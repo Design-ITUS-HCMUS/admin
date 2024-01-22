@@ -6602,9 +6602,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"designitusite@workspace:.":
+"designitus_admin@workspace:.":
   version: 0.0.0-use.local
-  resolution: "designitusite@workspace:."
+  resolution: "designitus_admin@workspace:."
   dependencies:
     "@emotion/cache": "npm:^11.11.0"
     "@mui/material-nextjs": "npm:^5.15.5"

@@ -1,5 +1,5 @@
-import { sha256 } from "js-sha256";
-import { PayOSObject } from "../interface/PayOSObject";
+import { sha256 } from 'js-sha256';
+import { PayOSObject } from '../interface/PayOSObject';
 
 // Generate order code base on unix timestamp
 export function generateOrderCode() {
@@ -22,9 +22,7 @@ export function getUnixTimeStamp() {
 }
 
 // Calculate total price
-export function calcTotalPrice(
-  items: { name: string; quantity: number; price: number }[],
-) {
+export function calcTotalPrice(items: { name: string; quantity: number; price: number }[]) {
   let totalPrice = 0;
 
   items.forEach((item) => {
