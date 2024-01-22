@@ -37,7 +37,7 @@ yarn.lock                        # yarn lockfile
 
 ## NVM-windows
 
-- Next require React ≥ 18.17.0, so install NVM to manage them.
+- Next require Node ≥ 18.17.0, so install NVM to manage them.
   ### Install [here](https://github.com/coreybutler/nvm-windows/releases)
   **⭐⭐ Uninstall any pre-existing Node installations!! ⭐⭐**
   > _Recommend - it’s hard to setup nvm-windows with current ongoing Node on the manchine_
