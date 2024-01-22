@@ -85,8 +85,8 @@ Change env:
 Run server with Postgre:
 
 ```bash
-1. Run "npx prisma generate" -> Update schema
-2. Run "npx prisma db push" -> Create db base on schema
+1. Run "yarn prisma generate" -> Update schema
+2. Run "yarn prisma db push" -> Create db base on schema
 
 Schema Location:
 /prisma/schema.prisma
