@@ -2,32 +2,34 @@
 
 ## Folder structure
 
-> *Use this to edit folder structure: [tree.nathanfriend.io](https://tree.nathanfriend.io/?s=(%27opqzs!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27%2F.stLybW0*7StLybW%20Kuraqz8.yarn0B*-YarHvQsioHmanagQ8hWs0B*-Custom%20hW6fL%20devs8intQface0*3-Database%20schemas23PayOSObjectZBB*-PayOS%20Obj%226IntQface8lib23hWsZ0*Fpredefined%20hWs23stLeZ0*FstLe23%2Ffeatures03Flogics8prisma0B3-Postgre%20setup%20with%20Prisma8public0B3-StaqcJiles8src23%2Fapp0B7MaiHsrcJoldQ23%2FstLies0*-C96foldQ2*%20%2Fassets0-Asset6foldQ2*Vc9%3E.cssB*7cs6rule6fLVc9%3E2*4.stLiesZ*-StLie6fL42*4ZxB*7TSXJL48uqls23payOSUqlsZBB*7fL%20PayOS2.env0B*3-Envirzment%20variables2.gitattributes07eol%20setupJL%20evQyJile6iHproject5.giqgnLe0*3-Git%20ignLeJiles5.pretqQrc0*7PretqQ%20rule6Kured5next.K.mjs0-Default%20Nextj6K2p*.jsz0\*-P_6and%20p*%20managQ2README.MD0B-Instrucqz6oHsetqng%20up%20the%20envirzment2yarn.lock0B-yarHlockfile%27)~vQsiz!%271%27)_37%23%200BBB2%5Cn3%20%204VC9%3E5%2C%20dzt%20touch26s%207%20-82%2F9ompzentB\*\*F-Redux%20Hn%20J%20fKczfigLorQerV%20%3CWookZ.ts_ackageqtizon%01zq_ZWVQLKJHFB987654320-_)\*
+> _Use this to edit folder structure: [tree.nathanfriend.io](https://tree.nathanfriend.io/?s=(%27optizs!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27%2F.stKybook9_-StKybook%20VuratizQ.yarn00*3YarBv_sioBmanag_Qint_face98-DatabasFschemas2LPayOSObjectq0*3PayOS%20Obj%227Int_faceQprisma00%20-PostgrFsetup%20with%20PrismaQpublic00%20-Static%20XsQsrc4api00-REST%20API%20code4app00-MaiBsrc%20fold_4assets9*-MaiBasset7fold_4Z98-Dev%227custom%20Z4lib28%2Ffeatures0*Jlogics28%2Fui9\*-Style7and%20cWs2**%2FcWs\***-CodFfK6qx28Zq08Jpredefined%20Z28stKeq08JstKe4stKies9*3StKie7fold_2*6.stKiesq*3StKie7fK6Qutils2LpayOSUtilsq0*-fK%20PayOS2.env008-Envirzment%20variables2.gitattributes9-eol%20setup%20fK%20ev_y%20X7iBproject5.gitignKe98-Git%245.pHignKe93PH%242.pHrc9*-PH%20rule7Vured5next.V.mjs93Default%20Nextj7V2package.jsz9*3Package7and%20packagFmanag_2README.MD003Instructiz7oBsetting%20up%20thFenvirzment2yarn.lock003yarBlockX%27)~v_siz!%271%27)8L-%2039**2%5Cn3%23%2042L%2F5%2C%20dzt%20touch26%20%3CCW%3E7s%208\*%2090**Bn%20Fe%20Hretti_J-Redux%20KorL%20%20Q2%2FVczfigWompzentXfileZhooks_erq.tszon%24%20ignKFXs%01%24zq_ZXWVQLKJHFB987654320-_)_
 
 ```bash
 /.storybook                      # Storybook configuration
 /.yarn                           # Yarn version manager
-/hooks                           # Custom hooks for devs
 /interface                       # Database schemas/
 └── PayOSObject.ts               # PayOS Obj's Interface
-/lib/
-├── hooks.ts                     # Redux predefined hooks
-├── store.ts                     # Redux store
-└── /features                    # Redux logics
 /prisma                          # Postgre setup with Prisma
 /public                          # Static files
 /src/
+├── /api                         # REST API code
 ├── /app                         # Main src folder
-└── /stories                     # Components folder/
-    ├── /assets                  # Assets folder
-    ├── <component>.css          # css rules for <component>
-    ├── <Component>.stories.ts   # Stories for <Component>
-    └── <Component>.tsx          # TSX for <Component>
+├── /assets                      # Main assets folder
+├── /hooks                       # Dev's custom hooks
+├── /lib/
+│   ├── /features                # Redux logics
+│   ├── /ui                      # Styles and components/
+│   │   └── /components          # Code for <Component>.tsx
+│   ├── hooks.ts                 # Redux predefined hooks
+│   └── store.ts                 # Redux store
+└── /stories                     # Stories folder/
+    └── <Component>.stories.ts   # Stories for <Component>
 /utils/
 └── payOSUtils.ts                # for PayOS
 .env                             # Environment variables
 .gitattributes                   # eol setup for every files in project, dont touch
 .gitignore                       # Git ignore files, dont touch
+.prettierignore                  # Prettier ignore files
 .prettierrc                      # Prettier rules configured, dont touch
 next.config.mjs                  # Default Nextjs config
 package.json                     # Packages and package manager

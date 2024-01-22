@@ -1,0 +1,30 @@
+/.storybook                      # Storybook configuration
+/.yarn                           # Yarn version manager
+/interface                       # Database schemas
+  PayOSObject.ts               # PayOS Obj's Interface
+/prisma                          # Postgre setup with Prisma
+/public                          # Static files
+/src
+  /api                          # REST API code
+  /app                         # Main src folder
+  /assets                     # Main assets folder
+  /hooks                       # Dev's custom hooks
+  /lib
+    /features                    # Redux logics
+    /ui                         # Styles and components
+      /components               # Code for <Component>.tsx
+    hooks.ts                     # Redux predefined hooks
+    store.ts                     # Redux store
+  /stories                     # Stories folder
+    <Component>.stories.ts   # Stories for <Component>
+/utils
+  payOSUtils.ts                # for PayOS
+.env                             # Environment variables
+.gitattributes                   # eol setup for every files in project, dont touch
+.gitignore                       # Git ignore files, dont touch
+.prettierignore                     # Prettier ignore files
+.prettierrc                      # Prettier rules configured, dont touch
+next.config.mjs                  # Default Nextjs config
+package.json                     # Packages and package manager
+README.MD                        # Instructions on setting up the environment
+yarn.lock                        # yarn lockfile
