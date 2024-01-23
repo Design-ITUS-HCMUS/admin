@@ -1,19 +1,16 @@
-// Setup database 
-//      Source 1: https://medium.com/@2018.itsuki/postgresql-with-next-js-and-prisma-44f66a05378a
-//      Source 2: https://vercel.com/guides/nextjs-prisma-postgres
-//      Source 3: https://vercel.com/docs/storage/vercel-postgres/using-an-orm
+//🧩Don't Edit this file.✨Generated in Tue Jan 23 2024 14:31:45 GMT+0700 (Indochina Time)✨
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("CONNECTION_STRING")
+  provider = "postgresql"
+  url      = env("CONNECTION_STRING")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
 }

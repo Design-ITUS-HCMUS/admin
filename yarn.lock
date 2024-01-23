@@ -6957,6 +6957,7 @@ __metadata:
     next: "npm:14.1.0"
     prettier: "npm:3.2.4"
     prisma: "npm:^5.8.1"
+    prisma-multischema: "npm:^1.1.4"
     react: "npm:^18"
     react-dom: "npm:^18"
     react-redux: "npm:^9.1.0"
@@ -11552,6 +11553,15 @@ __metadata:
   version: 1.0.3
   resolution: "pretty-hrtime@npm:1.0.3"
   checksum: 67cb3fc283a72252b49ac488647e6a01b78b7aa1b8f2061834aa1650691229081518ef3ca940f77f41cc8a8f02ba9eeb74b843481596670209e493062f2e89e0
+  languageName: node
+  linkType: hard
+
+"prisma-multischema@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "prisma-multischema@npm:1.1.4"
+  bin:
+    prisma-multischema: bin/run
+  checksum: 827d9f3f06049e3afd4cca7ea95bdca9d45ba4d9bda616fd5856c33e144d0478631255adc3e1fb6f1ad2e83a30259042f5ffab7f6e204d0a1068ec92ec20677f
   languageName: node
   linkType: hard
 
