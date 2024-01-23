@@ -12,8 +12,8 @@
 /prisma                          # Postgre setup with Prisma
 /public                          # Static files
 /src/
-├── /api                         # REST API code
-├── /app                         # Main src folder
+├── /app                         # Main src folder/
+│   └── /api                     # REST API code
 ├── /assets                      # Main assets folder
 ├── /hooks                       # Dev's custom hooks
 ├── /lib/
