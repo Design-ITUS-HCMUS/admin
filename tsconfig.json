@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@interfaces/*": ["./interfaces/*"],
+      "@interface/*": ["./interface/*"],
       "@utils/*": ["./utils/*"],
     },
   },
