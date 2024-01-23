@@ -19,6 +19,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@interfaces/*": ["./interfaces/*"],
+      "@utils/*": ["./utils/*"],
     },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
