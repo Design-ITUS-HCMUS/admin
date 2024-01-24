@@ -1,5 +1,14 @@
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+  id            Int            @id @default(autoincrement())
+  username      String         @unique
+  email         String         @unique
+  password      String
+  fullname      String
+  studentID     String
+  school        String
+  createdAt     DateTime       @default(now())
+  createdBy     String         @default("system")
+  role          Role           @relation(fields: [roleID], references: [id])
+  roleID        Int            @default(2) // role of user
+  accountEvents AccountEvent[] // list of events that user has joined
 }

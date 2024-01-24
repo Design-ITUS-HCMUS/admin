@@ -2,15 +2,18 @@ import { PrismaClient } from '@prisma/client';
 import { New_Rocker } from 'next/font/google';
 import { NextResponse } from 'next/server';
 
-const prisma = new PrismaClient();
-
 // Remember to run "npx prisma generate" after changing schema
-
+const Prisma = new PrismaClient();
 export async function GET(req: Request) {
-  const newUser = await prisma.user.create({
+  const newUser = await Prisma.user.create({
     data: {
-      name: 'Elliott',
-      email: 'xelliottx@example-user.com',
+      username: 'test1',
+      fullname: 'test',
+      email: 'test1',
+      password: 'test',
+      studentID: 'test',
+      roleID: 2,
+      school: 'test',
     },
   });
 
