@@ -2,13 +2,9 @@
 
 ## Folder structure
 
-> _Use this to edit folder structure: [tree.nathanfriend.io](https://tree.nathanfriend.io/?s=(%27optizs!(%27fancy!true~fullPath!false~trailingSlash!true~rootDot!false)~source!(%27source!%27%2F.stKybook9_-StKybook%20VuratizQ.yarn00*3YarBv_sioBmanag_Qint_face98-DatabasFschemas2LPayOSObjectq0*3PayOS%20Obj%227Int_faceQprisma00%20-PostgrFsetup%20with%20PrismaQpublic00%20-Static%20XsQsrc4api00-REST%20API%20code4app00-MaiBsrc%20fold_4assets9*-MaiBasset7fold_4Z98-Dev%227custom%20Z4lib28%2Ffeatures0*Jlogics28%2Fui9\*-Style7and%20cWs2**%2FcWs\***-CodFfK6qx28Zq08Jpredefined%20Z28stKeq08JstKe4stKies9*3StKie7fold_2*6.stKiesq*3StKie7fK6Qutils2LpayOSUtilsq0*-fK%20PayOS2.env008-Envirzment%20variables2.gitattributes9-eol%20setup%20fK%20ev_y%20X7iBproject5.gitignKe98-Git%245.pHignKe93PH%242.pHrc9*-PH%20rule7Vured5next.V.mjs93Default%20Nextj7V2package.jsz9*3Package7and%20packagFmanag_2README.MD003Instructiz7oBsetting%20up%20thFenvirzment2yarn.lock003yarBlockX%27)~v_siz!%271%27)8L-%2039**2%5Cn3%23%2042L%2F5%2C%20dzt%20touch26%20%3CCW%3E7s%208\*%2090**Bn%20Fe%20Hretti_J-Redux%20KorL%20%20Q2%2FVczfigWompzentXfileZhooks_erq.tszon%24%20ignKFXs%01%24zq_ZXWVQLKJHFB987654320-_)_
-
 ```bash
 /.storybook                      # Storybook configuration
 /.yarn                           # Yarn version manager
-/interface                       # Database schemas/
-└── PayOSObject.ts               # PayOS Obj's Interface
 /prisma                          # Postgre setup with Prisma
 /public                          # Static files
 /src/
@@ -16,21 +12,26 @@
 │   └── /api                     # REST API code
 ├── /assets                      # Main assets folder
 ├── /hooks                       # Dev's custom hooks
-├── /lib/
+├── /interfaces                  # Database schemas/
+│   └── PayOSObject.ts           # PayOS Obj's Interface
+├── /libs/
 │   ├── /features                # Redux logics
 │   ├── /ui                      # Styles and components/
 │   │   └── /components          # Code for <Component>.tsx
 │   ├── hooks.ts                 # Redux predefined hooks
 │   └── store.ts                 # Redux store
-└── /stories                     # Stories folder/
-    └── <Component>.stories.ts   # Stories for <Component>
-/utils/
-└── payOSUtils.ts                # for PayOS
+├── /services
+├── /stories                     # Stories folder/
+│   └── <Component>.stories.ts   # Stories for <Component>
+└── /utils/
+    └── payOSUtils.ts            # utilties functions for PayOS
 .env                             # Environment variables
 .gitattributes                   # eol setup for every files in project, dont touch
 .gitignore                       # Git ignore files, dont touch
 .prettierignore                  # Prettier ignore files
 .prettierrc                      # Prettier rules configured, dont touch
+cypress.config.ts                # Config settings for Cypress (E2E only)
+jest.config.ts                   # Config for Jest
 next.config.mjs                  # Default Nextjs config
 package.json                     # Packages and package manager
 README.MD                        # Instructions on setting up the environment
@@ -70,6 +71,12 @@ yarn storybook
 
 # Prisma
 yarn prisma studio
+
+# Cypress
+yarn cypress:open
+
+# Jest
+yarn test
 ```
 
 ## Backend note

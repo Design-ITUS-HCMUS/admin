@@ -1,5 +1,5 @@
 import { sha256 } from 'js-sha256';
-import { PayOSObject } from '@interface/PayOSObject';
+import { PayOSObject } from '@/interfaces/PayOSObject';
 
 // Generate order code base on unix timestamp
 export function generateOrderCode() {
