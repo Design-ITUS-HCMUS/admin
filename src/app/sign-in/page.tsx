@@ -3,10 +3,10 @@ import React, { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { styled } from '@mui/material/styles';
-import { FullscreenImage as Background, Logo, TextFieldWithLabel as TextField } from '@/lib/ui/components';
+import { FullscreenImage as Background, Logo, TextFieldWithLabel as TextField } from '@/libs/ui/components';
 import { Button, Typography, Paper, TypographyProps, InputAdornment, Divider } from '@mui/material';
 import { PersonRounded as PersonIcon, RemoveRedEyeRounded as ShowIcon } from '@mui/icons-material';
-import color from '@/lib/ui/color';
+import color from '@/libs/ui/color';
 
 const HeaderStyle: CSSProperties = {
   display: 'flex',

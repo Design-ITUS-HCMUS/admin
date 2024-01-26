@@ -1,9 +1,9 @@
 'use client';
 import React, { CSSProperties } from 'react';
 import { styled } from '@mui/material/styles';
-import { FullscreenImage as Background, Logo, TextFieldWithLabel as TextField } from '@/lib/ui/components';
+import { FullscreenImage as Background, Logo, TextFieldWithLabel as TextField } from '@/libs/ui/components';
 import { Typography, Paper, TypographyProps, InputAdornment } from '@mui/material';
-import color from '@/lib/ui/color';
+import color from '@/libs/ui/color';
 
 const HeaderStyle: CSSProperties = {
   display: 'flex',

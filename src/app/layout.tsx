@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '@/lib/ui/theme';
+import theme from '@/libs/ui/theme';
 import { Be_Vietnam_Pro } from 'next/font/google';
 
 const beVietnamPro = Be_Vietnam_Pro({

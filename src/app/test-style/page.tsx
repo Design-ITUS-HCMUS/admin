@@ -1,6 +1,6 @@
 'use client';
 import { Typography, Button, Alert } from '@mui/material';
-import { TextFieldWithLabel } from '@/lib/ui';
+import { TextFieldWithLabel } from '@/libs/ui';
 export default function TestStyle() {
   return (
     <div>
