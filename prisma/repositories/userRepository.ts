@@ -1,6 +1,7 @@
 import prisma from '../client';
 
 interface  IUserRepository {
+  id: number,
   username: string;
   fullName: string;
   email: string;

@@ -1,8 +1,7 @@
 import UserRepository from '@repositories/userRepository';
-import BaseRespone  from '@/utils/BaseRespone'
+import BaseRespone  from '@/utils/baseRespone'
 import { STATUS_CODE } from '@/utils/enum';
 import { CreateUser } from '@/interface/createUser'
-
 
 class UserService {
   private repository: any;
@@ -22,6 +21,18 @@ class UserService {
     } catch (err: any) {
       return new BaseRespone(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message)
     }
+  }
+
+  async getUserById(id: number) {
+     try {
+       const user = await this.repository.getByEntity({ id });
+        if (!user) {
+          return new BaseRespone(STATUS_CODE.NOT_FOUND, false, "User not found")
+        }
+        return new BaseRespone(STATUS_CODE.OK, true, "User found", user)
+     } catch (err: any) {
+       return new BaseRespone(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message)
+     }
   }
 }
 

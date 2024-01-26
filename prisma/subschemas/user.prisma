@@ -3,7 +3,7 @@ model User {
   username      String         @unique
   email         String         @unique
   password      String
-  fullname      String
+  fullName      String
   studentID     String
   school        String
   createdAt     DateTime       @default(now())
