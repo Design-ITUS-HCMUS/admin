@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import * as React from 'react';
-import { Typography, TypographyProps} from '@mui/material';
+import { Typography, TypographyProps } from '@mui/material';
 
 export const MUITypography = ({ ...rest }: TypographyProps) => <Typography {...rest}>MUI Typography</Typography>;
 
@@ -19,17 +19,15 @@ type Story = StoryObj;
  */
 
 export const LinkPrimary: Story = {
-  name: 'Link Primary',
   args: {
-    variant: 'linkPrimary'
+    variant: 'linkPrimary',
   },
   render: (args: TypographyProps) => <Typography {...args}>Link with primary color</Typography>,
 };
 
 export const LinkAccent: Story = {
-    name: 'Link Accent',
-    args: {
-      variant: 'linkAccent'
-    },
-    render: (args: TypographyProps) => <Typography {...args}>Link with accent color</Typography>,
-  };
+  args: {
+    variant: 'linkAccent',
+  },
+  render: (args: TypographyProps) => <Typography {...args}>Link with accent color</Typography>,
+};

@@ -131,20 +131,19 @@ export default function SignIn() {
                 </InputAdornment>
               ),
             }}></TextField>
-            <div style={{display: "flex", flexDirection:"row", justifyContent:"flex-end"}}>
-
-          <Link href='/sign-up'>
-            <Typography variant='linkAccent'>Quên mật khẩu</Typography>
-          </Link>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Link href='/sign-up'>
+              <Typography variant='linkAccent'>Quên mật khẩu</Typography>
+            </Link>
+          </div>
         </StyledForm>
         <Row>
           <Button variant='contained' size='large'>
             Đăng nhập
           </Button>
         </Row>
-        <Row style={{alignItems:"baseline", gap:2}}>
-          <Typography variant='body2' style={{textAlign: "right",...SupportTextStyle}}>
+        <Row style={{ alignItems: 'baseline', gap: 2 }}>
+          <Typography variant='body2' style={{ textAlign: 'right', ...SupportTextStyle }}>
             Chưa có tài khoản?
           </Typography>
           <Link href='/sign-up'>
