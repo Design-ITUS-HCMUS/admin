@@ -1,8 +1,8 @@
 import type { Preview, ReactRenderer } from '@storybook/react';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-// import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 // import CssBaseline from '@mui/material/CssBaseline';
-// import { lightTheme, darkTheme } from '../src/themes'; // Import your custom theme configs
+import { theme } from '../src/lib/ui'; // Import your custom theme configs
 
 const preview: Preview = {
   parameters: {
@@ -17,12 +17,11 @@ const preview: Preview = {
   },
   decorators: [
     withThemeFromJSXProvider<ReactRenderer>({
-      // themes: {
-      //   light: lightTheme,
-      //   dark: darkTheme,
-      // },
-      // defaultTheme: 'light',
-      // Provider: ThemeProvider,
+      themes: {
+        light: theme,
+      },
+      defaultTheme: 'light',
+      Provider: ThemeProvider,
       // GlobalStyles: CssBaseline,
     }),
   ],

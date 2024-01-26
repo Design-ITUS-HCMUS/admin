@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import * as React from 'react';
-import { Button, ButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 import { MyButton } from '../lib/ui/components/Button';
 
 const meta: Meta = {
@@ -19,5 +19,5 @@ type Story = StoryObj;
 
 export const Primary: Story = {
   name: 'I am the primary',
-  render: (args: ButtonProps) => <MyButton {...args}>Hlelo1</MyButton>,
+  render: (args: ButtonProps) => <MyButton {...args}>Hello</MyButton>,
 };

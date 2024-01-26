@@ -1,6 +1,6 @@
 // Configuration source: https://vercel.com/docs/storage/vercel-postgres/quickstart
 import { NextResponse } from 'next/server';
-import { PayOSObject } from '@interface/PayOSObject'
+import { PayOSObject } from '@interface/PayOSObject';
 import { getPayOSSignature, generateOrderCode, getUnixTimeStamp, calcTotalPrice } from '@utils/payOSUtils';
 
 // Do not use `export default` here, as it will break the routing
