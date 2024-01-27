@@ -1,7 +1,7 @@
 import UserRepository from '@repositories/userRepository';
 import BaseRespone  from '@/utils/baseRespone'
 import { STATUS_CODE } from '@/utils/enum';
-import { CreateUser } from '@/interface/createUser'
+import { CreateUser } from '@/interfaces/createUser'
 
 class UserService {
   private repository: any;

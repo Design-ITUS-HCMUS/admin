@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Fri Jan 26 2024 15:17:38 GMT+0700 (Indochina Time)✨
+//🧩Don't Edit this file.✨Generated in Sat Jan 27 2024 17:33:04 GMT+0700 (Indochina Time)✨
 model AccountEvent {
   id        Int   @id @default(autoincrement())
   eventID   Int
@@ -10,7 +10,6 @@ model AccountEvent {
   User      User? @relation(fields: [userId], references: [id])
   userId    Int?
 }
-//🧩Don't Edit this file.✨Generated in Fri Jan 26 2024 13:38:35 GMT+0700 (Indochina Time)✨
 
 generator client {
   provider = "prisma-client-js"
