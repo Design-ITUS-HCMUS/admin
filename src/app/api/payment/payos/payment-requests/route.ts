@@ -19,7 +19,7 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *             properties:
  *               buyerID:
  *                 type: integer
- *                 default: 2
+ *                 default: 1
  *     responses:
  *       200:
  *         description: Payment request object

@@ -6,7 +6,7 @@ import { getUnixTimeStamp, calcTotalPrice } from '@/utils/payOSUtils';
 import { payOS } from '@payOS';
 
 class PayOSPaymentService {
-  private repository: any;
+  private repository: PaymentRepository;
 
   constructor() {
     this.repository = new PaymentRepository();

@@ -4,7 +4,7 @@ import { STATUS_CODE } from '@/utils/enum';
 import { CreateUser } from '@/interfaces/createUser';
 
 class UserService {
-  private repository: any;
+  private repository: UserRepository;
 
   constructor() {
     this.repository = new UserRepository();
