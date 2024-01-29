@@ -1,5 +1,5 @@
 import UserRepository from '@repositories/userRepository';
-import BaseResponse  from '@/utils/baseRespone'
+import BaseResponse from '@/utils/baseResponse'
 import { STATUS_CODE } from '@/utils/enum';
 import { CreateUser } from '@/interfaces/createUser'
 
