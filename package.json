@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.5",
     "@mui/material-nextjs": "^5.15.5",
+    "@payos/node": "^1.0.6",
     "@prisma/client": "^5.8.1",
     "@reduxjs/toolkit": "^2.0.1",
     "js-sha256": "^0.10.1",

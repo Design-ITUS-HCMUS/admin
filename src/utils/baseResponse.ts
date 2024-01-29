@@ -6,7 +6,7 @@ interface IBaseResponse {
   data: any;
 }
 
-export default class BaseRespone {
+export default class BaseResponse {
   status: number ;
   success: boolean;
   message: string;
@@ -19,7 +19,7 @@ export default class BaseRespone {
     this.data = data || "";
   }
 
-  responeBody() {
+  responseBody() {
     return {
       success: this.success,
       message: this.message,
