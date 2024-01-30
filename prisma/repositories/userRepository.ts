@@ -34,7 +34,17 @@ export default class UserRepository {
 
   async getAll() {
     try {
-      const allUsers = await this.model.findMany();
+      const allUsers = await this.model.findMany({
+        orderBy: [
+          {
+            id: 'asc',
+          },
+        ],
+        include: {
+          accountEvents: true,
+          role: true
+        }
+      });
       return allUsers;
     } catch (error) {
       console.log(error);
@@ -51,6 +61,35 @@ export default class UserRepository {
     } catch (error) {
       console.log(error);
       return null;
+    }
+  }
+
+  async update(entity: Partial<IUserRepository>) {
+    try {
+      const user = await this.model.update({
+        where: { id: entity.id },
+        data: entity,
+      });
+      return user;
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  }
+
+  async delete(entity: number[]) {
+    try {
+      const deletedUser = await this.model.deleteMany({
+        where: {
+          id: {
+            in: entity
+          }
+        },
+      });
+      return deletedUser;
+    } catch (error) {
+      console.log(error);
+      return null
     }
   }
 }

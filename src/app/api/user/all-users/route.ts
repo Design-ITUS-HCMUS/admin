@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import UserService from '@/services/userService';
-export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const res = await UserService.createUser(data);
+
+export async function GET(req: NextRequest) {
+  const res = await UserService.getAllUsers();
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
