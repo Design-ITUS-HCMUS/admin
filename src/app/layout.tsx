@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/libs/ui/theme';
 import { Be_Vietnam_Pro } from 'next/font/google';
+import Navbar from '@/libs/ui/components/Navbar';
 
 const beVietnamPro = Be_Vietnam_Pro({
   display: 'swap',
@@ -25,7 +26,10 @@ export default function RootLayout({
     <html lang='en' className={beVietnamPro.className}>
       <body>
         <ThemeProvider theme={theme}>
-          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+          <AppRouterCacheProvider>
+            <Navbar />
+            {children}
+          </AppRouterCacheProvider>
         </ThemeProvider>
       </body>
     </html>
