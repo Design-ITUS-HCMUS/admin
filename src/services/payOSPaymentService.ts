@@ -35,7 +35,14 @@ class PayOSPaymentService {
       // Get first available orderCode
       let orderCode = (await this.repository.getCurrentID()) + 1;
 
-      while (1) {
+      // Start timer
+      const startTime = Date.now();
+
+      while (true) {
+        // If time out (1 min) -> Return error
+        if (Date.now() - startTime > 60000) 
+          return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
+
         // Create payOS checkout object
         const payOSCheckout: CheckoutRequestType = {
           orderCode,
@@ -62,8 +69,6 @@ class PayOSPaymentService {
             });
           } catch (err: any) {
             // This catch block is to handle database error only
-            // Cancle payment if database error
-            // await payOS.cancelPaymentLink(response.paymentLinkId, "Database error");
             return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
           }
 
@@ -71,7 +76,7 @@ class PayOSPaymentService {
           return new BaseResponse(STATUS_CODE.OK, true, 'Payment link created successfully', response);
         } catch (err: any) {
           // This catch block is to handle PayOS.createPaymentLink() error only
-          // If that payment is not available -> Inc orderCode
+          // If that payment already existed -> Inc orderCode
           // Otherwise -> Try again with the same orderCode
           if (err.message === 'Đơn thanh toán đã tồn tại') orderCode++;
         }
