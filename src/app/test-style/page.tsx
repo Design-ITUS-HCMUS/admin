@@ -10,7 +10,7 @@ export default function TestStyle() {
       <Button variant='contained' color='info'>
         Đăng nhập
       </Button>
-      <TextFieldWithLabel label='Username' containerStyle={{ margin: '16px' }} textFieldProps={{ size: 'small' }} />
+      <TextFieldWithLabel label='Username' containerStyle={{ margin: '16px' }} inputProps={{ size: 'small' }} />
       <Alert severity='error' onClose={() => {}}>
         <Typography variant='body2'>Mã OTP không hợp lệ, vui lòng thử lại</Typography>
       </Alert>

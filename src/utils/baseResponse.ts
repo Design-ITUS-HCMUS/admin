@@ -7,7 +7,7 @@ interface IBaseResponse {
 }
 
 export default class BaseResponse {
-  status: number ;
+  status: number;
   success: boolean;
   message: string;
   data: any;
@@ -15,16 +15,15 @@ export default class BaseResponse {
   constructor(status?: number, success?: boolean, message?: string, data?: any) {
     this.status = status || STATUS_CODE.INTERNAL_SERVER_ERROR;
     this.success = success || false;
-    this.message = message || "";
-    this.data = data || "";
+    this.message = message || '';
+    this.data = data || '';
   }
 
   responseBody() {
     return {
       success: this.success,
       message: this.message,
-      data: this.data
-    }
+      data: this.data,
+    };
   }
 }
-

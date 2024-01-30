@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Sat Jan 27 2024 17:33:04 GMT+0700 (Indochina Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Jan 29 2024 15:20:10 GMT+0700 (Indochina Time)✨
 model AccountEvent {
   id        Int   @id @default(autoincrement())
   eventID   Int
@@ -18,6 +18,21 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("CONNECTION_STRING")
+}
+
+model Payment {
+  id            Int       @id @default(autoincrement())
+  buyer         User      @relation(fields: [buyerID], references: [id])
+  buyerID       Int
+  gateway       String
+  paymentID     String?
+  amount        Int
+  description   String
+  accountNumber String?
+  reference     String?
+  paidAt        DateTime?
+  createdAt     DateTime  @default(now())
+  paymentStatus Int       @default(0) // 0 = Unpaid/Cancelled, 1 = Paid, 2 = Waiting for Confirmation, 3 = Cancelled
 }
 
 model Role {
@@ -41,4 +56,5 @@ model User {
   role          Role           @relation(fields: [roleID], references: [id])
   roleID        Int            @default(2) // role of user
   accountEvents AccountEvent[] // list of events that user has joined
+  Payment       Payment[]
 }

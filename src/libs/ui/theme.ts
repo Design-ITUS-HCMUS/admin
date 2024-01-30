@@ -5,6 +5,9 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 let theme = createTheme({
   palette: {
+    background: {
+      default: colors.neutral[50],
+    },
     primary: {
       main: colors.blue[500],
       light: colors.blue[200],
@@ -55,6 +58,11 @@ let theme = createTheme({
     },
   } as TypographyOptions,
   components: {
+    MuiTypography: {
+      defaultProps: {
+        variant: 'body2',
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
@@ -165,6 +173,23 @@ let theme = createTheme({
           borderRadius: '.5rem',
         },
       },
+    },
+    MuiPagination: {
+      styleOverrides: {
+        root: {
+          width: 'max-content',
+        },
+      },
+    },
+    MuiChip: {
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            background: colors.blue[50],
+          },
+        },
+      ],
     },
   },
 } as any);

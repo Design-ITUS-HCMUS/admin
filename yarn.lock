@@ -2767,6 +2767,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@payos/node@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "@payos/node@npm:1.0.6"
+  dependencies:
+    axios: "npm:^1.5.0"
+    crypto: "npm:^1.0.1"
+  checksum: a724eea3327977291e8b1933acf6b8bfc78dfe30aa9a9bb238e93adeb65dece45efb9da9e80f5b1aa8ccefbf3d0cfac8d814df299aee5220da9efa82e3624561
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -6241,6 +6251,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.5.0":
+  version: 1.6.7
+  resolution: "axios@npm:1.6.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.4"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 131bf8e62eee48ca4bd84e6101f211961bf6a21a33b95e5dfb3983d5a2fe50d9fffde0b57668d7ce6f65063d3dc10f2212cbcb554f75cfca99da1c73b210358d
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:^3.2.1":
   version: 3.2.1
   resolution: "axobject-query@npm:3.2.1"
@@ -7531,6 +7552,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "crypto@npm:1.0.1"
+  checksum: fcf7dbd68ac5415b7fde7d7208fe203038e92e83e8a8fcf6e86ab4771ce3dd026d6967a990ba56b9d1c771378210814d5c90d907d3739fbd1723d552ad6c8ab8
+  languageName: node
+  linkType: hard
+
 "csp_evaluator@npm:1.1.1":
   version: 1.1.1
   resolution: "csp_evaluator@npm:1.1.1"
@@ -7959,6 +7987,7 @@ __metadata:
     "@mui/icons-material": "npm:^5.15.6"
     "@mui/material": "npm:^5.15.5"
     "@mui/material-nextjs": "npm:^5.15.5"
+    "@payos/node": "npm:^1.0.6"
     "@prisma/client": "npm:^5.8.1"
     "@reduxjs/toolkit": "npm:^2.0.1"
     "@storybook/addon-essentials": "npm:^7.6.10"
@@ -9498,6 +9527,16 @@ __metadata:
   version: 0.227.0
   resolution: "flow-parser@npm:0.227.0"
   checksum: 4f22f6f45b96effcfaede2c2c7891e2b9062bdb7aa2bc75f7813b840b468e2a7dfc7dfc89c954e9942b5a9f23d1835605cbc6a7c7a35ee1432360fe568a98ff1
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.4":
+  version: 1.15.5
+  resolution: "follow-redirects@npm:1.15.5"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 418d71688ceaf109dfd6f85f747a0c75de30afe43a294caa211def77f02ef19865b547dfb73fde82b751e1cc507c06c754120b848fe5a7400b0a669766df7615
   languageName: node
   linkType: hard
 
@@ -17063,6 +17102,14 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
+  checksum: aec4ef4eb65821a7dde7b44790f8699cfafb7978c9b080f6d7a98a7f8fc0ce674c027073a78574c94786ba7112cc90fa2cc94fc224ceba4d4b1030cff9662494
+  languageName: node
+  linkType: hard
+
+"xdg-basedir@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "xdg-basedir@npm:4.0.0"
+  checksum: 1b5d70d58355af90363a4e0a51c992e77fc5a1d8de5822699c7d6e96a6afea9a1e048cb93312be6870f338ca45ebe97f000425028fa149c1e87d1b5b8b212a06
   checksum: aec4ef4eb65821a7dde7b44790f8699cfafb7978c9b080f6d7a98a7f8fc0ce674c027073a78574c94786ba7112cc90fa2cc94fc224ceba4d4b1030cff9662494
   languageName: node
   linkType: hard
