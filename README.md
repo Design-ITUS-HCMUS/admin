@@ -92,6 +92,7 @@ Change env:
 ```
 
 Schema Location:
+
 ```
 /prisma/subschemas/*.prisma
 ```

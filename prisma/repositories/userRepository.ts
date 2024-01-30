@@ -1,7 +1,7 @@
 import { prisma } from '../client';
 
-interface  IUserRepository {
-  id: number,
+interface IUserRepository {
+  id: number;
   username: string;
   fullName: string;
   email: string;
@@ -17,10 +17,10 @@ interface  IUserRepository {
 export default class UserRepository {
   private model: any;
   constructor() {
-    this.model = prisma.user
+    this.model = prisma.user;
   }
 
-    async add(entity: Partial<IUserRepository>) {
+  async add(entity: Partial<IUserRepository>) {
     try {
       const newUser = await this.model.create({
         data: entity,
@@ -28,7 +28,7 @@ export default class UserRepository {
       return newUser;
     } catch (error) {
       console.log(error);
-      return null
+      return null;
     }
   }
 
@@ -38,7 +38,7 @@ export default class UserRepository {
       return allUsers;
     } catch (error) {
       console.log(error);
-      return null
+      return null;
     }
   }
 
@@ -50,7 +50,7 @@ export default class UserRepository {
       return user;
     } catch (error) {
       console.log(error);
-      return null
+      return null;
     }
   }
 }

@@ -20,7 +20,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@repositories/*": ["./prisma/repositories/*"],
-      "@payOS": ["./payOS/client.ts"], 
+      "@payOS": ["./payOS/client.ts"],
     },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
