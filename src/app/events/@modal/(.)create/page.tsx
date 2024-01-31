@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Grid, Input} from '@mui/material';
-import {TextFieldWithLabel as TextField} from '@/libs/ui/components';
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Grid, Input } from '@mui/material';
+import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
 
 export default function Page() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function Page() {
       <DialogContent id='alert-dialog-description'>
         <Grid container>
           <Grid item xs={12} md={6}>
-            <Input placeholder='Outr Space'/>
+            <Input placeholder='Outr Space' />
             <TextField
               label='Khóa'
               inputProps={{
@@ -30,15 +30,14 @@ export default function Page() {
                 placeholder: 'Khóa',
                 type: 'date',
               }}></TextField>
-              <TextField
+            <TextField
               label='CTA link'
               inputProps={{
                 placeholder: 'www.outrspace.com',
                 type: 'url',
               }}></TextField>
           </Grid>
-          <Grid item xs={12} md={6}>
-          </Grid>
+          <Grid item xs={12} md={6}></Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
