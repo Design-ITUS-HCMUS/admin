@@ -2703,6 +2703,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/utils@npm:^5.15.6":
+  version: 5.15.6
+  resolution: "@mui/utils@npm:5.15.6"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.8"
+    "@types/prop-types": "npm:^15.7.11"
+    prop-types: "npm:^15.8.1"
+    react-is: "npm:^18.2.0"
+  peerDependencies:
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 030d5c6a569caf2bd5f2652764343201d5ddb3a858d666a0a2b1903e0bb43de57be1b50f7a32be5ef23d283044eee25cebc84bbd2ba527effdc8af5dc76c7e6e
+  languageName: node
+  linkType: hard
+
 "@ndelangen/get-tarball@npm:^3.0.7":
   version: 3.0.9
   resolution: "@ndelangen/get-tarball@npm:3.0.9"
@@ -8695,6 +8713,7 @@ __metadata:
     "@mui/icons-material": "npm:^5.15.6"
     "@mui/material": "npm:^5.15.5"
     "@mui/material-nextjs": "npm:^5.15.5"
+    "@mui/utils": "npm:^5.15.6"
     "@payos/node": "npm:^1.0.6"
     "@prisma/client": "npm:^5.8.1"
     "@reduxjs/toolkit": "npm:^2.0.1"

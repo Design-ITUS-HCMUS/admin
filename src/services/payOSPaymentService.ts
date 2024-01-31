@@ -40,7 +40,7 @@ class PayOSPaymentService {
 
       while (true) {
         // If time out (1 min) -> Return error
-        if (Date.now() - startTime > 60000) 
+        if (Date.now() - startTime > 60000)
           return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
 
         // Create payOS checkout object
