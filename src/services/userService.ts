@@ -52,7 +52,7 @@ class UserService {
     try {
       const users = await this.repository.getAll();
       if (!users) {
-        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "No user found");
+        throw new Error("Fail to get data")
       }
       return new BaseResponse(STATUS_CODE.OK, true, "Users found", users);
     } catch (err: any) {

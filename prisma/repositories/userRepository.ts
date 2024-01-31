@@ -56,6 +56,10 @@ export default class UserRepository {
     try {
       const user = await this.model.findUnique({
         where: entity,
+        include:{
+          accountEvents: true,
+          role: true
+        }
       });
       return user;
     } catch (error) {
