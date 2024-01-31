@@ -3,7 +3,7 @@ import UserService from '@/services/userService';
 
 /**
  * @swagger
- * /api/user:
+ * /api/user?id={userID}:
  *   get:
  *     tags:
  *       - User
@@ -19,7 +19,7 @@ import UserService from '@/services/userService';
  *     responses:
  *       200:
  *         description: Retrieved user successfully.
- *       409:
+ *       404:
  *         description: User not found.
  *       500:
  *         description: Error message.

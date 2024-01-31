@@ -100,11 +100,11 @@ class UserService {
     try {
       const deletedUsers = await this.repository.delete(ids);
       if (!deletedUsers) {
-        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "No user found")
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "No user found");
       }
-      return new BaseResponse(STATUS_CODE.OK, true, "Users deleted", deletedUsers)
+      return new BaseResponse(STATUS_CODE.OK, true, "Users deleted", deletedUsers);
     } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message)
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
   }
 }
