@@ -50,7 +50,7 @@ export default function Payment() {
     if (paymentLink) {
       window.location.href = paymentLink;
     }
-  }, 1500);
+  }, 100);
 
   return (
     <Container maxWidth='sm'>
@@ -61,6 +61,7 @@ export default function Payment() {
           multiline
           variant='standard'
           value={buyerID}
+          error={buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0)}
           onChange={(e) => setBuyerID(e.target.value)}
         />
         <Button variant='contained' type='submit'>
