@@ -83,17 +83,8 @@ class UserService {
           return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "User not found");
         }
         const { username, email } = data;
-        if (username) {
-            const existedUserName = await this.repository.getByEntity({ username });
-            if (existedUserName) {
-                return new BaseResponse(STATUS_CODE.CONFLICT, false, "Username existed");
-            }
-        }
-        if (email) {
-            const existedEmail = await this.repository.getByEntity({ email });
-            if (existedEmail) {
-                return new BaseResponse(STATUS_CODE.CONFLICT, false, "Email existed");
-            }
+        if(username || email) {
+          return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "Username and email cannot be updated");
         }
         const updatedUser = await this.repository.update({ id, ...data });
         if(!updatedUser) {
