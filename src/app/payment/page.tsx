@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Container, Box } from '@mui/material';
-import { TextFieldWithLabel } from '@/libs/ui';
 
 const styles = {
   form: {
@@ -12,6 +11,9 @@ const styles = {
     mt: 8,
   },
 };
+
+// Need help: Invalid `prisma.payment.create()` invocation:
+// Foreign key constraint failed on the field: `Payment_buyerID_fkey (index)`
 
 export default function Payment() {
   const [buyerID, setBuyerID] = useState('');
@@ -38,17 +40,17 @@ export default function Payment() {
     });
 
     const data = await response.json();
-    setPaymentLink(data.paymentLink);
+    setPaymentLink(data.data.checkoutUrl);
 
     // Display return data
     alert(JSON.stringify(data, null, 2));
   };
 
-  useEffect(() => {
+  setTimeout(() => {
     if (paymentLink) {
       window.location.href = paymentLink;
     }
-  }, [paymentLink]);
+  }, 1500);
 
   return (
     <Container maxWidth='sm'>

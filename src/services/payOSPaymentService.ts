@@ -19,8 +19,8 @@ class PayOSPaymentService {
       const buyerID = body.buyerID;
 
       const description = 'OUTRSPACE';
-      const cancelUrl = 'https://google.com';
-      const returnUrl = 'https://google.com';
+      const cancelUrl = 'http://localhost:3000/payment/failed';
+      const returnUrl = 'http://localhost:3000/payment/success';
       const items = [
         {
           name: 'Phí tham gia Outrspace',
@@ -40,7 +40,7 @@ class PayOSPaymentService {
 
       while (true) {
         // If time out (1 min) -> Return error
-        if (Date.now() - startTime > 60000) 
+        if (Date.now() - startTime > 60000)
           return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
 
         // Create payOS checkout object
