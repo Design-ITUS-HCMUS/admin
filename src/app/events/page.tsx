@@ -1,17 +1,13 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Badge, Button, Paper, Typography } from '@mui/material';
+import { Badge, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui/components';
 import { FilterListRounded, IosShareRounded } from '@mui/icons-material';
 import colors from '@/libs/ui/color';
 import data from './events.json';
 import { Order, stableSort, getComparator } from '@/utils';
-
-const Section = styled('section')(({ theme }) => ({
-  padding: theme.spacing(3, 3, 3),
-}));
 
 const ButtonGroup = styled('div')({
   display: 'flex',
@@ -62,7 +58,7 @@ interface ITableCell {
   status: string;
 }
 
-export default function Events() {
+export default function Events({ modal }: { modal: React.ReactNode }) {
   const rowsPerPage = 10;
   const [rows, setRows] = useState(data);
   const [page, setPage] = useState(0);
@@ -103,36 +99,37 @@ export default function Events() {
   }, [rows, page]);
 
   return (
-    <Section>
-      <Paper sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Typography variant='h6' fontWeight='600'>
-          Sự kiện
-        </Typography>
-        <ToolBar>
-          <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-          <ButtonGroup>
+    <>
+      {modal}
+      <Typography variant='h6' fontWeight='600'>
+        Sự kiện
+      </Typography>
+      <ToolBar>
+        <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
+        <ButtonGroup>
+          <Link href='/events/create'>
             <Button variant='contained' color='info'>
               Tạo sự kiện
             </Button>
-            <Badge badgeContent={11} max={9} color='primary'>
-              <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
-                Bộ lọc
-              </Button>
-            </Badge>
-            <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
-              Xuất file
+          </Link>
+          <Badge badgeContent={11} max={9} color='primary'>
+            <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
+              Bộ lọc
             </Button>
-          </ButtonGroup>
-        </ToolBar>
-        <EnhancedTable
-          headCells={headCells}
-          rows={visibleRows}
-          totalRows={data.length}
-          totalPages={Math.floor((data.length - 1) / rowsPerPage) + 1}
-          onChangePage={handleChangePage}
-          onSort={handleSort}
-        />
-      </Paper>
-    </Section>
+          </Badge>
+          <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
+            Xuất file
+          </Button>
+        </ButtonGroup>
+      </ToolBar>
+      <EnhancedTable
+        headCells={headCells}
+        rows={visibleRows}
+        totalRows={data.length}
+        totalPages={Math.floor((data.length - 1) / rowsPerPage) + 1}
+        onChangePage={handleChangePage}
+        onSort={handleSort}
+      />
+    </>
   );
 }

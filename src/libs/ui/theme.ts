@@ -191,6 +191,27 @@ let theme = createTheme({
         },
       ],
     },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          '& .MuiDialog-paper': {
+            padding: '0',
+          },
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: '1rem',
+        },
+        spacing: {
+          '& > :not(:first-of-type)': {
+            marginLeft: '1rem',
+          },
+        },
+      },
+    },
   },
 } as any);
 

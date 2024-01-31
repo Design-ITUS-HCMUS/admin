@@ -1,17 +1,5 @@
-'use client';
-import { Paper, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const Section = styled('section')(({ theme }) => ({
-  padding: theme.spacing(3, 3, 3),
-}));
+import { Typography } from '@mui/material';
 
 export default function EventDetails({ params }: { params: { key: string } }) {
-  return (
-    <Section>
-      <Paper>
-        <Typography variant='h6'>Chi tiết sự kiện {params.key}</Typography>
-      </Paper>
-    </Section>
-  );
+  return <Typography variant='h6'>Chi tiết sự kiện {params.key}</Typography>;
 }
