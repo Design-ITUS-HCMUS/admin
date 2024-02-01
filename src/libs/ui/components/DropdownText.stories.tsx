@@ -28,9 +28,9 @@ export const Default: Story = {
   args: {
     IconComponent: ExpandMoreIcon,
     children: [
-      <MenuItem value={1}>One</MenuItem>,
-      <MenuItem value={2}>Two</MenuItem>,
-      <MenuItem value={3}>Three</MenuItem>,
+      <MenuItem value={1} key={1}>One</MenuItem>,
+      <MenuItem value={2} key={2}>Two</MenuItem>,
+      <MenuItem value={3} key={3}>Three</MenuItem>,
     ],
     sx: {
       width: '300px',
