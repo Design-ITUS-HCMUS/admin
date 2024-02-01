@@ -12,16 +12,14 @@ import { Divider } from '@mui/material';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import DesignITUSLogo from '@/assets/LogoDesignITUS.svg';
-import Image from 'next/image';
+import { Logo } from './Logo';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { colors } from '@/libs/ui';
+import { colors } from '../';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PersonIcon from '@mui/icons-material/Person';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -30,7 +28,7 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import CloseIcon from '@mui/icons-material/Close';
 
-interface NavBarItem {
+export interface NavBarItem {
   name: string;
   link?: string;
   disabled?: boolean;
@@ -42,30 +40,7 @@ interface NavBarItem {
   }[];
 }
 
-const pages: NavBarItem[] = [
-  {
-    name: 'Sự kiện',
-    // disabled: true,
-    menuItems: [
-      { name: 'Outr space 8 (OS8)', link: '/events/OS8' },
-      { name: 'Workshop Des to Dev (D2D)', link: '/events/D2D', disabled: true },
-      { name: 'Tất cả sự kiện', link: '/events', disabled: false },
-    ],
-  },
-  { name: 'Thành viên', link: '/members' },
-  { name: 'Bài đăng', link: '/posts', disabled: true },
-];
-
-const settings: NavBarItem = {
-  name: 'Xin chào, Ngân Trúc',
-  menuItems: [
-    { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
-    { name: 'Lịch sử thanh toán', link: '/history', icon: <AttachMoneyIcon /> },
-    { name: 'Đăng xuất', link: '/logout' },
-  ],
-};
-
-type NavBarItemProps = NavBarItem & { index: number; active: boolean };
+type NavBarItemProps = NavBarItem & { index: number; active?: boolean };
 
 const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): React.JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -157,7 +132,41 @@ const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): 
   );
 };
 
-function ResponsiveAppBar() {
+const defaultPages = [
+  {
+    name: 'Sự kiện',
+    // disabled: true,
+    menuItems: [
+      { name: 'Outr space 8 (OS8)', link: '/events/OS8' },
+      { name: 'Workshop Des to Dev (D2D)', link: '/events/D2D', disabled: true },
+      { name: 'Tất cả sự kiện', link: '/events', disabled: false },
+    ],
+  },
+  { name: 'Thành viên', link: '/members' },
+  { name: 'Bài đăng', link: '/posts', disabled: true },
+] as NavBarItem[];
+
+const defaultSettings = {
+  name: 'Xin chào, Ngân Trúc',
+  menuItems: [
+    { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
+    { name: 'Lịch sử thanh toán', link: '/history', icon: <AttachMoneyIcon /> },
+    { name: 'Đăng xuất', link: '/logout' },
+  ],
+} as NavBarItem;
+
+function ResponsiveAppBar({
+  pages,
+  settings,
+  activeURL,
+}: {
+  pages?: NavBarItem[];
+  settings?: NavBarItem;
+  activeURL?: string;
+}) {
+  if (!pages) pages = defaultPages;
+  if (!settings) settings = defaultSettings;
+  if (!activeURL) activeURL = '';
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const pathname = usePathname();
 
@@ -200,20 +209,20 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           {/* Responsive -> Visible only on MD and above */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 3, mr: 1 }}>
-            <Image src={DesignITUSLogo} alt='Design ITUS Logo' width={69} />
+            <Logo size='small' />
           </Box>
           <Typography
             variant='h6'
             noWrap
-            component='a'
+            component={Link}
             href='/'
             sx={{
               mr: 10,
               display: { xs: 'none', md: 'flex' },
               fontWeight: 600,
               letterSpacing: '0.15px',
-              color: 'inherit',
-              textDecoration: 'none',
+              fontSize: '20px',
+              lineHeight: '1.5',
             }}>
             Administrator Portal
           </Typography>
@@ -223,7 +232,10 @@ function ResponsiveAppBar() {
                 index={index}
                 {...page}
                 key={index}
-                active={pathname.includes(page.link || page.menuItems?.[0].link || '')}
+                active={
+                  pathname?.includes(page.link || page.menuItems?.[0].link || '') ||
+                  activeURL?.includes(page.link || page.menuItems?.[0].link || '')
+                }
               />
             ))}
             <Box>
@@ -282,7 +294,7 @@ function ResponsiveAppBar() {
               )}
               <Divider />
               <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-                <ListItemText>
+                <ListItemText sx={{ color: colors.notification['error'] }}>
                   <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
                     {settings.menuItems?.[settings.menuItems?.length - 1].name}
                   </Link>
@@ -293,16 +305,20 @@ function ResponsiveAppBar() {
 
           {/* Responsive -> Visible only on XS and SM */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 2, mr: 1 }}>
-            <Image src={DesignITUSLogo} alt='Design ITUS Logo' width={69} />
+            <Logo size='small' />
           </Box>
           <Typography
             variant='h6'
             noWrap
-            component='a'
+            component={Link}
             href='/'
             sx={{
               display: { md: 'none' },
               flexGrow: 1,
+              fontWeight: 600,
+              letterSpacing: '0.15px',
+              fontSize: '20px',
+              lineHeight: '1.5',
             }}>
             Administration Portal
           </Typography>
@@ -376,7 +392,7 @@ function ResponsiveAppBar() {
                   )}
                   <Divider />
                   <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-                    <ListItemText>
+                    <ListItemText sx={{ color: colors.notification['error'] }}>
                       <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
                         {settings.menuItems?.[settings.menuItems?.length - 1].name}
                       </Link>
@@ -393,7 +409,7 @@ function ResponsiveAppBar() {
                       component={Link}
                       href={page.link}
                       onClick={toggleDrawer}
-                      selected={pathname.includes(page.link)}
+                      selected={pathname?.includes(page.link) || activeURL?.includes(page.link)}
                       disabled={page.disabled}>
                       <ListItemText
                         primary={page.name}
@@ -420,7 +436,7 @@ function ResponsiveAppBar() {
                                   href={menuItem.link}
                                   onClick={toggleDrawer}
                                   sx={{ pl: 4, pr: 4 }}
-                                  selected={pathname.includes(menuItem.link)}
+                                  selected={pathname?.includes(menuItem.link) || activeURL?.includes(menuItem.link)}
                                   disabled={menuItem.disabled}>
                                   <ListItemText>{menuItem.name}</ListItemText>
                                 </ListItemButton>
@@ -435,7 +451,10 @@ function ResponsiveAppBar() {
                               onClick={toggleDrawer}
                               sx={{ pl: 4, pr: 4 }}
                               disabled={page.menuItems[page.menuItems.length - 1].disabled}
-                              selected={pathname.includes(page.menuItems[page.menuItems.length - 1].link)}>
+                              selected={
+                                pathname?.includes(page.menuItems[page.menuItems.length - 1].link) ||
+                                activeURL?.includes(page.menuItems[page.menuItems.length - 1].link)
+                              }>
                               <ListItemText>{page.menuItems[page.menuItems.length - 1].name}</ListItemText>
                             </ListItemButton>
                           )}

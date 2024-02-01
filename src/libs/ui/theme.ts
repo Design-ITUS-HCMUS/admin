@@ -55,6 +55,14 @@ let theme = createTheme({
     },
   } as TypographyOptions,
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          color: 'inherit',
+          textDecoration: 'none',
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
