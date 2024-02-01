@@ -9,7 +9,7 @@ export default class PaymentRepository {
     this.model = prisma.payment;
   }
 
-  async add(entity: Prisma.PaymentCreateInput) {
+  async add(entity: Prisma.PaymentUncheckedCreateInput) {
     try {
       const newPayment = await this.model.create({
         data: entity,

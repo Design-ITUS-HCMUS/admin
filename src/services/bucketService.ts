@@ -29,8 +29,11 @@ class BucketService {
           data: await this.getByteArray(item as File),
         };
 
-        const id = await this.repository.add(entity);
-        idArr.push(id);
+        const retItem = await this.repository.add(entity);
+        if (retItem === null || retItem === undefined) 
+          throw new Error('Save items failed');
+
+        idArr.push(retItem.id);
       });
 
       return new BaseResponse(STATUS_CODE.OK, true, 'Save items successfully', idArr);
@@ -60,19 +63,6 @@ class BucketService {
     }
   }
 
-  async getFile(id: number) {
-    try {
-      const file = await this.repository.getByEntity({ id });
-
-      // Convert data from byteA to base64
-      file.data = this.convertToBase64(file.data);
-
-      return new BaseResponse(STATUS_CODE.OK, true, 'Get file successfully', file);
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
   async getFiles(ids: number[]) {
     try {
       let files: any[] = [];
@@ -80,10 +70,16 @@ class BucketService {
       for (let i = 0; i < ids.length; i++) {
         const file = await this.repository.getByEntity({ id: ids[i] });
 
-        // Convert data from byteA to base64
-        file.data = this.convertToBase64(file.data);
+        if (file === null || file === undefined)
+          throw new Error('Get files failed');
 
-        files.push(file);
+        // Convert data from byteA to base64
+        const base64File = {
+          ...file,
+          data: this.convertToBase64(file.data),
+        }
+
+        files.push(base64File);
       }
 
       return new BaseResponse(STATUS_CODE.OK, true, 'Get files successfully', files);

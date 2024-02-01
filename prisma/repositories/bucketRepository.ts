@@ -9,7 +9,7 @@ export default class BucketRepository {
     this.model = prisma.bucket;
   }
 
-  async add(entity: Prisma.BucketCreateInput) {
+  async add(entity: Prisma.BucketUncheckedCreateInput) {
     try {
       return await this.model.create({
         data: entity,
