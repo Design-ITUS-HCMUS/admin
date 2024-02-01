@@ -4,7 +4,7 @@ import { Button, Typography, Paper } from '@mui/material';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import color from '@/libs/ui/color';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import transactionCompleted from '@/assets/transactionCompleted.gif';
 
 const styles = {
@@ -44,7 +44,7 @@ export default function PaymentSuccess() {
 
   return (
     <Paper sx={styles.paper}>
-      <Image src={transactionCompleted} alt='Transaction Completed' width={300} height={300} layout='responsive' />
+      <Image src={transactionCompleted} alt='Transaction Completed' width={300} height={300} objectFit='contain' />{' '}
       <Typography variant='h4' gutterBottom style={styles.successText}>
         Giao dịch {typeof status === 'string' ? `${translateStatus(status)}` : ''}!
       </Typography>
