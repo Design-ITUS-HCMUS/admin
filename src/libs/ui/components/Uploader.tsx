@@ -54,7 +54,7 @@ export function Uploader({ buttonProps, inputProps }: UploaderProps) {
       <CenterStack spacing={1}>
         <UploadFile />
         <Typography color='er'>Click to upload</Typography>
-        <VisuallyHiddenInput type='file' accept='svg, png, jpg, jpeg, gif' {...inputProps}/>
+        <VisuallyHiddenInput type='file' accept='svg, png, jpg, jpeg, gif' {...inputProps} />
         <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
           SVG, PNG, JPG or GIF (1400x700px)
         </Typography>

@@ -24,7 +24,7 @@ export default function EventLayout({
   return (
     <Section>
       {/* Include shared UI here e.g. a header or sidebar */}
-      <StyledPaper>
+      <StyledPaper variant='section'>
         {modal}
         {children}
       </StyledPaper>

@@ -11,7 +11,7 @@ export default function Page() {
   }
 
   return (
-    <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth>
+    <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth PaperProps={{ variant: 'section' }}>
       <DialogTitle id='alert-dialog-title' fontWeight={'bold'}>
         Tạo sự kiện
       </DialogTitle>
