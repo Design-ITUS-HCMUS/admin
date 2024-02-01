@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ProgressIcon } from '../icon';
-import colors from '../color';
+import { ProgressIcon, colors } from '@/libs/ui';
 
 type Progress = 'done' | 'inprogress' | 'todo';
 interface ProgressProps {

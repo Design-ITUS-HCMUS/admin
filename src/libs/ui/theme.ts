@@ -124,12 +124,15 @@ let theme = createTheme({
       defaultProps: {
         elevation: 0,
       },
-      styleOverrides: {
-        root: {
-          borderRadius: '0.75rem',
-          padding: '1.5rem',
+      variants: [
+        {
+          props: { variant: 'section' },
+          style: {
+            borderRadius: '0.75rem',
+            padding: '1.5rem',
+          },
         },
-      },
+      ],
     },
     MuiOutlinedInput: {
       styleOverrides: {
@@ -194,6 +197,13 @@ let theme = createTheme({
             background: colors.blue[50],
           },
         },
+        {
+          props: { color: 'default' },
+          style: {
+            color: colors.blue[500],
+            background: colors.neutral[25],
+          },
+        },
       ],
     },
     MuiDialog: {
@@ -232,6 +242,20 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions {
     linkPrimary?: React.CSSProperties;
     linkAccent?: React.CSSProperties;
+  }
+
+  interface PaperVariants {
+    section: React.CSSProperties;
+  }
+
+  interface PaperVariantsOptions {
+    section?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    section: true;
   }
 }
 

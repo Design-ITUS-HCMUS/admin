@@ -23,6 +23,7 @@
     "@mui/material": "^5.15.5",
     "@mui/material-nextjs": "^5.15.5",
     "@mui/utils": "^5.15.6",
+    "@mui/x-date-pickers": "^6.19.2",
     "@payos/node": "^1.0.6",
     "@prisma/client": "^5.8.1",
     "@reduxjs/toolkit": "^2.0.1",
@@ -64,6 +65,7 @@
     "prettier": "3.2.4",
     "prisma": "^5.8.1",
     "storybook": "^7.6.10",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5"
   },
   "packageManager": "yarn@4.0.2"

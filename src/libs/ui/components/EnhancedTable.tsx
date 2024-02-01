@@ -97,16 +97,16 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
 interface EnhancedTableProps {
   headCells: readonly IHeadCell[];
   rows: IRowCell[];
-  totalRows?: number;
+  totalRows: number;
   rowsPerPage?: number;
   currentPage?: number;
-  totalPages: number;
   onChangePage: (event: unknown, page: number) => void;
   onSort: (event: unknown, order: Order, orderBy: number | null) => void;
 }
 
 export function EnhancedTable(props: EnhancedTableProps) {
-  const { headCells, rows, totalRows, rowsPerPage = 10, currentPage = 0, totalPages, onChangePage, onSort } = props;
+  const { headCells, rows, totalRows, rowsPerPage = 10, currentPage = 0, onChangePage, onSort } = props;
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<null | number>(null);
   const [page, setPage] = useState(currentPage);
