@@ -50,7 +50,7 @@ export default function PaymentSuccess() {
       </Typography>
       <Typography variant='h6'>Mã đơn hàng: {orderCode}</Typography>
       <Link href='/payment' passHref>
-        <Button variant='contained' color='primary'>
+        <Button variant='contained' style={styles.successText} component='a'>
           Trở lại trang thanh toán
         </Button>
       </Link>

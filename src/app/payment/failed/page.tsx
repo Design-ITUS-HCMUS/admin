@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Container, Typography, Box, Button } from '@mui/material';
+import color from '@/libs/ui/color';
 
 const styles = {
   box: {
@@ -24,7 +25,7 @@ export default function PaymentFailed() {
   return (
     <Container maxWidth='sm'>
       <Box sx={styles.box}>
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h4' component='h1' color={color.notification.error} gutterBottom>
           Thanh toán thất bại
         </Typography>
         <Typography variant='body1'>Đơn thanh toán của bạn đã hết hạn hoặc bị huỷ bỏ.</Typography>
