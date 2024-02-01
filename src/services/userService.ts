@@ -66,7 +66,7 @@ class UserService {
         if (!user) {
           return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "User not found");
         }
-        const updatedUser = await this.repository.update({ id, roleID: newRoleID });
+        const updatedUser = await this.repository.update({id, roleID: newRoleID});
         if(!updatedUser) {
             throw new Error("update role failed");
         }

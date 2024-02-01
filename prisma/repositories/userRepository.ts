@@ -1,26 +1,14 @@
+import { DefaultArgs } from '@prisma/client/runtime/library';
 import { prisma } from '../client';
-
-interface IUserRepository {
-  id: number;
-  username: string;
-  fullName: string;
-  email: string;
-  password: string;
-  studentID: string;
-  school: string;
-  roleID: number;
-  createdAt: Date;
-  createdBy: string;
-  accountEvents: any;
-}
+import { Prisma } from '@prisma/client'
 
 export default class UserRepository {
-  private model: any;
+  private model: Prisma.UserDelegate<DefaultArgs>;
   constructor() {
     this.model = prisma.user;
   }
 
-  async add(entity: Partial<IUserRepository>) {
+  async add(entity: Prisma.UserCreateInput) {
     try {
       const newUser = await this.model.create({
         data: entity,
@@ -52,7 +40,7 @@ export default class UserRepository {
     }
   }
 
-  async getByEntity(entity: Partial<IUserRepository>) {
+  async getByEntity(entity: Prisma.UserWhereUniqueInput) {
     try {
       const user = await this.model.findUnique({
         where: entity,
@@ -68,7 +56,7 @@ export default class UserRepository {
     }
   }
 
-  async update(entity: Partial<IUserRepository>) {
+  async update(entity: Partial<Prisma.UserUncheckedCreateInput>) {
     try {
       const user = await this.model.update({
         where: { id: entity.id },
