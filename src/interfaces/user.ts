@@ -5,4 +5,5 @@ export interface User {
   password: string;
   studentID: string;
   school: string;
+  member?: object;
 }

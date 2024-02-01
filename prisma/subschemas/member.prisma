@@ -1,0 +1,11 @@
+model Member {
+  id          Int       @id @default(autoincrement())
+  phone       String?
+  gen         Int?
+  dob         DateTime? @db.Date
+  departments String[]
+  position    String?   @default("member")
+  facebook    String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int?      @unique // relation scalar field (used in the `@relation` attribute above)
+}
