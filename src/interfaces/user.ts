@@ -1,8 +1,8 @@
-export interface CreateUser {
+export interface User {
   username: string;
   fullName: string;
   email: string;
   password: string;
-  studentId: string;
+  studentID: string;
   school: string;
 }

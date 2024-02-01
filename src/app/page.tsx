@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <main>
+      <h1>Design ITUS</h1>
+    </main>
   );
 }

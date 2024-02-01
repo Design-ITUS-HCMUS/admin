@@ -7,3 +7,9 @@ export const STATUS_CODE: any = {
   CONFLICT: 409,
   INTERNAL_SERVER_ERROR: 500,
 };
+
+export const ROLE: any = {
+  ADMIN: 1,
+  MEMBER: 2,
+  CONTESTANT: 3,
+};

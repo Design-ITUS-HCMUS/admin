@@ -5,6 +5,9 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 let theme = createTheme({
   palette: {
+    background: {
+      default: colors.neutral[50],
+    },
     primary: {
       main: colors.blue[500],
       light: colors.blue[200],
@@ -63,6 +66,11 @@ let theme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      defaultProps: {
+        variant: 'body2',
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
@@ -119,12 +127,15 @@ let theme = createTheme({
       defaultProps: {
         elevation: 0,
       },
-      styleOverrides: {
-        root: {
-          borderRadius: '0.75rem',
-          padding: '1.5rem',
+      variants: [
+        {
+          props: { variant: 'section' },
+          style: {
+            borderRadius: '0.75rem',
+            padding: '1.5rem',
+          },
         },
-      },
+      ],
     },
     MuiOutlinedInput: {
       styleOverrides: {
@@ -174,6 +185,51 @@ let theme = createTheme({
         },
       },
     },
+    MuiPagination: {
+      styleOverrides: {
+        root: {
+          width: 'max-content',
+        },
+      },
+    },
+    MuiChip: {
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            background: colors.blue[50],
+          },
+        },
+        {
+          props: { color: 'default' },
+          style: {
+            color: colors.blue[500],
+            background: colors.neutral[25],
+          },
+        },
+      ],
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          '& .MuiDialog-paper': {
+            padding: '0',
+          },
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: '1rem',
+        },
+        spacing: {
+          '& > :not(:first-of-type)': {
+            marginLeft: '1rem',
+          },
+        },
+      },
+    },
   },
 } as any);
 
@@ -189,6 +245,20 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions {
     linkPrimary?: React.CSSProperties;
     linkAccent?: React.CSSProperties;
+  }
+
+  interface PaperVariants {
+    section: React.CSSProperties;
+  }
+
+  interface PaperVariantsOptions {
+    section?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    section: true;
   }
 }
 
