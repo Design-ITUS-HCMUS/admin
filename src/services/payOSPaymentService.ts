@@ -81,16 +81,6 @@ class PayOSPaymentService {
     }
   }
 
-  async confirmWebhook(body: any) {
-    try {
-      const url = body.url;
-      await payOS.confirmWebhook(url);
-      return new BaseResponse(STATUS_CODE.OK, true, 'Webhook confirmed successfully: ' + url);
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
   async handleWebhookEvent(body: any) {
     try {
       // If default webhook -> Pass it

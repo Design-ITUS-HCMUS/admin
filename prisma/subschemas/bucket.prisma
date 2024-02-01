@@ -1,0 +1,7 @@
+model Bucket {
+  id        Int   @id @default(autoincrement())
+  filename  String
+  type      String
+  data      Bytes @db.ByteA
+  createdAt DateTime @default(now())
+}
