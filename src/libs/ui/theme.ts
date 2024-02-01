@@ -192,6 +192,13 @@ let theme = createTheme({
             background: colors.blue[50],
           },
         },
+        {
+          props: { color: 'default' },
+          style: {
+            color: colors.blue[500],
+            background: colors.neutral[25],
+          },
+        },
       ],
     },
     MuiDialog: {

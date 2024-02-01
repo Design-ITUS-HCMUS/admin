@@ -55,7 +55,7 @@ interface ITableCell {
   type: string;
   startTime: string;
   leader: string;
-  status: string;
+  status: JSX.Element;
 }
 
 export default function Events({ modal }: { modal: React.ReactNode }) {
@@ -126,7 +126,6 @@ export default function Events({ modal }: { modal: React.ReactNode }) {
         headCells={headCells}
         rows={visibleRows}
         totalRows={data.length}
-        totalPages={Math.floor((data.length - 1) / rowsPerPage) + 1}
         onChangePage={handleChangePage}
         onSort={handleSort}
       />

@@ -12,6 +12,7 @@ interface UploadButtonProps extends ButtonProps {
 interface UploaderProps {
   buttonProps?: UploadButtonProps;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  placeholder?: string;
 }
 
 const UploadButton = styled(Button, {
@@ -43,7 +44,7 @@ const CenterStack = styled(Stack)({
   justifyContent: 'center',
 });
 
-export function Uploader({ buttonProps, inputProps }: UploaderProps) {
+export function Uploader({ buttonProps, inputProps, placeholder }: UploaderProps) {
   return (
     <UploadButton
       component='label'
@@ -54,10 +55,12 @@ export function Uploader({ buttonProps, inputProps }: UploaderProps) {
       <CenterStack spacing={1}>
         <UploadFile />
         <Typography color='er'>Click to upload</Typography>
-        <VisuallyHiddenInput type='file' accept='svg, png, jpg, jpeg, gif' {...inputProps} />
-        <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
-          SVG, PNG, JPG or GIF (1400x700px)
-        </Typography>
+        <VisuallyHiddenInput type='file' {...inputProps} />
+        {placeholder && (
+          <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
+            {placeholder}
+          </Typography>
+        )}
       </CenterStack>
     </UploadButton>
   );

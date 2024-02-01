@@ -1,6 +1,5 @@
 import { Select, Typography, SelectProps } from '@mui/material';
 import { ReactNode } from 'react';
-import { styled } from "@mui/material/styles";
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -23,16 +22,3 @@ export const DropdownWithLabel: React.FC<Props> = ({ label, children, containerS
     </div>
   );
 };
-
-const StyledSelect = styled(Select)({
-  "::before": {
-    borderBottom: "none",
-  },
-  ":hover:not(.Mui-disabled, .Mui-error):before": {
-    borderBottom: "none",
-  },
-});
-
-export function DropdownText(props: SelectProps) {
-  return <StyledSelect {...props}>{props.children}</StyledSelect>;
-}
