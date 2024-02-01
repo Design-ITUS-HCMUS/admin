@@ -1,21 +1,15 @@
-import { prisma } from '../client';
-
-export interface IBucket {
-  id: number;
-  filename: string;
-  type: string;
-  data: Buffer;
-  createAt: Date;
-}
+import { prisma } from '@prismaClient';
+import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export default class BucketRepository {
-  private model: any;
+  private model: Prisma.BucketDelegate<DefaultArgs>;
 
   constructor() {
     this.model = prisma.bucket;
   }
 
-  async add(entity: Partial<IBucket>) {
+  async add(entity: Prisma.BucketCreateInput) {
     try {
       return await this.model.create({
         data: entity,
@@ -26,7 +20,7 @@ export default class BucketRepository {
     }
   }
 
-  async delete(entity: Partial<IBucket>) {
+  async delete(entity: Prisma.BucketWhereUniqueInput) {
     try {
       return await this.model.delete({
         where: entity,
@@ -37,7 +31,7 @@ export default class BucketRepository {
     }
   }
 
-  async patchEntity(entity: Partial<IBucket>) {
+  async patchEntity(entity: Partial<Prisma.BucketUncheckedCreateInput>) {
     try {
       return await this.model.update({
         where: { id: entity.id },
@@ -49,7 +43,7 @@ export default class BucketRepository {
     }
   }
 
-  async getByEntity(entity: Partial<IBucket>) {
+  async getByEntity(entity: Prisma.BucketWhereUniqueInput) {
     try {
       return await this.model.findUnique({
         where: entity,

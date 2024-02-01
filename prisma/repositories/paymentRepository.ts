@@ -1,27 +1,15 @@
-import { prisma } from '../client';
-
-export interface IPayment {
-  id?: number; // auto increment
-  buyerID: number;
-  paymentID?: string;
-  gateway: string;
-  amount: number;
-  description: string;
-  accountNumber?: string;
-  reference?: string;
-  paidAt?: Date;
-  createdAt?: Date; // auto create
-  paymentStatus?: 0 | 1; // Default = 0
-}
+import { prisma } from '@prismaClient';
+import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export default class PaymentRepository {
-  private model: any;
+  private model: Prisma.PaymentDelegate<DefaultArgs>;
 
   constructor() {
     this.model = prisma.payment;
   }
 
-  async add(entity: Partial<IPayment>) {
+  async add(entity: Prisma.PaymentCreateInput) {
     try {
       const newPayment = await this.model.create({
         data: entity,
@@ -33,7 +21,7 @@ export default class PaymentRepository {
     }
   }
 
-  async delete(entity: Partial<IPayment>) {
+  async delete(entity: Prisma.PaymentWhereUniqueInput) {
     try {
       const deletedPayment = await this.model.delete({
         where: entity,
@@ -45,7 +33,7 @@ export default class PaymentRepository {
     }
   }
 
-  async patch(entity: Partial<IPayment>) {
+  async patch(entity: Partial<Prisma.PaymentUncheckedCreateInput>) {
     try {
       const patchedPayment = await this.model.update({
         where: { id: entity.id },
@@ -68,7 +56,7 @@ export default class PaymentRepository {
     }
   }
 
-  async getByEntity(entity: Partial<IPayment>) {
+  async getByEntity(entity: Prisma.PaymentWhereUniqueInput) {
     try {
       const payment = await this.model.findUnique({
         where: entity,

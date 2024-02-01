@@ -1,7 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
-
-import { prisma } from '../client';
+import { prisma } from '@prismaClient';
+import { Prisma } from '@prisma/client'
 
 export default class UserRepository {
   private model: Prisma.UserDelegate<DefaultArgs>;
