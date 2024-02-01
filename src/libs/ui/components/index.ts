@@ -1,5 +1,6 @@
 export * from './Button';
 export * from './DropDown';
+export * from './DropdownText';
 export * from './EnhancedTable';
 export * from './FullscreenImage';
 export * from './Logo';

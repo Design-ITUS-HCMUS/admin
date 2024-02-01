@@ -8,7 +8,7 @@ type Props = {
 
 export const TextFieldWithLabel = ({ label, containerStyle, inputProps }: Props) => {
   return (
-    <Stack spacing={1} style={{...containerStyle}}>
+    <Stack spacing={1} style={{ ...containerStyle }}>
       <InputLabel>
         <Typography variant='subtitle2'>{label}</Typography>
       </InputLabel>
