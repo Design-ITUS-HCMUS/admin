@@ -1,9 +1,17 @@
-import { Typography, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, InputLabel, OutlinedInput, OutlinedInputProps, IconButton, InputAdornment } from '@mui/material';
+import { RemoveRedEyeRounded as ShowIcon } from '@mui/icons-material';
+import color from '@/libs/ui/color';
 
 const style: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   gap: '.5rem',
+};
+
+const stylePasswordIcon: React.CSSProperties = {
+  color: color.neutral[100],
+  padding: '12px',
 };
 
 type Props = {
