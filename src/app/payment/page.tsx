@@ -1,46 +1,91 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { lazy, useEffect, Suspense, useState, FC, Dispatch, SetStateAction, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Button,
-  TextField,
   Container,
-  Box,
-  Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
+  DialogTitle,
+  styled,
+  TextField,
 } from '@mui/material';
-import Loading from '@/libs/ui/components/Loading';
-import { useRouter } from 'next/navigation';
 import color from '@/libs/ui/color';
+import { MyDialog } from '@/libs/ui/components/Dialog';
 
-interface FormComponentProps {
-  buyerID: string;
-  setBuyerID: React.Dispatch<React.SetStateAction<string>>;
-  handleSubmit: (event: any) => void;
-  errorDialogOpen: boolean;
-  setErrorDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  loading: boolean;
-  loadingMessage: string;
-}
+const Loading = lazy(() => import('@/app/loading'));
 
-const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-    mt: 8,
-  },
-  errButton: {
-    backgroundColor: color.notification.error,
-  },
-  dialog: {
-    padding: 0,
-  },
+const API_ENDPOINT = '/api/payment/payos/payment-requests';
+const ERROR_MESSAGE = 'Có lỗi xảy ra khi tạo link thanh toán';
+
+type ErrorDialogProps = {
+  open: boolean;
+  onClose: () => void;
 };
 
-const FormComponent: React.FC<FormComponentProps> = ({
+const ErrorDialog: FC<ErrorDialogProps> = ({ open, onClose }) => (
+  <StyledDialog open={open} onClose={onClose}>
+    <DialogTitle style={{ color: color.notification.error }}>Lỗi</DialogTitle>
+    <DialogContent>
+      <DialogContentText>Buyer ID chỉ được phép là số</DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <StyledErrButton onClick={onClose}>OK</StyledErrButton>
+    </DialogActions>
+  </StyledDialog>
+);
+
+type FormComponentProps = {
+  buyerID: string;
+  setBuyerID: Dispatch<SetStateAction<string>>;
+  handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  errorDialogOpen: boolean;
+  setErrorDialogOpen: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
+  loadingMessage: string;
+};
+
+const StyledForm = styled('form')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  marginTop: '16px',
+});
+
+const StyledErrButton = styled(Button)({
+  backgroundColor: color.notification.error,
+  '&:hover': {
+    backgroundColor: 'darkred',
+  },
+});
+
+const StyledDialog = styled(MyDialog)({
+  '& .MuiDialogContent-root': {
+    padding: '8px',
+  },
+  '& .MuiDialogTitle-root': {
+    padding: '8px',
+  },
+});
+
+async function createPaymentLink(buyerID: number) {
+  const response = await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ buyerID }),
+  });
+
+  if (!response.ok) {
+    throw new Error(ERROR_MESSAGE);
+  }
+
+  const data = await response.json();
+  return data.data.checkoutUrl;
+}
+
+function FormComponent({
   buyerID,
   setBuyerID,
   handleSubmit,
@@ -48,55 +93,38 @@ const FormComponent: React.FC<FormComponentProps> = ({
   setErrorDialogOpen,
   loading,
   loadingMessage,
-}) => (
-  <Container maxWidth='sm'>
-    {loading && <Loading loadingMessage={loadingMessage} />}
-    <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
-      <TextField
-        label='Buyer ID'
-        placeholder='Buyer ID chỉ được phép là số'
-        multiline
-        variant='standard'
-        value={buyerID}
-        error={buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0)}
-        onChange={(e) => setBuyerID(e.target.value)}
-      />
-      <Button variant='contained' type='submit'>
-        Đến trang thanh toán PayOS
-      </Button>
-    </Box>
-    <Dialog
-      style={{ ...styles.dialog, padding: '8px' }}
-      open={errorDialogOpen}
-      onClose={() => setErrorDialogOpen(false)}>
-      <DialogTitle>Lỗi</DialogTitle>
-      <DialogContent>
-        <DialogContentText>Buyer ID chỉ được phép là số</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button style={styles.errButton} onClick={() => setErrorDialogOpen(false)}>
-          OK
+}: FormComponentProps) {
+  return (
+    <Container maxWidth='sm'>
+      {loading && <Loading loadingMessage={loadingMessage} />}
+      <StyledForm onSubmit={handleSubmit}>
+        <TextField
+          label='Buyer ID'
+          placeholder='Buyer ID chỉ được phép là số'
+          multiline
+          variant='standard'
+          value={buyerID}
+          error={buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0)}
+          onChange={(e) => setBuyerID(e.target.value)}
+        />
+        <Button variant='contained' type='submit'>
+          Đến trang thanh toán PayOS
         </Button>
-      </DialogActions>
-    </Dialog>
-  </Container>
-);
+      </StyledForm>
+      <ErrorDialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)} />
+    </Container>
+  );
+}
 
 export default function Payment() {
-  const [buyerID, setBuyerID] = useState('');
-  const [paymentLink, setPaymentLink] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [buyerID, setBuyerID] = useState<string>('');
+  const [paymentLink, setPaymentLink] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>('');
+  const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if (paymentLink) {
-      router.push(paymentLink);
-    }
-  }, [paymentLink]);
-
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const parsedBuyerID = Number(buyerID);
     if (isNaN(parsedBuyerID) || parsedBuyerID <= 0) {
@@ -105,21 +133,33 @@ export default function Payment() {
     }
     setLoadingMessage('Đang tạo link thanh toán...');
     setLoading(true);
-    const response = await fetch('/api/payment/payos/payment-requests', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ buyerID: parsedBuyerID }),
-    });
-    const data = await response.json();
-    setPaymentLink(data.data.checkoutUrl);
-    setLoading(false);
+    try {
+      const checkoutUrl = await createPaymentLink(parsedBuyerID);
+      setPaymentLink(checkoutUrl);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    if (paymentLink) {
+      router.push(paymentLink);
+    }
+  }, [paymentLink]);
+
   return (
-    <>
+    <Suspense fallback={<Loading loadingMessage='Loading...' />}>
       <FormComponent
-        {...{ buyerID, setBuyerID, handleSubmit, errorDialogOpen, setErrorDialogOpen, loading, loadingMessage }}
+        buyerID={buyerID}
+        setBuyerID={setBuyerID}
+        handleSubmit={handleSubmit}
+        errorDialogOpen={errorDialogOpen}
+        setErrorDialogOpen={setErrorDialogOpen}
+        loading={loading}
+        loadingMessage={loadingMessage}
       />
-    </>
+    </Suspense>
   );
 }
