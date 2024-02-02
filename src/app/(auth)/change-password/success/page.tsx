@@ -14,7 +14,7 @@ const Success = () => {
 
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Thay đổi mật khẩu thành công</CardHeader>
         <CardContents>
           Bạn đã thay đổi mật khẩu thành công, vui lòng đăng nhập lại với mật khẩu mới. Trở về trang đăng nhập sau{' '}

@@ -15,7 +15,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Thay đổi mật khẩu</CardHeader>
         <StyledForm>
           <PassField

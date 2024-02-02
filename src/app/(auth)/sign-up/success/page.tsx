@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 const Success = () => {
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Đăng ký thành công</CardHeader>
         <CardContents>
           Bạn đã đăng ký tài khoản thành công, vui lòng đăng nhập với tài khoản mới. Trở về trang đăng nhập sau{' '}

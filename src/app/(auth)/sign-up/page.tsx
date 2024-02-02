@@ -12,7 +12,7 @@ import { ReactNode } from 'react';
 const SignUp = () => {
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Đăng ký tài khoản</CardHeader>
         <StyledForm>
           <TextField

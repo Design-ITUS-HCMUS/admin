@@ -16,7 +16,7 @@ const ForgetPassword = () => {
 
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Quên mật khẩu</CardHeader>
         <StyledForm>
           <TextField

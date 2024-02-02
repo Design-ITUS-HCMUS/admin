@@ -12,7 +12,7 @@ const OTPResend = () => {
 
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>Xác thực mã OTP</CardHeader>
         <Alert icon={false} severity='error' onClose={() => {}}>
           <Typography variant='body2' style={{ fontWeight: '400', lineHeight: '20.02px', letterSpacing: '0.17px' }}>

@@ -14,7 +14,7 @@ const SignIn = () => {
 
   return (
     <>
-      <StyledPaper elevation={0}>
+      <StyledPaper elevation={0} variant='section'>
         <CardHeader>
           Câu lạc bộ học thuật thiết kế <br />
           Design ITUS
