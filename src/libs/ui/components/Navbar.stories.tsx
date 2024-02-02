@@ -1,14 +1,10 @@
 // Replace your-framework with the name of your framework
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Navbar from './Navbar';
-import { NavBarItem } from './Navbar';
+import Navbar, { NavbarProps } from './Navbar';
 
-const meta: Meta<typeof Navbar> = {
+const meta: Meta<NavbarProps> = {
   component: Navbar,
-  argTypes: {
-    activeURL: '/events/OS8',
-  },
 };
 
 export default meta;
@@ -22,5 +18,5 @@ type Story = StoryObj;
 
 export const Default: Story = {
   name: 'Navbar',
-  render: (args: any) => <Navbar {...args} />,
+  render: (args: NavbarProps) => <Navbar {...args} />,
 };

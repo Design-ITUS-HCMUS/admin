@@ -1,34 +1,43 @@
 'use client';
 
+// React and Next
 import * as React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+// Material UI Components
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Divider } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Logo } from './Logo';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { colors } from '../';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import PersonIcon from '@mui/icons-material/Person';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import CloseIcon from '@mui/icons-material/Close';
+import styled from '@mui/material/styles/styled';
 
-export interface NavBarItem {
+// Material UI Icons
+import PersonIcon from '@mui/icons-material/PersonRounded';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoneyRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import MenuIcon from '@mui/icons-material/MenuRounded';
+import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
+
+// Local Imports
+import { Logo } from './Logo';
+import { colors } from '../';
+
+interface INavBarItem {
   name: string;
   link?: string;
   disabled?: boolean;
@@ -40,9 +49,9 @@ export interface NavBarItem {
   }[];
 }
 
-type NavBarItemProps = NavBarItem & { index: number; active?: boolean };
+type NavBarItemProps = INavBarItem & { active?: boolean };
 
-const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): React.JSX.Element => {
+function NavbarItem({ name, link, menuItems, active }: NavBarItemProps): React.JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -90,10 +99,6 @@ const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): 
   return (
     <Box sx={BoxStyle}>
       <Button
-        id={'navbar-item-button-' + index}
-        aria-controls={open ? 'navbar-item-menu-' + index : undefined}
-        aria-haspopup='true'
-        aria-expanded={open ? 'true' : undefined}
         LinkComponent={link ? Link : undefined}
         href={link}
         sx={active ? ButtonActiveStyle : ButtonStyle}
@@ -102,16 +107,7 @@ const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): 
         {name}
       </Button>
       {menuItems && (
-        <Menu
-          id={'navbar-item-menu-' + index}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          disableScrollLock={true}
-          slotProps={{ paper: { sx: { padding: '0', borderRadius: '4px' } } }}
-          MenuListProps={{
-            'aria-labelledby': 'navbar-item-button-' + name,
-          }}>
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
           {menuItems?.map(
             (menuItem, i, arr) =>
               i < arr.length - 1 && (
@@ -130,9 +126,87 @@ const NavbarItem = ({ name, link, menuItems, index, active }: NavBarItemProps): 
       )}
     </Box>
   );
-};
+}
 
-const defaultPages = [
+function Title(): React.JSX.Element {
+  const StyledDiv = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    columnGap: theme.spacing(2),
+    padding: theme.spacing(0, 3, 0),
+    [theme.breakpoints.down('md')]: {
+      columnGap: theme.spacing(1),
+      flexGrow: 1,
+      padding: theme.spacing(0, 2, 0),
+    },
+  }));
+
+  return (
+    <StyledDiv>
+      <Logo size='small' />
+      <Typography noWrap variant='h6' fontWeight={600}>
+        Administrator Portal
+      </Typography>
+    </StyledDiv>
+  );
+}
+
+function UserSettings(settings: INavBarItem): React.JSX.Element {
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  return (
+    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+      <Button
+        onClick={handleOpenUserMenu}
+        endIcon={Boolean(anchorElUser) ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        sx={{
+          color: colors.neutral[400],
+          backgroundColor: 'transparent',
+          '&:hover': { color: colors.blue[900], backgroundColor: colors.blue[50] },
+        }}>
+        <Typography variant='subtitle1' fontWeight={700}>
+          {settings.name}
+        </Typography>
+      </Button>
+      <Menu
+        anchorEl={anchorElUser}
+        keepMounted
+        open={Boolean(anchorElUser)}
+        disableScrollLock
+        onClose={handleCloseUserMenu}>
+        {settings.menuItems?.map(
+          (item, i, arr) =>
+            i < arr.length - 1 && (
+              <MenuItem key={item.name} onClick={handleCloseUserMenu}>
+                {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+                <ListItemText>
+                  <Link href={item.link}>{item.name}</Link>
+                </ListItemText>
+              </MenuItem>
+            )
+        )}
+        <Divider />
+        <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
+          <ListItemText sx={{ color: colors.notification['error'] }}>
+            <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
+              {settings.menuItems?.[settings.menuItems?.length - 1].name}
+            </Link>
+          </ListItemText>
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+}
+
+const defaultPages: INavBarItem[] = [
   {
     name: 'Sự kiện',
     // disabled: true,
@@ -144,39 +218,29 @@ const defaultPages = [
   },
   { name: 'Thành viên', link: '/members' },
   { name: 'Bài đăng', link: '/posts', disabled: true },
-] as NavBarItem[];
+];
 
-const defaultSettings = {
+const defaultSettings: INavBarItem = {
   name: 'Xin chào, Ngân Trúc',
   menuItems: [
     { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
     { name: 'Lịch sử thanh toán', link: '/history', icon: <AttachMoneyIcon /> },
     { name: 'Đăng xuất', link: '/logout' },
   ],
-} as NavBarItem;
+};
 
-function ResponsiveAppBar({
-  pages,
-  settings,
-  activeURL,
-}: {
-  pages?: NavBarItem[];
-  settings?: NavBarItem;
+export interface NavbarProps {
+  pages?: INavBarItem[];
+  settings?: INavBarItem;
   activeURL?: string;
-}) {
-  if (!pages) pages = defaultPages;
-  if (!settings) settings = defaultSettings;
-  if (!activeURL) activeURL = '';
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+}
+
+function Navbar({
+  pages = defaultPages,
+  settings = defaultSettings,
+  activeURL = '/events/OS8',
+}: NavbarProps): React.JSX.Element {
   const pathname = usePathname();
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   // Responsive Drawer state manager
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -190,15 +254,6 @@ function ResponsiveAppBar({
     setOpenCollapse(!openCollapse);
   };
 
-  // Responsive User Menu state manager
-  const [anchorElUserRes, setAnchorElUserRes] = React.useState<null | HTMLElement>(null);
-  const handleOpenUserMenuResponsive = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUserRes(event.currentTarget);
-  };
-  const handleCloseUserMenuResponsive = () => {
-    setAnchorElUserRes(null);
-  };
-
   return (
     <AppBar
       position='static'
@@ -207,121 +262,29 @@ function ResponsiveAppBar({
       color='default'>
       <Container maxWidth={false} disableGutters>
         <Toolbar disableGutters>
+          <Title />
           {/* Responsive -> Visible only on MD and above */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 3, mr: 1 }}>
-            <Logo size='small' />
-          </Box>
-          <Typography
-            variant='h6'
-            noWrap
-            component={Link}
-            href='/'
-            sx={{
-              mr: 10,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 600,
-              letterSpacing: '0.15px',
-              fontSize: '20px',
-              lineHeight: '1.5',
-            }}>
-            Administrator Portal
-          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
             {pages.map((page, index) => (
               <NavbarItem
-                index={index}
                 {...page}
                 key={index}
                 active={
-                  pathname?.includes(page.link || page.menuItems?.[0].link || '') ||
-                  activeURL?.includes(page.link || page.menuItems?.[0].link || '')
+                  pathname?.includes(page.link || page.menuItems?.[index].link || '') ||
+                  activeURL?.includes(page.link || page.menuItems?.[index].link || '')
                 }
               />
             ))}
-            <Box>
-              <Button LinkComponent={Link} href='/createEvent' sx={{ fontSize: '16px' }}>
-                Tạo sự kiện
+            <div>
+              <Button LinkComponent={Link} href='/events/create'>
+                <Typography variant='subtitle1' fontWeight={600}>
+                  Tạo sự kiện
+                </Typography>
               </Button>
-            </Box>
+            </div>
           </Box>
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'block' } }}>
-            <Button
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleOpenUserMenu}
-              endIcon={Boolean(anchorElUser) ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-              sx={{
-                color: colors.neutral[400],
-                backgroundColor: 'transparent',
-                '&:hover': { color: colors.blue[900], backgroundColor: colors.blue[50] },
-              }}>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  letterSpacing: '0.15px',
-                  lineHeight: '1.75',
-                  fontSize: '16px',
-                }}>
-                {settings.name}
-              </Typography>
-            </Button>
-            <Menu
-              sx={{ mt: '45px' }}
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              disableScrollLock
-              slotProps={{ paper: { sx: { padding: '0', borderRadius: '4px' } } }}
-              onClose={handleCloseUserMenu}>
-              {settings.menuItems?.map(
-                (item, i, arr) =>
-                  i < arr.length - 1 && (
-                    <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-                      {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-                      <ListItemText>
-                        <Link href={item.link}>{item.name}</Link>
-                      </ListItemText>
-                    </MenuItem>
-                  )
-              )}
-              <Divider />
-              <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-                <ListItemText sx={{ color: colors.notification['error'] }}>
-                  <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
-                    {settings.menuItems?.[settings.menuItems?.length - 1].name}
-                  </Link>
-                </ListItemText>
-              </MenuItem>
-            </Menu>
-          </Box>
-
+          <UserSettings {...settings} />
           {/* Responsive -> Visible only on XS and SM */}
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 2, mr: 1 }}>
-            <Logo size='small' />
-          </Box>
-          <Typography
-            variant='h6'
-            noWrap
-            component={Link}
-            href='/'
-            sx={{
-              display: { md: 'none' },
-              flexGrow: 1,
-              fontWeight: 600,
-              letterSpacing: '0.15px',
-              fontSize: '20px',
-              lineHeight: '1.5',
-            }}>
-            Administration Portal
-          </Typography>
           <Box sx={{ display: { md: 'none' } }}>
             <IconButton onClick={toggleDrawer}>
               <MenuIcon />
@@ -333,72 +296,25 @@ function ResponsiveAppBar({
             open={openDrawer}
             onClose={toggleDrawer}
             keepMounted
-            sx={{ width: '100%' }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-            PaperProps={{ sx: { padding: 0, borderRadius: 0, width: '100%' } }}>
+            PaperProps={{ sx: { width: '100%' } }}>
             <Box sx={{ overflow: 'auto' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2, py: 1 }}>
                 <IconButton onClick={toggleDrawer}>
                   <CloseIcon />
                 </IconButton>
                 <Button
-                  aria-controls='menu-appbar'
-                  aria-haspopup='true'
-                  onClick={handleOpenUserMenuResponsive}
-                  endIcon={Boolean(anchorElUserRes) ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                  LinkComponent={Link}
+                  href='/profile'
+                  endIcon={<ChevronRightIcon />}
                   sx={{
                     color: colors.neutral[400],
                     backgroundColor: 'transparent',
                     '&:hover': { color: colors.blue[900], backgroundColor: colors.blue[50] },
                   }}>
-                  <Typography
-                    sx={{
-                      fontWeight: 700,
-                      letterSpacing: '0.15px',
-                      lineHeight: '1.75',
-                      fontSize: '16px',
-                    }}>
+                  <Typography variant='subtitle1' fontWeight={700}>
                     {settings.name}
                   </Typography>
                 </Button>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  anchorEl={anchorElUserRes}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUserRes)}
-                  disableScrollLock
-                  slotProps={{ paper: { sx: { padding: '0', borderRadius: '4px' } } }}
-                  onClose={handleCloseUserMenuResponsive}>
-                  {settings.menuItems?.map(
-                    (item, i, arr) =>
-                      i < arr.length - 1 && (
-                        <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-                          {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-                          <ListItemText>
-                            <Link href={item.link}>{item.name}</Link>
-                          </ListItemText>
-                        </MenuItem>
-                      )
-                  )}
-                  <Divider />
-                  <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-                    <ListItemText sx={{ color: colors.notification['error'] }}>
-                      <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
-                        {settings.menuItems?.[settings.menuItems?.length - 1].name}
-                      </Link>
-                    </ListItemText>
-                  </MenuItem>
-                </Menu>
               </Box>
               <Divider />
               <List>
@@ -471,4 +387,4 @@ function ResponsiveAppBar({
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Navbar;
