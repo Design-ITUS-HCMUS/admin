@@ -27,6 +27,8 @@ import UserService from '@/services/userService';
  *     responses:
  *       200:
  *         description: Creating account successfully.
+ *       400:
+ *         description: Missing required information (username, email, or password).
  *       409:
  *         description: Existed username or email.
  *       500:

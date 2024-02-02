@@ -5534,6 +5534,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bcryptjs@npm:^2":
+  version: 2.4.6
+  resolution: "@types/bcryptjs@npm:2.4.6"
+  checksum: 1182663f0c081c5c58760019459cd309335e9b5fc6552780b0fd21b6c5f25661a844709e46218796f4bdbebe6736e11cfc5af0729bc2cdb0160943650aceb3da
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
@@ -7232,6 +7239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bcryptjs@npm:^2.4.3":
+  version: 2.4.3
+  resolution: "bcryptjs@npm:2.4.3"
+  checksum: b969467087ed7a01ff905a1c6a0c45014ec586248a448ea08370c8ed8bb314bda16a870ca23e0961d7d23bdce1a04c76fa70a9d680be814fa9ac7d8fc61870a3
+  languageName: node
+  linkType: hard
+
 "better-opn@npm:^3.0.2":
   version: 3.0.2
   resolution: "better-opn@npm:3.0.2"
@@ -8890,10 +8904,12 @@ __metadata:
     "@storybook/test": "npm:^7.6.10"
     "@testing-library/jest-dom": "npm:^6.3.0"
     "@testing-library/react": "npm:^14.1.2"
+    "@types/bcryptjs": "npm:^2"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/swagger-ui-react": "npm:^4.18.3"
+    bcryptjs: "npm:^2.4.3"
     cypress: "npm:^13.6.3"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.1.0"
@@ -8902,6 +8918,7 @@ __metadata:
     husky: "npm:^8.0.0"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
+    jose: "npm:^5.2.0"
     js-sha256: "npm:^0.10.1"
     lighthouse: "npm:^11.5.0"
     lint-staged: "npm:^15.2.0"
@@ -12702,6 +12719,13 @@ __metadata:
   bin:
     jiti: bin/jiti.js
   checksum: 7f361219fe6c7a5e440d5f1dba4ab763a5538d2df8708cdc22561cf25ea3e44b837687931fca7cdd8cdd9f567300e90be989dd1321650045012d8f9ed6aab07f
+  languageName: node
+  linkType: hard
+
+"jose@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "jose@npm:5.2.0"
+  checksum: a5631e9a7148fb56c8feca8e00d1f03de6fa6e18e494fe62428b53bed525a9dba554ff3e860bdfc4aee60574194691015ba991557874ae826509c4c19dba4fea
   languageName: node
   linkType: hard
 
