@@ -1,19 +1,17 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Container, Typography, Box, Button } from '@mui/material';
+import { Box, Button, Container, styled, Typography } from '@mui/material';
 import color from '@/libs/ui/color';
 
-const styles = {
-  box: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    gap: '20px',
-  },
-};
+const StyledBox = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100vh',
+  gap: '20px',
+});
 
 export default function PaymentFailed() {
   const router = useRouter();
@@ -24,7 +22,7 @@ export default function PaymentFailed() {
 
   return (
     <Container maxWidth='sm'>
-      <Box sx={styles.box}>
+      <StyledBox>
         <Typography variant='h4' component='h1' color={color.notification.error} gutterBottom>
           Thanh toán thất bại
         </Typography>
@@ -32,7 +30,7 @@ export default function PaymentFailed() {
         <Button variant='contained' onClick={handleRetry}>
           Thử lại
         </Button>
-      </Box>
+      </StyledBox>
     </Container>
   );
 }
