@@ -32,7 +32,7 @@ import UserService from '@/services/userService';
  *                  example: 21127141
  *               school:
  *                  type: string
- *                  example: Đaị học Khoa học Tự Nhiên - Đaị học quốc gia Hồ Chí Minh
+ *                  example: Đại học Khoa học Tự Nhiên - Đại học quốc gia Hồ Chí Minh
  *     responses:
  *       200:
  *         description: Creating account successfully.
