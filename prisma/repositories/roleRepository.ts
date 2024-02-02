@@ -80,6 +80,7 @@ export default class RoleRepository {
           id,
         },
         data: {
+          name: entity.name,
           actions: {
             set: entity.actions as any,
           },

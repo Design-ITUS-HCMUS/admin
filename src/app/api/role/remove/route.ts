@@ -23,6 +23,8 @@ import { NextRequest, NextResponse } from 'next/server';
  *     responses:
  *       200:
  *         description: Remove role successfully.
+ *       403:
+ *         description: Prohibit to remove the role.
  *       404:
  *         description: Role not found.
  *       500:

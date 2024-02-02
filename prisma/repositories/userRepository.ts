@@ -10,15 +10,15 @@ export default class UserRepository {
 
   async add(entity: Prisma.UserCreateInput) {
     try {
-      if (entity.member) {
-        entity.member = {
-          create: entity.member,
+      if (entity.profile) {
+        entity.profile = {
+          create: entity.profile,
         };
       }
       const newUser = await this.model.create({
         data: entity,
         include: {
-          member: true,
+          profile: true,
         },
       });
       return newUser;
@@ -39,7 +39,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
-          member: true,
+          profile: true,
         },
       });
       return allUsers;
@@ -56,6 +56,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
+          profile: true,
         },
       });
       return user;
@@ -67,11 +68,11 @@ export default class UserRepository {
 
   async update(entity: Prisma.UserUncheckedUpdateInput) {
     try {
-      if (entity.member) {
-        entity.member = {
+      if (entity.profile) {
+        entity.profile = {
           upsert: {
-            create: entity.member,
-            update: entity.member,
+            create: entity.profile,
+            update: entity.profile,
           },
         };
       }
@@ -81,7 +82,7 @@ export default class UserRepository {
         },
         data: entity,
         include: {
-          member: true,
+          profile: true,
         },
       });
       return user;

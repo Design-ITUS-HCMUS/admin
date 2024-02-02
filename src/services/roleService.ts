@@ -61,6 +61,9 @@ class RoleService {
 
   async deleteRole(id: number) {
     try {
+      if (id in [1, 2, 3]) {
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Cannot delete default roles');
+      }
       const role = await this.repository.getByEntity({ id });
       if (!role) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Role not found');

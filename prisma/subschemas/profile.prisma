@@ -1,5 +1,8 @@
-model Member {
+model Profile {
   id          Int       @id @default(autoincrement())
+  fullName    String?
+  studentID   String?
+  school      String?
   phone       String?
   gen         Int?
   dob         DateTime? @db.Date
