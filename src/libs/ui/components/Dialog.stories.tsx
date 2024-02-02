@@ -16,7 +16,7 @@ export const Primary: Story = {
     title: 'Insert title',
     content: 'Insert content',
     open: true,
-    style: { fontFamily: 'Be Vietnam Pro', 'sans-serif': 'Arial' },
+    style: { fontFamily: "'Be Vietnam Pro', sans-serif" },
   },
   render: (args: any) => <MyDialog {...args}></MyDialog>,
 };
