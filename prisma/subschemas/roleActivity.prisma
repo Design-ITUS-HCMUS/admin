@@ -1,7 +1,6 @@
-model Role {
+model RoleActivity {
   id           Int            @id @default(autoincrement())
   name         String         @unique
-  actions      RoleActivity[]
-  users        User[]
-  AccountEvent AccountEvent[]
+  description  String       
+  roles        Role[]
 }
