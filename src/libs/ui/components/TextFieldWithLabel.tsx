@@ -1,18 +1,4 @@
-import React, { useState } from 'react';
-import { Typography, InputLabel, OutlinedInput, OutlinedInputProps, IconButton, InputAdornment } from '@mui/material';
-import { RemoveRedEyeRounded as ShowIcon } from '@mui/icons-material';
-import color from '@/libs/ui/color';
-
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '.5rem',
-};
-
-const stylePasswordIcon: React.CSSProperties = {
-  color: color.neutral[100],
-  padding: '12px',
-};
+import { Stack, Typography, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
 
 type Props = {
   label: string;
@@ -22,11 +8,11 @@ type Props = {
 
 export const TextFieldWithLabel = ({ label, containerStyle, inputProps }: Props) => {
   return (
-    <div style={{ ...style, ...containerStyle }}>
+    <Stack spacing={1} style={{ ...containerStyle }}>
       <InputLabel>
         <Typography variant='subtitle2'>{label}</Typography>
       </InputLabel>
       <OutlinedInput {...inputProps} />
-    </div>
+    </Stack>
   );
 };
