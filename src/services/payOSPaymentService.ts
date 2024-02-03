@@ -17,17 +17,11 @@ class PayOSPaymentService {
     try {
       // Get data from body
       const buyerID = body.buyerID;
+      const description = body.description;
+      const items = body.items;
 
-      const description = 'OUTRSPACE';
       const cancelUrl = 'https://google.com';
       const returnUrl = 'https://google.com';
-      const items = [
-        {
-          name: 'Phí tham gia Outrspace',
-          quantity: 1,
-          price: 10000,
-        },
-      ];
 
       // Calculate total price
       const amount = calcTotalPrice(items);
@@ -40,8 +34,8 @@ class PayOSPaymentService {
 
       while (true) {
         // If time out (1 min) -> Return error
-        if (Date.now() - startTime > 60000)
-          return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
+        // if (Date.now() - startTime > 60000)
+        //   return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
 
         // Create payOS checkout object
         const payOSCheckout: CheckoutRequestType = {
@@ -81,6 +75,27 @@ class PayOSPaymentService {
           if (err.message === 'Đơn thanh toán đã tồn tại') orderCode++;
         }
       }
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async verifyPayment(body: any) {
+    try {
+      const response = body.data;
+      return new BaseResponse(STATUS_CODE.OK, true, 'Payment verified', response);
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async getPaymentByBuyerID(body: any) {
+    try {
+      const response = await this.repository.getByBuyerID(body.buyerID);
+      console.log('getPaymentByBuyerID');
+      console.log(response);
+
+      return new BaseResponse(STATUS_CODE.OK, true, 'Get payment by buyerID', response);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }

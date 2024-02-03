@@ -1,6 +1,6 @@
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import { prisma } from '../client';
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client';
 
 export default class UserRepository {
   private model: Prisma.UserDelegate<DefaultArgs>;
@@ -30,8 +30,8 @@ export default class UserRepository {
         ],
         include: {
           accountEvents: true,
-          role: true
-        }
+          role: true,
+        },
       });
       return allUsers;
     } catch (error) {
@@ -44,10 +44,10 @@ export default class UserRepository {
     try {
       const user = await this.model.findUnique({
         where: entity,
-        include:{
+        include: {
           accountEvents: true,
-          role: true
-        }
+          role: true,
+        },
       });
       return user;
     } catch (error) {
@@ -65,7 +65,7 @@ export default class UserRepository {
       return user;
     } catch (error) {
       console.log(error);
-      return null
+      return null;
     }
   }
 
@@ -74,14 +74,14 @@ export default class UserRepository {
       const deletedUser = await this.model.deleteMany({
         where: {
           id: {
-            in: entity
-          }
+            in: entity,
+          },
         },
       });
       return deletedUser;
     } catch (error) {
       console.log(error);
-      return null
+      return null;
     }
   }
 }
