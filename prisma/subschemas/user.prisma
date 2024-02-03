@@ -3,12 +3,10 @@ model User {
   username      String         @unique
   email         String         @unique
   password      String
-  fullName      String
-  studentID     String
-  school        String
   createdAt     DateTime       @default(now())
   createdBy     String         @default("system")
   role          Role           @relation(fields: [roleID], references: [id])
   roleID        Int            @default(2) // role of user
   accountEvents AccountEvent[] // list of events that user has joined
+  profile       Profile?        
 }

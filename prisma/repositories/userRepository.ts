@@ -10,8 +10,16 @@ export default class UserRepository {
 
   async add(entity: Prisma.UserCreateInput) {
     try {
+      if (entity.profile) {
+        entity.profile = {
+          create: entity.profile,
+        };
+      }
       const newUser = await this.model.create({
         data: entity,
+        include: {
+          profile: true,
+        },
       });
       return newUser;
     } catch (error) {
@@ -31,6 +39,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
+          profile: true,
         },
       });
       return allUsers;
@@ -47,6 +56,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
+          profile: true,
         },
       });
       return user;
@@ -56,11 +66,24 @@ export default class UserRepository {
     }
   }
 
-  async update(entity: Partial<Prisma.UserUncheckedCreateInput>) {
+  async update(entity: Prisma.UserUncheckedUpdateInput) {
     try {
+      if (entity.profile) {
+        entity.profile = {
+          upsert: {
+            create: entity.profile,
+            update: entity.profile,
+          },
+        };
+      }
       const user = await this.model.update({
-        where: { id: entity.id },
+        where: {
+          id: entity.id as number,
+        },
         data: entity,
+        include: {
+          profile: true,
+        },
       });
       return user;
     } catch (error) {
