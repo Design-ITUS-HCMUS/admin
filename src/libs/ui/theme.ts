@@ -62,6 +62,11 @@ let theme = createTheme({
       defaultProps: {
         variant: 'body2',
       },
+      styleOverrides: {
+        root: {
+          fontFamily: '"Be Vietnam Pro", san-serif',
+        },
+      },
     },
     MuiButton: {
       defaultProps: {
