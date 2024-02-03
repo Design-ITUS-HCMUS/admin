@@ -150,7 +150,7 @@ export default function Payment() {
   }, [paymentLink]);
 
   return (
-    <Suspense fallback={<Loading loadingMessage='Loading...' />}>
+    <Suspense fallback={<Loading loadingMessage='Đang tải...' />}>
       <FormComponent
         buyerID={buyerID}
         setBuyerID={setBuyerID}

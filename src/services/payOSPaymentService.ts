@@ -19,8 +19,8 @@ class PayOSPaymentService {
       const buyerID = body.buyerID;
 
       const description = 'OUTRSPACE';
-      const cancelUrl = 'http://localhost:3000/payment/failed';
-      const returnUrl = 'http://localhost:3000/payment/success';
+      const cancelUrl = 'http://localhost:3000/payment/result';
+      const returnUrl = 'http://localhost:3000/payment/result';
       const items = [
         {
           name: 'Phí tham gia Outrspace',
