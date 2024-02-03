@@ -1,10 +1,4 @@
-import { Typography, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
-
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '.5rem',
-};
+import { Stack, Typography, InputLabel, OutlinedInput, OutlinedInputProps } from '@mui/material';
 
 type Props = {
   label: string;
@@ -14,11 +8,11 @@ type Props = {
 
 export const TextFieldWithLabel = ({ label, containerStyle, inputProps }: Props) => {
   return (
-    <div style={{ ...style, ...containerStyle }}>
+    <Stack spacing={1} style={{ ...containerStyle }}>
       <InputLabel>
         <Typography variant='subtitle2'>{label}</Typography>
       </InputLabel>
       <OutlinedInput {...inputProps} />
-    </div>
+    </Stack>
   );
 };

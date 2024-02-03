@@ -1,7 +1,7 @@
 model Role {
   id           Int            @id @default(autoincrement())
   name         String         @unique
-  // actions      RoleActivity[]
+  actions      RoleActivity[]
   users        User[]
   AccountEvent AccountEvent[]
 }

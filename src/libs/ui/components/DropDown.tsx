@@ -1,5 +1,3 @@
-// temp code for upload this folder to GIT
-
 import { Select, Typography, SelectProps } from '@mui/material';
 import { ReactNode } from 'react';
 
