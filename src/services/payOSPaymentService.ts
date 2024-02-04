@@ -28,8 +28,8 @@ class PayOSPaymentService {
 
       // Get first available orderCode
       let currentID = await this.repository.getCurrentID();
-      if (currentID === null || currentID === undefined) 
-        return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Get currentID failed');
+      if (!currentID)
+        throw new Error('Get currentID failed');
       let orderCode = currentID + 1;
 
       // Start timer
@@ -94,8 +94,8 @@ class PayOSPaymentService {
       // If wekhookData is verified -> Check if is updated or not
       // If updated -> Pass it
       const payment = await this.repository.getByEntity({ id: webhookData.orderCode });
-      if (payment === null || payment === undefined)
-        return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Get payment failed');
+      if (!payment)
+        throw new Error('Get payment failed');
       if (payment.paymentStatus === 1)
         return new BaseResponse(STATUS_CODE.OK, true, 'Webhook event has been handled before');
 

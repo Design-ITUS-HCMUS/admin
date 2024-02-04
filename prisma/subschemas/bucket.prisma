@@ -1,7 +1,8 @@
 model Bucket {
   id        Int   @id @default(autoincrement())
   filename  String
-  type      String
-  data      Bytes @db.ByteA
-  createdAt DateTime @default(now())
+  owner     User @relation(fields: [ownerID], references: [id])
+  ownerID   Int
+  permission Int @default(0) // 0: Private, 1: Admin, 2: Public
+  uploadStatus Boolean @default(false)
 }
