@@ -5828,10 +5828,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6":
+  version: 6.4.14
+  resolution: "@types/nodemailer@npm:6.4.14"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: b5958843576cde76dc532aa7b726182fef8b466fa9fcaf1aa03f89f02e896bec4e28b593ffa1a289a46bd0b7fdf34da0640ab7ef8f0811948016f58f77e16307
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.4
   resolution: "@types/normalize-package-data@npm:2.4.4"
   checksum: aef7bb9b015883d6f4119c423dd28c4bdc17b0e8a0ccf112c78b4fe0e91fbc4af7c6204b04bba0e199a57d2f3fbbd5b4a14bf8739bf9d2a39b2a0aad545e0f86
+  languageName: node
+  linkType: hard
+
+"@types/otp-generator@npm:^4":
+  version: 4.0.2
+  resolution: "@types/otp-generator@npm:4.0.2"
+  checksum: e5e24ba52a2fdbf196f134622e4d8188d1ce7beca6602000855bc99138cb432d080a5bbd54f223ba5066459b1621bb052ac15f4f3c28c67859c7de4ddf6e62e3
   languageName: node
   linkType: hard
 
@@ -8906,6 +8922,8 @@ __metadata:
     "@testing-library/react": "npm:^14.1.2"
     "@types/bcryptjs": "npm:^2"
     "@types/node": "npm:^20"
+    "@types/nodemailer": "npm:^6"
+    "@types/otp-generator": "npm:^4"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/swagger-ui-react": "npm:^4.18.3"
@@ -8924,6 +8942,8 @@ __metadata:
     lint-staged: "npm:^15.2.0"
     next: "npm:14.1.0"
     next-swagger-doc: "npm:^0.4.0"
+    nodemailer: "npm:^6.9.9"
+    otp-generator: "npm:^4.0.1"
     prettier: "npm:3.2.4"
     prisma: "npm:^5.8.1"
     prisma-multischema: "npm:^1.1.4"
@@ -14219,6 +14239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.9.9":
+  version: 6.9.9
+  resolution: "nodemailer@npm:6.9.9"
+  checksum: ba72da4ca8a003921c86f3d132d64d9bb86c1a3d79d248664b3de28f6a7a621f0476273ad7cf3ecc48d3b78a66ae4ec62b7c4c8ab6f07d9ca26d4bad4d08802e
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^7.0.0":
   version: 7.2.0
   resolution: "nopt@npm:7.2.0"
@@ -14522,6 +14549,13 @@ __metadata:
   version: 1.2.2
   resolution: "ospath@npm:1.2.2"
   checksum: e485a6ca91964f786163408b093860bf26a9d9704d83ec39ccf463b9f11ea712b780b23b73d1f64536de62c5f66244dd94ed83fc9ffe3c1564dd1eed5cdae923
+  languageName: node
+  linkType: hard
+
+"otp-generator@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "otp-generator@npm:4.0.1"
+  checksum: 22822bfa0f914bca9dbbf309acffcfdcf4f4ed6f800e6b3d08d6b442355bb6da15b5d1b3417530cd9db8fed64810ba63923964567d53b03ba6cccde51edc2546
   languageName: node
   linkType: hard
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import UserService from '@/services/userService';
+import AuthService from '@/services/authService';
 
 /**
  * @swagger
@@ -41,13 +41,17 @@ import UserService from '@/services/userService';
 
 export async function POST(req: NextRequest) {
     const data = await req.json();
-    const res = await UserService.login(data);
-    const { data: { token }, ...dataWithoutToken } = res.responseBody();
-    const response = NextResponse.json(dataWithoutToken, { status: res.status });
+    const res = await AuthService.login(data);
+    const resBody = res.responseBody();
+    const { token } = resBody.data;
+    delete resBody.data.token;
+    const response = NextResponse.json(resBody, { status: res.status });
     if (token) {
       response.cookies.set({
         name: 'token',
         value: token,
+        httpOnly: true,
+        secure: true,
       });
     }
     return response;

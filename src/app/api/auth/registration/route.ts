@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import UserService from '@/services/userService';
+import AuthService from '@/services/authService';
 
 /**
  * @swagger
@@ -37,6 +37,6 @@ import UserService from '@/services/userService';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const res = await UserService.createUser(data);
+  const res = await AuthService.register(data);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
