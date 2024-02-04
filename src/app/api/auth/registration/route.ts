@@ -3,10 +3,10 @@ import UserService from '@/services/userService';
 
 /**
  * @swagger
- * /api/user/registration:
+ * /api/auth/registration:
  *   post:
  *     tags:
- *       - User
+ *       - Authentication
  *     description: Create account for user
  *     requestBody:
  *       required: true
