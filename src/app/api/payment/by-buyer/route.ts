@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import payOSPaymentService from '@/services/payOSPaymentService';
-
+import paymentService from '@/services/paymentService';
 /**
  * @swagger
- * /api/payment/payos/payment-verification:
- *   patch:
+ * /api/payment/by-buyer:
+ *   post:
  *     tags:
  *       - Payment
- *     description: Update payment status.
+ *     description: Returns all payments of a buyer.
  *     requestBody:
  *       required: true
  *       content:
@@ -27,20 +26,10 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *         description: Error message
  */
 
-export async function PATCH(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    body.description = 'OUTRSPACE8';
-    body.items = [
-      {
-        name: 'Phí tham gia Outrspace',
-        quantity: 1,
-        price: 10000,
-      },
-    ];
-
-    const paymentLink = await payOSPaymentService.createPaymentLink(body);
-    const response = await payOSPaymentService.verifyPayment(paymentLink);
+    const response = await paymentService.getPaymentByBuyerID(body);
 
     if (response === undefined) throw new Error('Empty response');
     return NextResponse.json(response.responseBody(), { status: response.status });

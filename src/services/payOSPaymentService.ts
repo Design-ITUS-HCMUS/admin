@@ -80,27 +80,6 @@ class PayOSPaymentService {
     }
   }
 
-  async verifyPayment(body: any) {
-    try {
-      const response = body.data;
-      return new BaseResponse(STATUS_CODE.OK, true, 'Payment verified', response);
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
-  async getPaymentByBuyerID(body: any) {
-    try {
-      const response = await this.repository.getByBuyerID(body.buyerID);
-      console.log('getPaymentByBuyerID');
-      console.log(response);
-
-      return new BaseResponse(STATUS_CODE.OK, true, 'Get payment by buyerID', response);
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
   async confirmWebhook(body: any) {
     try {
       const url = body.url;
