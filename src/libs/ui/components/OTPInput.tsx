@@ -1,23 +1,25 @@
 'use client';
-import { CSSProperties, useRef, useEffect } from 'react';
-import { Box, OutlinedInput } from '@mui/material';
+
+// React
+import { CSSProperties, useEffect, useRef } from 'react';
+
+// Material UI Components
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const NUMBER_OF_INPUTS = 6;
 
 const otpGroup: CSSProperties = {
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(6, 3.5rem)',
   justifyContent: 'center',
-  alignItems: 'flex-start',
-  gap: '16px',
-  alignSelf: 'stretch',
-}
-
-type Props = {
-  onChange: (res: string) => void;
 };
 
-export default function OTPInput({ onChange }: Props) {
+interface OTPInputProps {
+  onChange: (res: string) => void;
+}
 
+export const OTPInput = ({ onChange }: OTPInputProps) => {
   const inputsRef = useRef<Array<HTMLInputElement>>([]);
 
   useEffect(() => {
@@ -54,11 +56,10 @@ export default function OTPInput({ onChange }: Props) {
     const target = e.target as HTMLInputElement;
     const previousElementSibling = target.parentElement?.previousElementSibling?.firstChild;
     if (key === 'Backspace') {
-      if (target.value === '' && previousElementSibling) {
+      if (previousElementSibling) {
+        target.value = '';
         (previousElementSibling as HTMLInputElement).focus();
         e.preventDefault();
-      } else {
-        target.value = '';
       }
       sendResult();
     }
@@ -80,8 +81,7 @@ export default function OTPInput({ onChange }: Props) {
       if (pastedCharacter.match('[0-9]{1}')) {
         if (!currentValue) {
           currentInputElement.value = pastedCharacter;
-          const nextElementSibling =
-            currentInputElement.parentElement?.nextElementSibling?.firstChild;
+          const nextElementSibling = currentInputElement.parentElement?.nextElementSibling?.firstChild;
 
           if (nextElementSibling !== null) {
             (nextElementSibling as HTMLInputElement)?.focus();
@@ -108,7 +108,7 @@ export default function OTPInput({ onChange }: Props) {
             maxLength: 1,
             style: { textAlign: 'center' },
           }}
-          type="tel"
+          type='tel'
           inputRef={(el: HTMLInputElement) => (inputsRef.current[idx] = el)}
           autoComplete={idx === 0 ? 'one-time-code' : 'off'}
           sx={{
@@ -121,4 +121,4 @@ export default function OTPInput({ onChange }: Props) {
       ))}
     </Box>
   );
-}
+};

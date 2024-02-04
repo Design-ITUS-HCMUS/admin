@@ -1,49 +1,26 @@
 'use client';
-import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
-import { Button, InputAdornment } from '@mui/material';
-import { PersonRounded as PersonIcon } from '@mui/icons-material';
-import { Row, StyledPaper, StyledForm, CardHeader, CardFooter } from '@/app';
-import AuthenLayout from '@/app/(auth)/layout';
+
+// React
 import { ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+
+// Internal
+import AuthenLayout from '@/app/(auth)/layout';
+import { CardPage } from '@/app/(auth)/_components';
 
 const ForgetPassword = () => {
-  const router = useRouter();
-
-  const handleLinkClick = (pathname: string) => {
-    router.replace(pathname);
-  };
-
   return (
-    <>
-      <StyledPaper elevation={0} variant='section'>
-        <CardHeader>Quên mật khẩu</CardHeader>
-        <StyledForm>
-          <TextField
-            label='Username'
-            inputProps={{
-              placeholder: 'Username hoặc email đã đăng ký',
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}></TextField>
-        </StyledForm>
-        <Row>
-          <Button variant='contained' size='large'>
-            <div
-              onClick={(e) => {
-                e.preventDefault();
-                handleLinkClick('/sign-in/otp');
-              }}>
-              Gửi mã
-            </div>
-          </Button>
-        </Row>
-        <CardFooter mainText='Chưa có tài khoản?' linkText='Đăng ký' linkHref='/sign-up' />
-      </StyledPaper>
-    </>
+    <CardPage
+      header='Quên mật khẩu'
+      showInputUsername
+      userNamePlaceholder='Username hoặc email đã đăng ký'
+      showPrimaryButton
+      buttonPrimaryText='Gửi mã'
+      buttonPrimaryHref='/sign-in/otp'
+      showFooter
+      footerMainText='Chưa có tài khoản?'
+      footerLinkText='Đăng ký'
+      footerLinkHref='/sign-up'
+    />
   );
 };
 

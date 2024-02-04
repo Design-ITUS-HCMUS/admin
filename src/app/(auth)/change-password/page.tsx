@@ -1,49 +1,24 @@
 'use client';
-import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
-import { Button } from '@mui/material';
-import { Row, StyledPaper, StyledForm, CardHeader } from '@/app';
-import AuthenLayout from '@/app/(auth)/layout';
+
+// React
 import { ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+
+// Internal
+import AuthenLayout from '@/app/(auth)/layout';
+import { CardPage } from '@/app/(auth)/_components';
 
 const ChangePassword = () => {
-  const router = useRouter();
-
-  const handleLinkClick = (pathname: string) => {
-    router.replace(pathname);
-  };
-
   return (
-    <>
-      <StyledPaper elevation={0} variant='section'>
-        <CardHeader>Thay đổi mật khẩu</CardHeader>
-        <StyledForm>
-          <PassField
-              label='Mật khẩu mới'
-              inputProps={{
-                placeholder: 'Nhập mật khẩu mới',
-              }}
-            />
-          <PassField
-              label='Nhập lại mật khẩu mới'
-              inputProps={{
-                placeholder: 'Nhập lại mật khẩu mới',
-              }}
-            />
-        </StyledForm>
-        <Row>
-          <Button variant='contained' size='large'>
-          <div
-              onClick={(e) => {
-                e.preventDefault();
-                handleLinkClick('/change-password/success');
-              }}>
-              Thay đổi
-          </div>
-          </Button>
-        </Row>
-      </StyledPaper>
-    </>
+    <CardPage
+      header='Thay đổi mật khẩu'
+      showInputPassword
+      passwordTitle='Mật khẩu mới'
+      passwordPlaceholder='Nhập mật khẩu mới'
+      showInputRetypePassword
+      showPrimaryButton
+      buttonPrimaryText='Thay đổi'
+      buttonPrimaryHref='/change-password/success'
+    />
   );
 };
 

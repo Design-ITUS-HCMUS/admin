@@ -1,46 +1,53 @@
+// React
 import React, { useState } from 'react';
-import { Typography, InputLabel, OutlinedInput, OutlinedInputProps, IconButton, InputAdornment } from '@mui/material';
-import { RemoveRedEyeRounded as ShowIcon } from '@mui/icons-material';
-import color from '@/libs/ui/color';
 
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '.5rem',
-};
+// Material UI Components
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
+// Material UI Icons
+import HideIcon from '@mui/icons-material/VisibilityOffRounded';
+import ShowIcon from '@mui/icons-material/RemoveRedEyeRounded';
+
+// Internal
+import color from '@/libs/ui/color';
 
 const stylePasswordIcon: React.CSSProperties = {
   color: color.neutral[100],
   padding: '12px',
 };
 
-type Props = {
-    label: string;
-    containerStyle?: React.CSSProperties;
-    inputProps?: OutlinedInputProps;
-};
+interface PasswordFieldProps {
+  label: string;
+  containerStyle?: React.CSSProperties;
+  inputProps?: OutlinedInputProps;
+}
 
-export const PasswordFieldWithLabel = ({ label, containerStyle, inputProps }: Props) => {
-    const [showPassword, setShowPassword] = useState(false);
-  
-    const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
-  
-    return (
-      <div style={{ ...style, ...containerStyle }}>
-        <InputLabel>
-          <Typography variant='subtitle2'>{label}</Typography>
-        </InputLabel>
-        <OutlinedInput
-          {...inputProps}
-          type={showPassword ? 'text' : 'password'}
-          endAdornment={
-            <InputAdornment position='end'>
-              <IconButton onClick={togglePasswordVisibility} edge='end' style={stylePasswordIcon} disableRipple>
-                <ShowIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </div>
-    );
-  };
+export const PasswordFieldWithLabel = ({ label, containerStyle, inputProps }: PasswordFieldProps) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  return (
+    <Stack style={{ ...containerStyle }} spacing={1}>
+      <InputLabel>
+        <Typography variant='subtitle2'>{label}</Typography>
+      </InputLabel>
+      <OutlinedInput
+        {...inputProps}
+        type={showPassword ? 'text' : 'password'}
+        endAdornment={
+          <InputAdornment position='end'>
+            <IconButton onClick={togglePasswordVisibility} edge='end' style={stylePasswordIcon} disableRipple>
+              {showPassword ? <ShowIcon /> : <HideIcon />}
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+    </Stack>
+  );
+};

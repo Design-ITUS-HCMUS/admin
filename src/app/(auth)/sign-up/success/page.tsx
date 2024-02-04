@@ -1,27 +1,34 @@
 'use client';
-import { Button } from '@mui/material';
-import { Row, StyledPaper, CardHeader, CardContents } from '@/app';
-import AuthenLayout from '@/app/(auth)/layout';
+
+// React and Next
 import { ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+
+// Internal
+import AuthenLayout from '@/app/(auth)/layout';
+import { CardPage } from '@/app/(auth)/_components';
+
+const SIGN_IN_PAGE = '/sign-in';
 
 const Success = () => {
+  const router = useRouter();
+  const backSignInPage = () => {
+    router.replace(SIGN_IN_PAGE);
+  };
+
   return (
-    <>
-      <StyledPaper elevation={0} variant='section'>
-        <CardHeader>Đăng ký thành công</CardHeader>
-        <CardContents>
-          Bạn đã đăng ký tài khoản thành công, vui lòng đăng nhập với tài khoản mới. Trở về trang đăng nhập sau{' '}
-          <span style={{ fontWeight: '800' }}>00:05</span> giây.
-        </CardContents>
-        <Row>
-          <Button href='/sign-in' variant='contained' size='large'>
-            Đăng nhập
-          </Button>
-        </Row>
-      </StyledPaper>
-    </>
+    <CardPage
+      header='Đăng ký thành công'
+      showContent
+      content='Bạn đã đăng ký tài khoản thành công, vui lòng đăng nhập với tài khoản mới. Trở về trang đăng nhập sau'
+      timeRemainInSecond={5}
+      showPrimaryButton
+      buttonPrimaryText='Đăng nhập'
+      buttonPrimaryHref={SIGN_IN_PAGE}
+      handleCompleteCountDown={backSignInPage}
+    />
   );
-}
+};
 
 Success.getLayout = (page: ReactNode) => {
   return <AuthenLayout>{page}</AuthenLayout>;

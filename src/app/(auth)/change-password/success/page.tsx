@@ -1,38 +1,32 @@
 'use client';
-import { Button } from '@mui/material';
-import { Row, StyledPaper, CardHeader, CardContents } from '@/app';
-import AuthenLayout from '@/app/(auth)/layout';
+
+// React and Next
 import { ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Internal
+import AuthenLayout from '@/app/(auth)/layout';
+import { CardPage } from '@/app/(auth)/_components';
+
+const SIGN_IN_PAGE = '/sign-in';
+
 const Success = () => {
   const router = useRouter();
-
-  const handleLinkClick = (pathname: string) => {
-    router.replace(pathname);
+  const backSignInPage = () => {
+    router.replace(SIGN_IN_PAGE);
   };
 
   return (
-    <>
-      <StyledPaper elevation={0} variant='section'>
-        <CardHeader>Thay đổi mật khẩu thành công</CardHeader>
-        <CardContents>
-          Bạn đã thay đổi mật khẩu thành công, vui lòng đăng nhập lại với mật khẩu mới. Trở về trang đăng nhập sau{' '}
-          <span style={{ fontWeight: '800' }}>00:05</span> giây.
-        </CardContents>
-        <Row>
-          <Button variant='contained' size='large'>
-            <div
-              onClick={(e) => {
-                e.preventDefault();
-                handleLinkClick('/sign-in');
-              }}>
-              Đăng nhập
-            </div>
-          </Button>
-        </Row>
-      </StyledPaper>
-    </>
+    <CardPage
+      header='Thay đổi mật khẩu thành công'
+      showContent
+      content='Bạn đã thay đổi mật khẩu thành công, vui lòng đăng nhập lại với mật khẩu mới. Trở về trang đăng nhập sau'
+      timeRemainInSecond={5}
+      showPrimaryButton
+      buttonPrimaryText='Đăng nhập'
+      buttonPrimaryHref={SIGN_IN_PAGE}
+      handleCompleteCountDown={backSignInPage}
+    />
   );
 };
 
