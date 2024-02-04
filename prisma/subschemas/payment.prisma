@@ -1,14 +1,16 @@
 model Payment {
-  id        Int   @id @default(autoincrement())
-  buyer     User  @relation(fields: [buyerID], references: [id])
-  buyerID   Int
-  gateway   String
-  paymentID String?
-  amount    Int
-  description String
+  id            Int       @id @default(autoincrement())
+  buyer         User      @relation(fields: [buyerID], references: [id])
+  buyerID       Int
+  gateway       String
+  paymentID     String?
+  amount        Int
+  description   String
   accountNumber String?
-  reference String?
-  paidAt    DateTime?
-  createdAt DateTime @default(now())
-  paymentStatus Int @default(0) // 0 = Unpaid/Cancelled, 1 = Paid, 2 = Waiting for Confirmation, 3 = Cancelled
+  reference     String?
+  paidAt        DateTime?
+  createdAt     DateTime  @default(now())
+  paymentStatus Int       @default(0) // 0 = Unpaid/Cancelled, 1 = Paid, 2 = Waiting for Confirmation, 3 = Cancelled
+  teamID        Int?      @unique
+  team          Team?     @relation(fields: [teamID], references: [id])
 }
