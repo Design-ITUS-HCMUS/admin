@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material';
 
-export default function EventDetails({ params }: { params: { key: string } }) {
+export default function EventDetails() {
   return (
     <Typography variant='h6' fontWeight='600'>
-      Chi tiết sự kiện {params.key}
+      Quản lý tài khoản
     </Typography>
   );
 }

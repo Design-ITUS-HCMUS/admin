@@ -159,23 +159,26 @@ export function EnhancedTable(props: EnhancedTableProps) {
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <StyledTableRow hover tabIndex={-1} key={index} sx={{ cursor: 'pointer' }}>
-                  {Object.values(row).map((value, id) =>
-                    id == 0 ? (
-                      <TableCell
-                        key={`${headCells[id].id}-${index}`}
-                        component='th'
-                        id={labelId}
-                        scope='row'
-                        padding='none'
-                        align={align[id]}>
-                        {value}
-                      </TableCell>
-                    ) : (
-                      <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
-                        {value}
-                      </TableCell>
-                    )
-                  )}
+                  {/* Filter: just render the data match the head cell */}
+                  {Object.values(row)
+                    .filter((value, id) => id < headCells.length)
+                    .map((value, id) =>
+                      id == 0 ? (
+                        <TableCell
+                          key={`${headCells[id].id}-${index}`}
+                          component='th'
+                          id={labelId}
+                          scope='row'
+                          padding='none'
+                          align={align[id]}>
+                          {value}
+                        </TableCell>
+                      ) : (
+                        <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
+                          {value}
+                        </TableCell>
+                      )
+                    )}
                 </StyledTableRow>
               );
             })}

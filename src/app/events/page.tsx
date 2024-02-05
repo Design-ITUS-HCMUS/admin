@@ -1,13 +1,31 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Badge, Button, Typography } from '@mui/material';
+
+import Badge from '@mui/material/Badge';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui/components';
-import { FilterListRounded, IosShareRounded } from '@mui/icons-material';
-import colors from '@/libs/ui/color';
-import data from './events.json';
+
+import FilterListRounded from '@mui/icons-material/FilterListRounded';
+import IosShareRounded from '@mui/icons-material/IosShareRounded';
+
+import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui';
 import { Order, stableSort, getComparator } from '@/utils';
+import data from './events.json';
+
+const Section = styled('section')(({ theme }) => ({
+  padding: theme.spacing(3, 3, 3),
+  minHeight: 'calc(100vh - 64px - 48px)',
+}));
+
+const StyledPaper = styled(Paper)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+  minHeight: 'inherit',
+});
 
 const ButtonGroup = styled('div')({
   display: 'flex',
@@ -58,7 +76,7 @@ interface ITableCell {
   status: JSX.Element;
 }
 
-export default function Events({ modal }: { modal: React.ReactNode }) {
+export default function EventsPage({ modal }: { modal: React.ReactNode }) {
   const rowsPerPage = 10;
   const [rows, setRows] = useState(data);
   const [page, setPage] = useState(0);
@@ -76,7 +94,7 @@ export default function Events({ modal }: { modal: React.ReactNode }) {
     return data.map((item: any) => {
       return {
         name: (
-          <Typography sx={{ color: colors.blue[500] }}>
+          <Typography sx={{ color: 'primary.main' }}>
             <Link href={`/events/${item.key}`}>{item.name}</Link>
           </Typography>
         ),
@@ -84,7 +102,7 @@ export default function Events({ modal }: { modal: React.ReactNode }) {
         type: item.type,
         startTime: item.startTime,
         leader: (
-          <Typography sx={{ color: colors.blue[500] }}>
+          <Typography sx={{ color: 'primary.main' }}>
             <Link href={`/events`}>{item.leader}</Link>
           </Typography>
         ),
@@ -99,36 +117,39 @@ export default function Events({ modal }: { modal: React.ReactNode }) {
   }, [rows, page]);
 
   return (
-    <>
-      {modal}
-      <Typography variant='h6' fontWeight='600'>
-        Sự kiện
-      </Typography>
-      <ToolBar>
-        <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-        <ButtonGroup>
-          <Link href='/events/create'>
-            <Button variant='contained' color='info'>
-              Tạo sự kiện
-            </Button>
-          </Link>
-          <Badge badgeContent={11} max={9} color='primary'>
+    <Section>
+      {/* Include shared UI here e.g. a header or sidebar */}
+      <StyledPaper variant='section'>
+        {modal}
+        <Typography variant='h6' fontWeight='600'>
+          Sự kiện
+        </Typography>
+        <ToolBar>
+          <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
+          <ButtonGroup>
+            <Link href='/events/create'>
+              <Button variant='contained' color='info'>
+                Tạo sự kiện
+              </Button>
+            </Link>
+            {/* <Badge badgeContent={11} max={9} color='primary'>
             <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
               Bộ lọc
             </Button>
-          </Badge>
-          <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
-            Xuất file
-          </Button>
-        </ButtonGroup>
-      </ToolBar>
-      <EnhancedTable
-        headCells={headCells}
-        rows={visibleRows}
-        totalRows={data.length}
-        onChangePage={handleChangePage}
-        onSort={handleSort}
-      />
-    </>
+          </Badge> */}
+            <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
+              Xuất file
+            </Button>
+          </ButtonGroup>
+        </ToolBar>
+        <EnhancedTable
+          headCells={headCells}
+          rows={visibleRows}
+          totalRows={data.length}
+          onChangePage={handleChangePage}
+          onSort={handleSort}
+        />
+      </StyledPaper>
+    </Section>
   );
 }

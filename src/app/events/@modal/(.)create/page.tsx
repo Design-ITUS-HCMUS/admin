@@ -1,9 +1,15 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+
 import { CreateEventForm } from '../../_components';
 
-export default function Page() {
+export default function EventCreateModal() {
   const router = useRouter();
 
   function handleClose() {

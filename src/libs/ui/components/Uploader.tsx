@@ -4,29 +4,6 @@ import { Button, ButtonProps, Stack, Typography } from '@mui/material';
 import { UploadFile } from '@mui/icons-material';
 import { colors } from '@/libs/ui';
 
-interface UploadButtonProps extends ButtonProps {
-  state?: 'resting' | 'error';
-  onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-interface UploaderProps {
-  buttonProps?: UploadButtonProps;
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  placeholder?: string;
-}
-
-const UploadButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'state',
-})<UploadButtonProps>(({ state }) => ({
-  '& .MuiTypography-body2': {
-    color: '#000000',
-  },
-  border: `${state == 'error' ? '1px solid' : '1px dashed'}`,
-  minWidth: '300px',
-  padding: '1.5rem',
-  background: `${state == 'error' ? colors.background.error : ''}`,
-}));
-
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -38,6 +15,29 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
+
+interface UploadButtonProps extends ButtonProps {
+  state?: 'resting' | 'error';
+  onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const UploadButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'state',
+})<UploadButtonProps>(({ state }) => ({
+  '& .MuiTypography-body2': {
+    color: 'contrastText',
+  },
+  border: `${state == 'error' ? '1px solid' : '1px dashed'}`,
+  minWidth: '300px',
+  padding: '1.5rem',
+  background: `${state == 'error' ? colors.background.error : ''}`,
+}));
+
+interface UploaderProps {
+  buttonProps?: UploadButtonProps;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  placeholder?: string;
+}
 
 const CenterStack = styled(Stack)({
   alignItems: 'center',

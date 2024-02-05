@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Button, Grid, Stack, Typography } from '@mui/material';
 import { CreateEventForm } from '../_components';
 
-export default function Page() {
+export default function EventCreatePage() {
   function handleSubmit(formData: FormData) {}
 
   return (

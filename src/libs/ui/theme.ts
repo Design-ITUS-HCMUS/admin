@@ -1,7 +1,7 @@
 'use client';
 import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import colors from './color';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import { ThemeOptions } from '@mui/material/styles';
 
 let theme = createTheme({
   palette: {
@@ -56,7 +56,7 @@ let theme = createTheme({
         color: colors.blue[700],
       },
     },
-  } as TypographyOptions,
+  },
   components: {
     MuiTypography: {
       defaultProps: {
@@ -150,6 +150,15 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           color: colors.neutral[100],
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '& .MuiFormLabel-asterisk': {
+            color: 'red',
+          },
         },
       },
     },

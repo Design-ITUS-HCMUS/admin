@@ -1,4 +1,3 @@
-export * from './Button';
 export * from './DropDown';
 export * from './DropdownText';
 export * from './EnhancedTable';
@@ -6,5 +5,6 @@ export * from './FullscreenImage';
 export * from './Logo';
 export * from './ProgressTag';
 export * from './Search';
+export * from './SideBar';
 export * from './TextFieldWithLabel';
 export * from './Uploader';

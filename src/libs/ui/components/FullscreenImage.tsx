@@ -1,7 +1,7 @@
 'use client';
+import React from 'react';
 import Image, { ImageProps } from 'next/image';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 
 const BGImage = styled(Image)({
   position: 'absolute',
@@ -16,15 +16,15 @@ const BlackLayer = styled('div')({
   height: '100vh',
 });
 
-type Props = {
+interface FullscreenImageProps {
   opacity?: number | 0.5;
   src: string | '/thumbnail.jpg';
   alt: string;
   imageProps?: ImageProps;
   blackLayerStyle?: React.CSSProperties;
-};
+}
 
-export function FullscreenImage({ opacity = 0.5, src, alt, imageProps, blackLayerStyle }: Props) {
+export function FullscreenImage({ opacity = 0.5, src, alt, imageProps, blackLayerStyle }: FullscreenImageProps) {
   if (opacity > 1) opacity = 1;
   if (opacity < 0) opacity = 0;
   return (
