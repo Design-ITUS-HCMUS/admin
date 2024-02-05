@@ -22,9 +22,9 @@ const Success = () => {
   };
 
   return (
-    <CardPage header='Đăng ký thành công'>
+    <CardPage header='Thay đổi mật khẩu thành công'>
       <Typography variant='body1'>
-        Bạn đã đăng ký tài khoản thành công, vui lòng đăng nhập với tài khoản mới. Trở về trang đăng nhập sau{' '}
+        Bạn đã thay đổi mật khẩu thành công, vui lòng đăng nhập lại với mật khẩu mới. Trở về trang đăng nhập sau{' '}
         <CountDown initialSeconds={5} onComplete={backSignInPage} /> giây.
       </Typography>
       <Row>

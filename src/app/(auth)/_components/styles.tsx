@@ -11,13 +11,6 @@ import { TypographyProps } from '@mui/material/';
 // Libs
 import color from '@/libs/ui/color';
 
-export const HeaderStyle: CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '.5rem',
-};
-
 export const SupportTextStyle: CSSProperties = {
   color: color.neutral[200],
 };

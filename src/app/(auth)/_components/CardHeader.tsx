@@ -1,17 +1,26 @@
 'use client';
 
+// React
+import { CSSProperties } from 'react';
+
 // Material UI Components
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 // Internal
-import { CardProps, HeaderStyle } from '.';
+import { CardProps } from '.';
+
+const CardHeaderWrapper = styled(Typography)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '.5rem',
+});
 
 export const CardHeader = ({ children, typographyProps }: CardProps) => {
   return (
-    <div style={HeaderStyle}>
-      <Typography {...typographyProps} variant='h5'>
-        {children}
-      </Typography>
-    </div>
+    <CardHeaderWrapper {...typographyProps} variant='h5'>
+      {children}
+    </CardHeaderWrapper>
   );
 };

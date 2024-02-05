@@ -40,7 +40,7 @@ const OTP = () => {
           sx={{ color: ableResend ? theme.palette.primary.main : colors.neutral[300] }}>
           Gửi lại mã
         </Button>
-        <Link href='/sign-up/success'>
+        <Link href='/sign-in/change-password'>
           <Button variant='contained' size='large' sx={{ width: '100%' }}>
             Xác nhận
           </Button>
@@ -55,14 +55,14 @@ const OTP = () => {
             width: 'fit-content',
             fontWeight: '600',
           }}>
-          Đã có tài khoản?
+          Chưa có tài khoản?
         </Typography>
         <Typography
           component={Link}
           href='/sign-up'
           variant='linkPrimary'
           sx={{ display: 'inline-block', width: 'fit-content' }}>
-          Đăng nhập
+          Đăng ký
         </Typography>
       </Row>
     </CardPage>

@@ -16,11 +16,6 @@ import ShowIcon from '@mui/icons-material/RemoveRedEyeRounded';
 // Internal
 import color from '@/libs/ui/color';
 
-const stylePasswordIcon: React.CSSProperties = {
-  color: color.neutral[100],
-  padding: '12px',
-};
-
 interface PasswordFieldProps {
   label: string;
   containerStyle?: React.CSSProperties;
@@ -33,7 +28,7 @@ export const PasswordFieldWithLabel = ({ label, containerStyle, inputProps }: Pa
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
-    <Stack style={{ ...containerStyle }} spacing={1}>
+    <Stack sx={{ ...containerStyle }} spacing={1}>
       <InputLabel>
         <Typography variant='subtitle2'>{label}</Typography>
       </InputLabel>
@@ -42,7 +37,7 @@ export const PasswordFieldWithLabel = ({ label, containerStyle, inputProps }: Pa
         type={showPassword ? 'text' : 'password'}
         endAdornment={
           <InputAdornment position='end'>
-            <IconButton onClick={togglePasswordVisibility} edge='end' style={stylePasswordIcon} disableRipple>
+            <IconButton onClick={togglePasswordVisibility} edge='end' sx={{ color: color.neutral[100], padding: '12px' }} disableRipple>
               {showPassword ? <ShowIcon /> : <HideIcon />}
             </IconButton>
           </InputAdornment>

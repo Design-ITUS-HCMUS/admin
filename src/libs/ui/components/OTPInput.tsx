@@ -1,19 +1,13 @@
 'use client';
 
 // React
-import { CSSProperties, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Material UI Components
-import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Stack from '@mui/material/Stack';
 
 const NUMBER_OF_INPUTS = 6;
-
-const otpGroup: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(6, 3.5rem)',
-  justifyContent: 'center',
-};
 
 interface OTPInputProps {
   onChange: (res: string) => void;
@@ -96,7 +90,7 @@ export const OTPInput = ({ onChange }: OTPInputProps) => {
   };
 
   return (
-    <Box style={otpGroup}>
+    <Stack direction='row' spacing={2} sx={{ justifyContent: 'center' }}>
       {Array.from(Array(NUMBER_OF_INPUTS).keys()).map((idx) => (
         <OutlinedInput
           key={idx}
@@ -106,7 +100,7 @@ export const OTPInput = ({ onChange }: OTPInputProps) => {
           onPaste={handleOnPaste}
           inputProps={{
             maxLength: 1,
-            style: { textAlign: 'center' },
+            sx: { textAlign: 'center' },
           }}
           type='tel'
           inputRef={(el: HTMLInputElement) => (inputsRef.current[idx] = el)}
@@ -119,6 +113,6 @@ export const OTPInput = ({ onChange }: OTPInputProps) => {
           }}
         />
       ))}
-    </Box>
+    </Stack>
   );
 };
