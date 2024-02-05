@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Sat Feb 03 2024 15:08:38 GMT+0700 (Indochina Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Feb 06 2024 04:09:31 GMT+0700 (Indochina Time)✨
 model AccountEvent {
   id        Int   @id @default(autoincrement())
   eventID   Int
