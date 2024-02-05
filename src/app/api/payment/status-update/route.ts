@@ -17,8 +17,12 @@ import paymentService from '@/services/paymentService';
  *             type: object
  *             required:
  *               - buyerID
+ *               - teamID
  *             properties:
  *               buyerID:
+ *                 type: integer
+ *                 default: 1
+ *               teamID:
  *                 type: integer
  *                 default: 1
  *     responses:
@@ -40,9 +44,7 @@ export async function POST(req: NextRequest) {
       },
     ];
 
-    const paymentLink = await payOSPaymentService.createPaymentLink(body);
-    const response = await paymentService.createTransaction(paymentLink);
-
+    const response = await paymentService.createTransaction(body);
     if (response === undefined) throw new Error('Empty response');
     return NextResponse.json(response.responseBody(), { status: response.status });
   } catch (err: any) {

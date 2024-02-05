@@ -1,6 +1,6 @@
 import PaymentRepository from '@repositories/paymentRepository';
 import TeamRepository from '@repositories/teamRepository';
-import { payOS } from '@payOS';
+import payOSPaymentService from './payOSPaymentService';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
 
@@ -15,29 +15,18 @@ class PaymentService {
 
   async createTransaction(body: any) {
     try {
-      const orderId = body.data.orderCode;
+      const teamId = body.teamID;
 
-      const paymentInfo = await this.paymentRepository.getByEntity({ id: orderId });
-      if (!paymentInfo) {
-        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment does not exist');
-      }
-
-      const team = await this.teamRepository.getByEntity({ teamLead: paymentInfo.buyerID });
+      const team = await this.teamRepository.getByEntity({ id: teamId });
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if (team.paymentID) {
-        this.paymentRepository.delete({ id: orderId });
+      if (team.paymentId) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment already exists');
       }
 
-      if (paymentInfo.paymentStatus === 1) {
-        const updatedTeam = await this.teamRepository.update({ id: team?.id, status: 1, paymentStatus: 1 });
-        return new BaseResponse(STATUS_CODE.OK, true, 'Team payment status updated', updatedTeam);
-      }
-
-      const response = await this.teamRepository.update({ id: team?.id, paymentID: paymentInfo.paymentID });
-      return new BaseResponse(STATUS_CODE.OK, true, 'Payment transaction', response);
+      const paymentLink = await payOSPaymentService.createPaymentLink(body);
+      return new BaseResponse(STATUS_CODE.OK, true, 'Payment transaction', paymentLink);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -50,8 +39,19 @@ class PaymentService {
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
+      if(!team.paymentId) {
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment to verify');
+      }
+      if(!team.paymentProof){
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment proof to verify');
+      }
+      if(team.paymentStatus !== 1) {
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment not paid or already verified');
+      }
 
-      const response = await this.teamRepository.update({ id: team?.id, status: 1, paymentStatus: 1 });
+      //Update the payment status to 2 (verified)
+      //For now, just return team data
+      const response = team;
       return new BaseResponse(STATUS_CODE.OK, true, 'Payment verified', response);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

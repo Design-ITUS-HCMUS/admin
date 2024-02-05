@@ -42,21 +42,6 @@ export default class TeamRepository {
     }
   }
 
-  async update(entity: Prisma.TeamUncheckedUpdateInput) {
-    try {
-      const team = await this.model.update({
-        where: {
-          id: entity.id as number,
-        },
-        data: entity,
-      });
-      return team;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
   async delete(id: number) {
     try {
       const deleteTeam = await this.model.delete({

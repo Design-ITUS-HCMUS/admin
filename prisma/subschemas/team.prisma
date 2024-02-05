@@ -1,11 +1,11 @@
 model Team {
   id            Int            @id @default(autoincrement())
   name          String         @unique
-  teamLead      Int            @unique
-  status        Int            @default(0) 
-  category      String
-  paymentID     String?
-  paymentStatus Int            @default(0)
-  paymentProof  Int
-  submissions   Int[]
+  status        Boolean        @default(true)
+  category      String?
+  paymentStatus Int            @default(0) // 0 = Unpaid, 1 = Paid, waiting for confirmation, 2 = Confirm
+  paymentProof  Int?
+  submission    Int[]
+  paymentID     Payment?
+  accountEvents AccountEvent[]
 }
