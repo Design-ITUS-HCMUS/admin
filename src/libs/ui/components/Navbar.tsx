@@ -22,7 +22,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import styled from '@mui/material/styles/styled';
+import { styled, useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Material UI Icons
 import PersonIcon from '@mui/icons-material/PersonRounded';
@@ -36,6 +37,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
 // Local Imports
 import { Logo } from './Logo';
 import { colors } from '../';
+import { ListItem } from '@mui/material';
 
 interface INavBarItem {
   name: string;
@@ -49,40 +51,48 @@ interface INavBarItem {
   }[];
 }
 
-type NavBarItemProps = INavBarItem & { active?: boolean };
+interface NavBarItemProps extends INavBarItem {
+  active?: boolean;
+}
 
-function NavbarItem({ name, link, menuItems, active }: NavBarItemProps): React.JSX.Element {
+const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })(() => ({
+  color: colors.neutral[400],
+  backgroundColor: 'transparent',
+  padding: '4px 6px',
+  fontSize: '16px',
+  '&:hover': {
+    color: colors.blue[900],
+    backgroundColor: colors.neutral[50],
+  },
+}));
+
+const StyledNavbarPillActive = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })(() => ({
+  color: colors.blue[500],
+  backgroundColor: 'transparent',
+  padding: '4px 6px',
+  fontSize: '16px',
+  '&:hover': {
+    backgroundColor: colors.blue[50],
+  },
+}));
+
+const FocusedNavbarPillStyle = {
+  color: colors.blue[500],
+  backgroundColor: colors.blue[50],
+};
+
+function NavbarPill({ name, link, menuItems, active, disabled }: NavBarItemProps): React.JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+    event.currentTarget.focus();
+    console.log('focused');
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const ButtonStyle = {
-    color: colors.neutral[400],
-    backgroundColor: 'transparent',
-    padding: '4px 6px',
-    fontSize: '16px',
-    '&:hover': {
-      color: colors.blue[900],
-      backgroundColor: colors.neutral[50],
-    },
-  };
-
-  const ButtonActiveStyle = {
-    color: colors.blue[500],
-    backgroundColor: 'transparent',
-    padding: '4px 6px',
-    fontSize: '16px',
-    '&:hover': {
-      color: colors.blue[900],
-      backgroundColor: colors.blue[50],
-    },
   };
 
   const BoxStyle = {
@@ -98,28 +108,44 @@ function NavbarItem({ name, link, menuItems, active }: NavBarItemProps): React.J
 
   return (
     <Box sx={BoxStyle}>
-      <Button
-        LinkComponent={link ? Link : undefined}
-        href={link}
-        sx={active ? ButtonActiveStyle : ButtonStyle}
-        onClick={menuItems && handleOpen}
-        endIcon={menuItems && (open ? <ExpandMoreIcon /> : <ExpandLessIcon />)}>
-        {name}
-      </Button>
+      {active ? (
+        <StyledNavbarPillActive
+          LinkComponent={Link}
+          href={!menuItems ? link : undefined}
+          onClick={menuItems && handleOpen}
+          endIcon={menuItems && <ExpandMoreIcon />}
+          sx={open ? FocusedNavbarPillStyle : undefined}
+          disabled={disabled}>
+          {name}
+        </StyledNavbarPillActive>
+      ) : (
+        <StyledNavbarPill
+          LinkComponent={Link}
+          href={!menuItems ? link : undefined}
+          onClick={menuItems && handleOpen}
+          endIcon={menuItems && <ExpandMoreIcon />}
+          sx={open ? FocusedNavbarPillStyle : undefined}
+          disabled={disabled}>
+          {name}
+        </StyledNavbarPill>
+      )}
       {menuItems && (
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
           {menuItems?.map(
             (menuItem, i, arr) =>
               i < arr.length - 1 && (
-                <MenuItem key={menuItem.name}>
-                  <Link href={menuItem.link}>{menuItem.name}</Link>
+                <MenuItem key={menuItem.name} component={Link} href={menuItem.link}>
+                  {menuItem.name}
                 </MenuItem>
               )
           )}
           <Divider />
           {menuItems && (
-            <MenuItem key={menuItems[menuItems.length - 1].name}>
-              <Link href={menuItems[menuItems.length - 1].link}>{menuItems[menuItems.length - 1].name}</Link>
+            <MenuItem
+              key={menuItems[menuItems.length - 1].name}
+              component={Link}
+              href={menuItems[menuItems.length - 1].link}>
+              {menuItems[menuItems.length - 1].name}
             </MenuItem>
           )}
         </Menu>
@@ -153,9 +179,11 @@ function Title(): React.JSX.Element {
 
 function UserSettings(settings: INavBarItem): React.JSX.Element {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+    !isMobile && setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseUserMenu = () => {
@@ -163,57 +191,49 @@ function UserSettings(settings: INavBarItem): React.JSX.Element {
   };
 
   return (
-    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-      <Button
+    <div>
+      <ListItemButton
         onClick={handleOpenUserMenu}
-        endIcon={Boolean(anchorElUser) ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-        sx={{
-          color: colors.neutral[400],
-          backgroundColor: 'transparent',
-          '&:hover': { color: colors.blue[900], backgroundColor: colors.blue[50] },
-        }}>
-        <Typography variant='subtitle1' fontWeight={700}>
-          {settings.name}
-        </Typography>
-      </Button>
-      <Menu
-        anchorEl={anchorElUser}
-        keepMounted
-        open={Boolean(anchorElUser)}
-        disableScrollLock
-        onClose={handleCloseUserMenu}>
-        {settings.menuItems?.map(
-          (item, i, arr) =>
-            i < arr.length - 1 && (
-              <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-                {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-                <ListItemText>
-                  <Link href={item.link}>{item.name}</Link>
-                </ListItemText>
-              </MenuItem>
-            )
-        )}
-        <Divider />
-        <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-          <ListItemText sx={{ color: colors.notification['error'] }}>
-            <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
-              {settings.menuItems?.[settings.menuItems?.length - 1].name}
-            </Link>
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-    </Box>
+        component={isMobile ? Link : Button}
+        href={isMobile ? '/profile' : undefined}>
+        <ListItemText primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }} primary={settings.name} />
+        <ListItemIcon sx={{ minWidth: 0 }}>{isMobile ? <ChevronRightIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+      </ListItemButton>
+      {!isMobile && (
+        <Menu anchorEl={anchorElUser} open={Boolean(anchorElUser)} disableScrollLock onClose={handleCloseUserMenu}>
+          {settings.menuItems?.map(
+            (item, i, arr) =>
+              i < arr.length - 1 && (
+                <MenuItem key={item.name} onClick={handleCloseUserMenu}>
+                  {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+                  <ListItemText>
+                    <Link href={item.link}>{item.name}</Link>
+                  </ListItemText>
+                </MenuItem>
+              )
+          )}
+          <Divider />
+          <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
+            <ListItemText sx={{ color: colors.notification['error'] }}>
+              <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
+                {settings.menuItems?.[settings.menuItems?.length - 1].name}
+              </Link>
+            </ListItemText>
+          </MenuItem>
+        </Menu>
+      )}
+    </div>
   );
 }
 
 const defaultPages: INavBarItem[] = [
   {
     name: 'Sự kiện',
-    // disabled: true,
+    link: '/events',
     menuItems: [
       { name: 'Outr space 8 (OS8)', link: '/events/OS8' },
       { name: 'Workshop Des to Dev (D2D)', link: '/events/D2D', disabled: true },
-      { name: 'Tất cả sự kiện', link: '/events', disabled: false },
+      { name: 'Tất cả sự kiện', link: '/events' },
     ],
   },
   { name: 'Thành viên', link: '/members' },
@@ -235,11 +255,7 @@ export interface NavbarProps {
   activeURL?: string;
 }
 
-function Navbar({
-  pages = defaultPages,
-  settings = defaultSettings,
-  activeURL = '/events/OS8',
-}: NavbarProps): React.JSX.Element {
+function Navbar({ pages = defaultPages, settings = defaultSettings, activeURL = '' }: NavbarProps): React.JSX.Element {
   const pathname = usePathname();
 
   // Responsive Drawer state manager
@@ -254,6 +270,9 @@ function Navbar({
     setOpenCollapse(!openCollapse);
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <AppBar
       position='static'
@@ -264,124 +283,109 @@ function Navbar({
         <Toolbar disableGutters>
           <Title />
           {/* Responsive -> Visible only on MD and above */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-            {pages.map((page, index) => (
-              <NavbarItem
-                {...page}
-                key={index}
-                active={
-                  pathname?.includes(page.link || page.menuItems?.[index].link || '') ||
-                  activeURL?.includes(page.link || page.menuItems?.[index].link || '')
-                }
-              />
-            ))}
-            <div>
-              <Button LinkComponent={Link} href='/events/create'>
-                <Typography variant='subtitle1' fontWeight={600}>
-                  Tạo sự kiện
-                </Typography>
-              </Button>
-            </div>
-          </Box>
-          <UserSettings {...settings} />
-          {/* Responsive -> Visible only on XS and SM */}
-          <Box sx={{ display: { md: 'none' } }}>
-            <IconButton onClick={toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <Drawer
-            variant='temporary'
-            anchor='right'
-            open={openDrawer}
-            onClose={toggleDrawer}
-            keepMounted
-            PaperProps={{ sx: { width: '100%' } }}>
-            <Box sx={{ overflow: 'auto' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2, py: 1 }}>
-                <IconButton onClick={toggleDrawer}>
-                  <CloseIcon />
-                </IconButton>
-                <Button
-                  LinkComponent={Link}
-                  href='/profile'
-                  endIcon={<ChevronRightIcon />}
-                  sx={{
-                    color: colors.neutral[400],
-                    backgroundColor: 'transparent',
-                    '&:hover': { color: colors.blue[900], backgroundColor: colors.blue[50] },
-                  }}>
-                  <Typography variant='subtitle1' fontWeight={700}>
-                    {settings.name}
+          {!isMobile ? (
+            <>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                {pages.map((page, index) => (
+                  <NavbarPill
+                    {...page}
+                    key={index}
+                    active={pathname?.includes(page.link || '') || activeURL?.includes(page.link || '')}
+                    disabled={page.disabled}
+                  />
+                ))}
+                <Button LinkComponent={Link} href='/events/create' sx={{ height: 'fit-content' }}>
+                  <Typography variant='subtitle1' fontWeight={600}>
+                    Tạo sự kiện
                   </Typography>
                 </Button>
               </Box>
-              <Divider />
-              <List>
-                {pages.map((page, index) =>
-                  page.link ? (
-                    <ListItemButton
-                      key={index}
-                      component={Link}
-                      href={page.link}
-                      onClick={toggleDrawer}
-                      selected={pathname?.includes(page.link) || activeURL?.includes(page.link)}
-                      disabled={page.disabled}>
+              <UserSettings {...settings} />
+            </>
+          ) : (
+            /* Responsive -> Visible only on XS and SM */
+            <>
+              <Box sx={{ display: { md: 'none' } }}>
+                <IconButton onClick={toggleDrawer}>
+                  <MenuIcon />
+                </IconButton>
+              </Box>
+              <Drawer anchor='right' open={openDrawer} onClose={toggleDrawer} PaperProps={{ sx: { width: '100%' } }}>
+                <Box sx={{ overflow: 'auto' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2, py: 1 }}>
+                    <IconButton onClick={toggleDrawer}>
+                      <CloseIcon />
+                    </IconButton>
+                    <UserSettings {...settings} />
+                  </Box>
+                  <Divider />
+                  <List>
+                    {pages.map((page, index) =>
+                      !page.menuItems ? (
+                        <ListItemButton
+                          key={index}
+                          component={Link}
+                          href={page.link || ''}
+                          onClick={toggleDrawer}
+                          disabled={page.disabled}>
+                          <ListItemText
+                            primary={page.name}
+                            primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }}
+                          />
+                        </ListItemButton>
+                      ) : (
+                        <React.Fragment key={index}>
+                          <ListItemButton disabled={page.disabled} onClick={toggleCollapse} sx={{ padding: '0 16px' }}>
+                            <ListItemText
+                              primary={page.name}
+                              primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }}
+                            />
+                            <ListItemIcon>{openCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+                          </ListItemButton>
+                          <Collapse in={openCollapse} timeout='auto' unmountOnExit>
+                            <List component='div'>
+                              {page.menuItems?.map(
+                                (menuItem, index, arr) =>
+                                  index < arr.length - 1 && (
+                                    <ListItemButton
+                                      key={index}
+                                      component={Link}
+                                      href={menuItem.link}
+                                      onClick={toggleDrawer}
+                                      sx={{ pl: 4, pr: 4 }}
+                                      disabled={menuItem.disabled}>
+                                      <ListItemText>{menuItem.name}</ListItemText>
+                                    </ListItemButton>
+                                  )
+                              )}
+                              <Divider component='li' variant='middle' />
+                              {page.menuItems && (
+                                <ListItemButton
+                                  key={page.menuItems[page.menuItems.length - 1].name}
+                                  component={Link}
+                                  href={page.menuItems[page.menuItems.length - 1].link}
+                                  onClick={toggleDrawer}
+                                  sx={{ px: 4 }}
+                                  disabled={page.menuItems[page.menuItems.length - 1].disabled}>
+                                  <ListItemText>{page.menuItems[page.menuItems.length - 1].name}</ListItemText>
+                                </ListItemButton>
+                              )}
+                            </List>
+                          </Collapse>
+                        </React.Fragment>
+                      )
+                    )}
+                    <ListItemButton component={Link} href='/events/create'>
                       <ListItemText
-                        primary={page.name}
+                        primary='Tạo sự kiện'
                         primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }}
                       />
                     </ListItemButton>
-                  ) : (
-                    <React.Fragment key={index}>
-                      <ListItemButton disabled={page.disabled} onClick={toggleCollapse} sx={{ padding: '0 16px' }}>
-                        <ListItemText
-                          primary={page.name}
-                          primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }}
-                        />
-                        <ListItemIcon>{openCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
-                      </ListItemButton>
-                      <Collapse in={openCollapse} timeout='auto' unmountOnExit>
-                        <List component='div'>
-                          {page.menuItems?.map(
-                            (menuItem, index, arr) =>
-                              index < arr.length - 1 && (
-                                <ListItemButton
-                                  key={index}
-                                  component={Link}
-                                  href={menuItem.link}
-                                  onClick={toggleDrawer}
-                                  sx={{ pl: 4, pr: 4 }}
-                                  selected={pathname?.includes(menuItem.link) || activeURL?.includes(menuItem.link)}
-                                  disabled={menuItem.disabled}>
-                                  <ListItemText>{menuItem.name}</ListItemText>
-                                </ListItemButton>
-                              )
-                          )}
-                          <Divider component='li' variant='middle' />
-                          {page.menuItems && (
-                            <ListItemButton
-                              key={page.menuItems[page.menuItems.length - 1].name}
-                              component={Link}
-                              href={page.menuItems[page.menuItems.length - 1].link}
-                              onClick={toggleDrawer}
-                              sx={{ pl: 4, pr: 4 }}
-                              disabled={page.menuItems[page.menuItems.length - 1].disabled}
-                              selected={
-                                pathname?.includes(page.menuItems[page.menuItems.length - 1].link) ||
-                                activeURL?.includes(page.menuItems[page.menuItems.length - 1].link)
-                              }>
-                              <ListItemText>{page.menuItems[page.menuItems.length - 1].name}</ListItemText>
-                            </ListItemButton>
-                          )}
-                        </List>
-                      </Collapse>
-                    </React.Fragment>
-                  )
-                )}
-              </List>
-            </Box>
-          </Drawer>
+                  </List>
+                </Box>
+              </Drawer>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
