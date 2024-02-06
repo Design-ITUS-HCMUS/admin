@@ -132,11 +132,12 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
                 Tạo sự kiện
               </Button>
             </Link>
-            {/* <Badge badgeContent={11} max={9} color='primary'>
-            <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
-              Bộ lọc
-            </Button>
-          </Badge> */}
+            {/* Right now, there is no filter feature
+             <Badge badgeContent={11} max={9} color='primary'>
+              <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
+                Bộ lọc
+              </Button>
+            </Badge> */}
             <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
               Xuất file
             </Button>

@@ -2,27 +2,27 @@
 import { useState, MouseEvent } from 'react';
 import { styled } from '@mui/material/styles';
 import { Theme, useMediaQuery } from '@mui/material';
-import {
-  Box,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Typography,
-  Pagination,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
 import { visuallyHidden } from '@mui/utils';
-import { Order } from '@/utils';
-// need to resolve this issue to load from storybook
-// import { colors } from '@/libs/ui';
-// temporary solution: import from local, no alias link
-import colors from '../color';
 
-const TableFooter = styled('div')({
+import MoreIcon from '@mui/icons-material/MoreHorizRounded';
+
+import { Order } from '@/utils';
+import { colors } from '@/libs/ui';
+
+const StyledTableFooter = styled('div')({
   display: 'flex',
   flexDirection: 'row-reverse',
   justifyContent: 'space-between',
@@ -38,10 +38,10 @@ const StyledTableRow = styled(TableRow)({
 });
 
 export interface IHeadCell {
-  disablePadding?: boolean | false;
+  disablePadding?: boolean;
   id: string;
   label: string;
-  numeric?: boolean | false;
+  numeric?: boolean;
 }
 
 export interface IRowCell {
@@ -53,10 +53,11 @@ interface EnhancedTableHeadProps {
   order: Order;
   orderBy: null | number;
   headCells: readonly IHeadCell[];
+  disableAction?: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableHeadProps) {
-  const { order, orderBy, onRequestSort, headCells } = props;
+  const { order, orderBy, onRequestSort, headCells, disableAction } = props;
   const createSortHandler = (property: number) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
@@ -89,8 +90,42 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             </TableSortLabel>
           </TableCell>
         ))}
+        {!disableAction && <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
       </TableRow>
     </TableHead>
+  );
+}
+
+function TableMenu({
+  anchorEl,
+  onClose,
+  children,
+}: {
+  anchorEl?: HTMLElement | null;
+  onClose?: () => void;
+  children?: React.ReactNode;
+}) {
+  return (
+    <Menu
+      elevation={5}
+      id='detail-menu'
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      disableScrollLock
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      onClose={onClose}
+      MenuListProps={{
+        role: 'listbox',
+      }}>
+      {children}
+    </Menu>
   );
 }
 
@@ -102,17 +137,33 @@ interface EnhancedTableProps {
   currentPage?: number;
   onChangePage: (event: unknown, page: number) => void;
   onSort: (event: unknown, order: Order, orderBy: number | null) => void;
+  disableAction?: boolean;
+  onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  children?: React.ReactNode;
 }
 
-export function EnhancedTable(props: EnhancedTableProps) {
-  const { headCells, rows, totalRows, rowsPerPage = 10, currentPage = 0, onChangePage, onSort } = props;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
+export function EnhancedTable({
+  headCells,
+  rows,
+  totalRows,
+  rowsPerPage = 10,
+  currentPage = 0,
+  onChangePage,
+  onSort,
+  disableAction = false,
+  onAct = (e) => {},
+  children,
+}: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<null | number>(null);
   const [page, setPage] = useState(currentPage);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const dense = isMobile ? true : false;
   const align = headCells.map((cell) => (cell.numeric ? 'right' : 'left'));
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage - 1);
     onChangePage(event, newPage - 1);
@@ -129,6 +180,11 @@ export function EnhancedTable(props: EnhancedTableProps) {
     setOrder('asc');
     setOrderBy(null);
     onSort(event, 'asc', null);
+  };
+
+  const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
+    setAnchorEl(event.currentTarget);
+    onAct(event, _id);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -156,29 +212,33 @@ export function EnhancedTable(props: EnhancedTableProps) {
           <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} />
           <TableBody>
             {rows.map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <StyledTableRow hover tabIndex={-1} key={index} sx={{ cursor: 'pointer' }}>
                   {/* Filter: just render the data match the head cell */}
-                  {Object.values(row)
-                    .filter((value, id) => id < headCells.length)
-                    .map((value, id) =>
-                      id == 0 ? (
-                        <TableCell
-                          key={`${headCells[id].id}-${index}`}
-                          component='th'
-                          id={labelId}
-                          scope='row'
-                          padding='none'
-                          align={align[id]}>
-                          {value}
-                        </TableCell>
-                      ) : (
-                        <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
-                          {value}
-                        </TableCell>
-                      )
-                    )}
+                  {headCells.map((head, id) => {
+                    return id == 0 ? (
+                      <TableCell
+                        key={`${headCells[id].id}-${index}`}
+                        component='th'
+                        id={`row-${index}-${id}`}
+                        scope='row'
+                        padding='none'
+                        align={align[id]}>
+                        {row[head.id]}
+                      </TableCell>
+                    ) : (
+                      <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
+                        {row[head.id]}
+                      </TableCell>
+                    );
+                  })}
+                  {!disableAction && (
+                    <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
+                      <IconButton onClick={(e) => handleClick(e, row._id)} sx={{ margin: 0 }}>
+                        <MoreIcon />
+                      </IconButton>
+                    </TableCell>
+                  )}
                 </StyledTableRow>
               );
             })}
@@ -193,7 +253,7 @@ export function EnhancedTable(props: EnhancedTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TableFooter>
+      <StyledTableFooter>
         <Pagination
           variant='outlined'
           color='primary'
@@ -206,7 +266,12 @@ export function EnhancedTable(props: EnhancedTableProps) {
           boundaryCount={0}
         />
         {totalRows && <Typography>Tổng: {totalRows}</Typography>}
-      </TableFooter>
+      </StyledTableFooter>
+      {!disableAction && children && (
+        <TableMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
+          {children}
+        </TableMenu>
+      )}
     </Box>
   );
 }

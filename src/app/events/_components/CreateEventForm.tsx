@@ -77,7 +77,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
             </LocalizationProvider>
           </Stack>
 
-          <Stack direction='row'>
+          <Stack direction='row' alignItems="baseline">
             <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
               <Typography variant='subtitle2'>Trưởng Ban tổ chức</Typography>
             </InputLabel>
@@ -92,7 +92,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
               <MenuItem value='Võ Tuấn Tài'>Võ Tuấn Tài</MenuItem>
             </DropdownText>
           </Stack>
-          <Stack direction='row'>
+          <Stack direction='row' alignItems="baseline">
             <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
               <Typography variant='subtitle2'>Loại sự kiện</Typography>
             </InputLabel>

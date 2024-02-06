@@ -1,16 +1,19 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
 import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui';
+import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
 import { Order, stableSort, getComparator } from '@/utils';
 import { CreateAccountModal } from './_components';
+import data from './members.json';
 
 const ButtonGroup = styled('div')({
   display: 'flex',
@@ -44,47 +47,24 @@ const headCells: readonly IHeadCell[] = [
   },
 ];
 
-interface ITableCell {
-  name: JSX.Element;
-  gen: string;
-  department: string;
-  facebook: string;
+interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Element | string> {
+  _id: string;
 }
-
-const data = [
-  {
-    name: 'Nguyễn Văn A',
-    gen: '11',
-    department: 'Video',
-    facebook: 'https://www.facebook.com/ngantruc2003/',
-  },
-  {
-    name: 'Nguyễn Văn B',
-    gen: '11',
-    department: 'Drawing',
-    facebook: 'https://www.facebook.com/ngantruc2003/',
-  },
-  {
-    name: 'Nguyễn Văn C',
-    gen: '12',
-    department: 'Photography',
-    facebook: 'https://www.facebook.com/Nash.Equ17ibrium',
-  },
-];
 
 export default function AccountsPage() {
   const [open, setOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<string | null>(null);
 
   const refactorData = (data: any): ITableCell[] => {
     return data.map((item: any) => {
-      return {
+      const newData: ITableCell = {
+        ...item,
+        _id: item.id,
         name: (
           <Typography sx={{ color: 'primary.main' }}>
             <Link href={`/events/${item.key}`}>{item.name}</Link>
           </Typography>
         ),
-        gen: item.gen,
-        deparment: item.department,
         facebook: (
           <Link href={`/events/${item.facebook}`}>
             <Typography sx={{ color: 'primary.main', maxWidth: '250px' }} textOverflow='ellipsis' overflow='hidden'>
@@ -93,9 +73,13 @@ export default function AccountsPage() {
           </Link>
         ),
       };
+      return newData;
     }) as ITableCell[];
   };
 
+  const handleMore = (e: MouseEvent<HTMLElement>, _id: string | null) => {
+    setSelectedRow(_id);
+  };
   return (
     <>
       <Typography variant='h6' fontWeight='600'>
@@ -112,13 +96,18 @@ export default function AccountsPage() {
           </Button>
         </ButtonGroup>
       </ToolBar>
+      {/* All members data table */}
       <EnhancedTable
         headCells={headCells}
         rows={refactorData(data)}
         totalRows={data.length}
         onChangePage={() => {}}
         onSort={() => {}}
-      />
+        onAct={handleMore}>
+        <Link href={`/members/accounts/${selectedRow}`}>
+          <MenuItem>Xem chi tiết</MenuItem>
+        </Link>
+      </EnhancedTable>
       <CreateAccountModal open={open} onClose={() => setOpen(false)} />
     </>
   );

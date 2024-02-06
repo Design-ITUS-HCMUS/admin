@@ -62,7 +62,7 @@ export default function EventDetailsTemplate({ children }: { children: React.Rea
   };
 
   return (
-    <Section>
+    <main>
       <SideBar
         header={
           <Typography
@@ -79,7 +79,9 @@ export default function EventDetailsTemplate({ children }: { children: React.Rea
         SideBarItems={SideBarItems}
         onClickMenuItem={handleClick}
       />
-      <StyledPaper variant='section'>{children}</StyledPaper>
-    </Section>
+      <Section>
+        <StyledPaper variant='section'>{children}</StyledPaper>
+      </Section>
+    </main>
   );
 }

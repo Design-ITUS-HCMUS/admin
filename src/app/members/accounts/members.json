@@ -1,0 +1,147 @@
+[
+  {
+    "id": "1",
+    "username": "ER | Đạt được KPI",
+    "name": "Nguyễn Đức Tuấn Đạt",
+    "email": "example@gmail.com",
+    "role": 1,
+    "profile": {
+      "phone": "0123456789",
+      "studentId": "21127590",
+      "gen": "12",
+      "dob": "6/30/2003",
+      "department": ["Video", "Photography", "Graphic"],
+      "position": "Trưởng ban",
+      "facebook": "https://www.facebook.com/ngantruc2003/"
+    },
+    "gen": "11",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "2",
+    "name": "Nguyễn Văn B",
+    "gen": "11",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "3",
+    "name": "Nguyễn Văn C",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "4",
+    "name": "Nguyễn Văn D",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "5",
+    "name": "Nguyễn Văn E",
+    "gen": "12",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "6",
+    "name": "Nguyễn Văn F",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "7",
+    "name": "Nguyễn Văn G",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "8",
+    "name": "Nguyễn Văn H",
+    "gen": "12",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "9",
+    "name": "Nguyễn Văn I",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "10",
+    "name": "Nguyễn Văn K",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "11",
+    "name": "Nguyễn Văn L",
+    "gen": "12",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "12",
+    "name": "Nguyễn Văn M",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "13",
+    "name": "Nguyễn Văn N",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "14",
+    "name": "Nguyễn Văn O",
+    "gen": "12",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "15",
+    "name": "Nguyễn Văn P",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "16",
+    "name": "Nguyễn Văn Q",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "17",
+    "name": "Nguyễn Văn R",
+    "gen": "12",
+    "department": "Drawing",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "18",
+    "name": "Nguyễn Văn S",
+    "gen": "12",
+    "department": "Photography",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  },
+  {
+    "id": "19",
+    "name": "Nguyễn Văn T",
+    "gen": "12",
+    "department": "Video",
+    "facebook": "https://www.facebook.com/ngantruc2003/"
+  }
+]
