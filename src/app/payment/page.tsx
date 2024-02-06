@@ -105,7 +105,7 @@ function FormComponent({
           variant='standard'
           value={buyerID}
           error={buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0)}
-          onChange={(e: any) => setBuyerID(e.target.value)}
+          onChange={(e) => setBuyerID(e.target.value)}
         />
         <Button variant='contained' type='submit'>
           Đến trang thanh toán PayOS

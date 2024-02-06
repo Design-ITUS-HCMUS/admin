@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Feb 06 2024 14:45:55 GMT+0700 (Indochina Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Feb 06 2024 04:09:31 GMT+0700 (Indochina Time)✨
 model AccountEvent {
   id        Int   @id @default(autoincrement())
   eventID   Int
@@ -35,34 +35,12 @@ model Payment {
   paymentStatus Int       @default(0) // 0 = Unpaid/Cancelled, 1 = Paid, 2 = Waiting for Confirmation, 3 = Cancelled
 }
 
-model Profile {
-  id          Int       @id @default(autoincrement())
-  fullName    String?
-  studentID   String?
-  school      String?
-  phone       String?
-  gen         Int?
-  dob         DateTime? @db.Date
-  departments String[]
-  position    String?   @default("member")
-  facebook    String?
-  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int?      @unique // relation scalar field (used in the `@relation` attribute above)
-}
-
 model Role {
   id           Int            @id @default(autoincrement())
   name         String         @unique
-  actions      RoleActivity[]
+  // actions      RoleActivity[]
   users        User[]
   AccountEvent AccountEvent[]
-}
-
-model RoleActivity {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
-  description String
-  roles       Role[]
 }
 
 model User {
@@ -70,11 +48,13 @@ model User {
   username      String         @unique
   email         String         @unique
   password      String
+  fullName      String
+  studentID     String
+  school        String
   createdAt     DateTime       @default(now())
   createdBy     String         @default("system")
   role          Role           @relation(fields: [roleID], references: [id])
   roleID        Int            @default(2) // role of user
   accountEvents AccountEvent[] // list of events that user has joined
-  profile       Profile?
   Payment       Payment[]
 }
