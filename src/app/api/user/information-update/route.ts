@@ -23,9 +23,10 @@ import UserService from '@/services/userService';
  *               data:
  *                 type: object
  *                 example:
- *                   fullName: "Bui Do Duy Quan"
- *                   studentID: "21127113"
- *
+ *                   profile: {
+ *                      fullName: "Bui Do Duy Quan",
+ *                      studentID: "21127113"
+ *                   }
  *     responses:
  *       200:
  *         description: Update user's information successfully.

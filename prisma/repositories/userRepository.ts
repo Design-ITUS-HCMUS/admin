@@ -10,8 +10,16 @@ export default class UserRepository {
 
   async add(entity: Prisma.UserCreateInput) {
     try {
+      if (entity.profile) {
+        entity.profile = {
+          create: entity.profile,
+        };
+      }
       const newUser = await this.model.create({
         data: entity,
+        include: {
+          profile: true,
+        },
       });
       return newUser;
     } catch (error) {
@@ -31,6 +39,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
+          profile: true,
         },
       });
       return allUsers;
@@ -47,6 +56,7 @@ export default class UserRepository {
         include: {
           accountEvents: true,
           role: true,
+          profile: true,
         },
       });
       return user;
@@ -56,29 +66,26 @@ export default class UserRepository {
     }
   }
 
-  async update(entity: Partial<Prisma.UserUncheckedCreateInput>) {
+  async update(entity: Prisma.UserUncheckedUpdateInput) {
     try {
-      const user = await this.model.update({
-        where: { id: entity.id },
-        data: entity,
-      });
-      return user;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
-  async delete(entity: number[]) {
-    try {
-      const deletedUser = await this.model.deleteMany({
-        where: {
-          id: {
-            in: entity,
+      if (entity.profile) {
+        entity.profile = {
+          upsert: {
+            create: entity.profile,
+            update: entity.profile,
           },
+        };
+      }
+      const user = await this.model.update({
+        where: {
+          id: entity.id as number,
+        },
+        data: entity,
+        include: {
+          profile: true,
         },
       });
-      return deletedUser;
+      return user;
     } catch (error) {
       console.log(error);
       return null;

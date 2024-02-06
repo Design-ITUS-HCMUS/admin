@@ -18,21 +18,12 @@ import UserService from '@/services/userService';
  *               username:
  *                 type: string
  *                 example: Design_ITUS
- *               fullName:
- *                 type: string
- *                 example: Nguyen Van A
  *               email:
  *                 type: string
  *                 example: DesignITUS@gmail.com
  *               password:
  *                  type: string
  *                  example: 12345678
- *               studentID:
- *                  type: string
- *                  example: 21127141
- *               school:
- *                  type: string
- *                  example: Đaị học Khoa học Tự Nhiên - Đaị học quốc gia Hồ Chí Minh
  *     responses:
  *       200:
  *         description: Creating account successfully.
