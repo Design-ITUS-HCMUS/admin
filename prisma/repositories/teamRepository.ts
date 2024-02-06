@@ -15,7 +15,7 @@ export default class TeamRepository {
       });
       return newTeam;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -25,7 +25,7 @@ export default class TeamRepository {
       const allTeams = await this.model.findMany();
       return allTeams;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -37,7 +37,7 @@ export default class TeamRepository {
       });
       return team;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -49,7 +49,7 @@ export default class TeamRepository {
       });
       return teams;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -62,7 +62,7 @@ export default class TeamRepository {
       });
       return updatedTeam;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -74,7 +74,7 @@ export default class TeamRepository {
       });
       return deletedTeam;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

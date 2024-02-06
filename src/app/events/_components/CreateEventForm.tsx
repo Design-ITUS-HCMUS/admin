@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
-import { Box, Chip, Input, MenuItem, Stack, Typography, InputLabel, OutlinedInput } from '@mui/material';
+import { Box, Chip, Input, MenuItem, Stack, Typography, InputLabel } from '@mui/material';
 import { TextFieldWithLabel as TextField, DropdownText, Uploader, colors } from '@/libs/ui';
 import { styled } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

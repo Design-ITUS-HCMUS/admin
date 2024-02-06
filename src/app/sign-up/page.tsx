@@ -1,19 +1,14 @@
 'use client';
 import React, { CSSProperties } from 'react';
 import { styled } from '@mui/material/styles';
-import { FullscreenImage as Background, Logo, TextFieldWithLabel as TextField } from '@/libs/ui/components';
-import { Typography, Paper, TypographyProps, InputAdornment } from '@mui/material';
-import color from '@/libs/ui/color';
+import { FullscreenImage as Background, Logo } from '@/libs/ui/components';
+import { Typography, Paper, TypographyProps } from '@mui/material';
 
 const HeaderStyle: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   gap: '.5rem',
-};
-
-const SupportTextStyle: CSSProperties = {
-  color: color.neutral[200],
 };
 
 const StyledPaper = styled(Paper)({

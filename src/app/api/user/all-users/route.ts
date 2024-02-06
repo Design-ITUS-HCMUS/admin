@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import UserService from '@/services/userService';
 
 /**
@@ -15,7 +15,7 @@ import UserService from '@/services/userService';
  *         description: Error message.
  */
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const res = await UserService.getAllUsers();
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

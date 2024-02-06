@@ -1,5 +1,5 @@
 import EventService from '@/services/eventService';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 /**
  * @swagger
@@ -15,7 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
  *        description: Error message.
  */
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const res = await EventService.getAllEvents();
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

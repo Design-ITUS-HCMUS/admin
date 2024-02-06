@@ -15,7 +15,7 @@ export default class EventRepository {
       });
       return newEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -25,7 +25,7 @@ export default class EventRepository {
       const allEvents = await this.model.findMany();
       return allEvents;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -37,7 +37,7 @@ export default class EventRepository {
       });
       return event;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -50,7 +50,7 @@ export default class EventRepository {
       });
       return updatedEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -62,7 +62,7 @@ export default class EventRepository {
       });
       return deletedEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

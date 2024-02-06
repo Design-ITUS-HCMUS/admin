@@ -14,7 +14,7 @@ export default class AccountEventRepository {
       });
       return newAccountEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -24,39 +24,33 @@ export default class AccountEventRepository {
       const allAccountEvents = await this.model.findMany();
       return allAccountEvents;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
 
-  async getByEntity(entity: Prisma.AccountEventWhereInput) {
+  async getByEntity(entity: Prisma.AccountEventWhereInput, select?: Prisma.AccountEventSelect) {
     try {
       const accountEvent = await this.model.findFirst({
         where: entity,
+        select,
       });
       return accountEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
 
-  async getManyByEntity(entity: Prisma.AccountEventWhereInput) {
+  async getManyByEntity(entity: Prisma.AccountEventWhereInput, select?: Prisma.AccountEventSelect) {
     try {
       const accountEvents = await this.model.findMany({
         where: entity,
-        include: {
-          team: true,
-          user: {
-            include: {
-              profile: true,
-            },
-          },
-        },
+        select,
       });
       return accountEvents;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -69,7 +63,7 @@ export default class AccountEventRepository {
       });
       return updatedAccountEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -81,7 +75,7 @@ export default class AccountEventRepository {
       });
       return deletedAccountEvent;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

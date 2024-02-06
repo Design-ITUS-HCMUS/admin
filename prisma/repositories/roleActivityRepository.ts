@@ -15,7 +15,7 @@ export default class RoleActivityRepository {
       });
       return newRoleActivity;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -25,7 +25,7 @@ export default class RoleActivityRepository {
       const allRoleActivities = await this.model.findMany();
       return allRoleActivities;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -37,7 +37,7 @@ export default class RoleActivityRepository {
       });
       return roleActivity;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
