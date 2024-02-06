@@ -2,12 +2,14 @@ import AccountEventRepository from '@repositories/accountEventRepository';
 import { AccountEvent } from '@/interfaces/accountEvent';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils';
-import TeamRepository from '@repositories/teamRepository';
+import EventRepository from '@repositories/eventRepository';
 
 class AccountEventService {
   private repository: AccountEventRepository;
+  private eventRepository: EventRepository;
   constructor() {
     this.repository = new AccountEventRepository();
+    this.eventRepository = new EventRepository();
   }
 
   async createAccountEvent(data: AccountEvent) {
@@ -24,33 +26,69 @@ class AccountEventService {
     }
   }
 
-  async getContestantsByEventId(eventID: number) {
+  async getContestantsByEventID(eventID: number) {
     try {
-      const accountEvents = await this.repository.getManyByEntity({ eventID, teamID: { not: null } });
+      const event = await this.eventRepository.getByEntity({ id: eventID });
+      if (!event) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
+      }
+      const accountEvents = await this.repository.getManyByEntity(
+        { eventID, teamID: { not: null } },
+        {
+          team: {
+            select: {
+              name: true,
+              category: true,
+            },
+          },
+          user: {
+            select: {
+              email: true,
+              profile: {
+                select: {
+                  fullName: true,
+                  school: true,
+                },
+              },
+            },
+          },
+        }
+      );
       return new BaseResponse(STATUS_CODE.OK, true, 'Get all contestants successfully', accountEvents);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
   }
 
-  async getTeamsByEventId(eventID: number) {
+  async getOrganizersByEventID(eventID: number) {
     try {
-      const accountEvents = await this.repository.getManyByEntity({ eventID, teamID: { not: null } });
-      if (accountEvents) {
-        const teamIDs = accountEvents && (accountEvents.map((accountEvent) => accountEvent.teamID) as number[]);
-        const teamRepository = new TeamRepository();
-        const teams = await teamRepository.getManyByEntity({ id: { in: teamIDs } });
-        return new BaseResponse(STATUS_CODE.OK, true, 'Get all teams successfully', teams);
+      const event = await this.eventRepository.getByEntity({ id: eventID });
+      if (!event) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
-      return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'No team found');
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
-  async getOrganizersByEventId(eventID: number) {
-    try {
-      const accountEvents = await this.repository.getManyByEntity({ eventID, teamID: null });
+      const accountEvents = await this.repository.getManyByEntity(
+        { eventID, teamID: null },
+        {
+          role: {
+            select: {
+              name: true,
+            },
+          },
+          user: {
+            select: {
+              profile: {
+                select: {
+                  fullName: true,
+                },
+              },
+            },
+          },
+          department: true,
+        }
+      );
+      if (!accountEvents) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Organizers not found');
+      }
       return new BaseResponse(STATUS_CODE.OK, true, 'Get all organizers successfully', accountEvents);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

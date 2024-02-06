@@ -3,7 +3,7 @@ export interface Team {
   status: boolean;
   category: string;
   paymentID?: any;
-  paymentStatus: number;
+  paymentStatus: boolean;
   paymentProof?: number;
   submission?: number[];
 }

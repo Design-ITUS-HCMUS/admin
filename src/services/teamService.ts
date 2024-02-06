@@ -2,23 +2,42 @@ import TeamRepository from '@repositories/teamRepository';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils';
 import { Team } from '@/interfaces/team';
+import EventRepository from '@repositories/eventRepository';
 
 class TeamService {
-  private teamRepository: TeamRepository;
+  private repository: TeamRepository;
+  private eventRepository: EventRepository;
 
   constructor() {
-    this.teamRepository = new TeamRepository();
+    this.repository = new TeamRepository();
+    this.eventRepository = new EventRepository();
   }
 
   async createTeam(data: Team) {
     try {
       const { name } = data;
-      const existedTeam = await this.teamRepository.getByEntity({ name });
+      const existedTeam = await this.repository.getByEntity({ name });
       if (existedTeam) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team already exists');
       }
-      const team = await this.teamRepository.add(data);
+      const team = await this.repository.add(data);
       return new BaseResponse(STATUS_CODE.OK, true, 'Team created successfully', team);
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async getAllTeamsByEventID(eventID: number) {
+    try {
+      const event = await this.eventRepository.getByEntity({ id: eventID });
+      if (!event) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
+      }
+      const teams = await this.repository.getManyByEntity({ accountEvents: { some: { eventID } } });
+      if (!teams) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Teams not found');
+      }
+      return new BaseResponse(STATUS_CODE.OK, true, 'Teams found', teams);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -26,7 +45,7 @@ class TeamService {
 
   async getTeamById(id: number) {
     try {
-      const team = await this.teamRepository.getByEntity({ id });
+      const team = await this.repository.getByEntity({ id });
       if (!team) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Team not found');
       }
@@ -38,15 +57,15 @@ class TeamService {
 
   async updateTeam(id: number, data: Team) {
     try {
-      let team = await this.teamRepository.getByEntity({ id });
+      let team = await this.repository.getByEntity({ id });
       if (!team) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Team not found');
       }
-      team = await this.teamRepository.getByEntity({ name: data.name });
+      team = await this.repository.getByEntity({ name: data.name });
       if (team && team.id !== id) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team name already exists');
       }
-      const updatedTeam = await this.teamRepository.update(id, data);
+      const updatedTeam = await this.repository.update(id, data);
       return new BaseResponse(STATUS_CODE.OK, true, 'Team updated successfully', updatedTeam);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

@@ -4,7 +4,7 @@ import { Button, Grid, Stack, Typography } from '@mui/material';
 import { CreateEventForm } from '../_components';
 
 export default function Page() {
-  function handleSubmit(formData: FormData) {}
+  function handleSubmit(_formData: FormData) {}
 
   return (
     <Grid container columns={8} spacing={2} mt={{ xs: 0, md: 4 }}>
