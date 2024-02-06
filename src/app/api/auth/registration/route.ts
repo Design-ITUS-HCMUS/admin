@@ -34,9 +34,13 @@ import AuthService from '@/services/authService';
  *       500:
  *         description: Error message.
  */
-
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const res = await AuthService.register(data);
-  return NextResponse.json(res.responseBody(), { status: res.status });
+  const OTP = decodeURIComponent( req.cookies.get('OTP')?.value || '');
+  const res = await AuthService.register(data, OTP);
+  const response = NextResponse.json(res.responseBody(), { status: res.status });
+  if (res.status === 200) {
+    response.cookies.delete('OTP');
+  }
+  return response;
 }

@@ -5,3 +5,4 @@ export * from './payOSUtils';
 export * from './sortObjects';
 export * from './route';
 export * from './areAllFieldsNotNull';
+export * from './templateMail';

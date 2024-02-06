@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import AuthService from '@/services/authService';
+import CommonService from '@/services/commonService';
 
 /**
  * @swagger
@@ -38,18 +39,15 @@ import AuthService from '@/services/authService';
  *       500:
  *         description: Error message.
  */
-
 export async function POST(req: NextRequest) {
     const data = await req.json();
     const res = await AuthService.login(data);
-    const resBody = res.responseBody();
-    const { token } = resBody.data;
-    delete resBody.data.token;
-    const response = NextResponse.json(resBody, { status: res.status });
-    if (token) {
+    const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'token');
+    const response = NextResponse.json(body, { status: res.status });
+    if (value) {
       response.cookies.set({
         name: 'token',
-        value: token,
+        value,
         httpOnly: true,
         secure: true,
       });

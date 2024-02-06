@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import AuthService from '@/services/authService';
+import CommonService from '@/services/commonService';
 
 /**
  * @swagger
- * /api/auth/sendOTP:
+ * /api/auth/otpRegistration:
  *   post:
  *     tags:
  *       - Authentication
@@ -25,16 +26,14 @@ import AuthService from '@/services/authService';
  *         description: Error message.
  */
 export async function POST(req: NextRequest) {
-    const { email } = await req.json();
-    const res = await AuthService.sendOTP(email);
-    const body = res.responseBody();
-    const OTP = body.data.OTP;
-    delete body.data.OTP;
+    const { email, username } = await req.json();
+    const res = await AuthService.sendOtpToRegister(email, username);
+    const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'OTP');
     const response = NextResponse.json(body, { status: res.status });
-    if (OTP) {
+    if (value) {
         response.cookies.set({
             name: 'OTP',
-            value: OTP,
+            value,
             httpOnly: true,
             secure: true,
             expires: new Date(Date.now() + 5 * 60 * 1000 + 7 * 3600 * 1000), // 5 minutes in GMT+7
