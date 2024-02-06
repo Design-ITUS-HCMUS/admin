@@ -12,4 +12,4 @@ export const ROLE: any = {
   ADMIN: 1,
   MEMBER: 2,
   CONTESTANT: 3,
-}
+};
