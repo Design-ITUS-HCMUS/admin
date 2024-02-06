@@ -17,25 +17,30 @@ type Story = StoryObj;
 //  * to learn how to use render functions.
 //  */
 
-
 const renderValue = (value: any) => {
-  if (!value) return "Chọn 1 option"
-  return value
-}
+  if (!value) return 'Chọn 1 option';
+  return value;
+};
 
 export const Default: Story = {
   name: 'DropdownText',
   args: {
     IconComponent: ExpandMoreIcon,
     children: [
-      <MenuItem value={1} key={1}>One</MenuItem>,
-      <MenuItem value={2} key={2}>Two</MenuItem>,
-      <MenuItem value={3} key={3}>Three</MenuItem>,
+      <MenuItem value={1} key={1}>
+        One
+      </MenuItem>,
+      <MenuItem value={2} key={2}>
+        Two
+      </MenuItem>,
+      <MenuItem value={3} key={3}>
+        Three
+      </MenuItem>,
     ],
     sx: {
       width: '300px',
     },
-    renderValue: renderValue
+    renderValue: renderValue,
   },
   render: (args: DropdownTextProps) => <DropdownText {...args}></DropdownText>,
 };
