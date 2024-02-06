@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import { replaceFile } from '@/libs/fileManagement';
+import { replaceFile } from '@/libs/fileHelper';
 
 const Admin = () => {
   const [files, setFiles] = React.useState<File[]>([]);

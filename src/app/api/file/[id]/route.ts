@@ -6,9 +6,8 @@ export async function GET(req: NextRequest) {
   try {
     const id = Number(getParams(req));
     const response = await bucketService.getFile(id);
-    
-    if (!response.success) 
-      throw new Error(response.responseBody().message);
+
+    if (!response.success) throw new Error(response.responseBody().message);
 
     return NextResponse.redirect(response.data);
   } catch (err: any) {

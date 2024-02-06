@@ -1,8 +1,17 @@
 import BucketRepository from '@repositories/bucketRepository';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import { S3Client } from '@aws-sdk/client-s3';
-import { PutObjectCommand, GetObjectCommand, HeadObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  DeleteObjectCommand,
+  CreateMultipartUploadCommand,
+  UploadPartCommand,
+  CompleteMultipartUploadCommand,
+  AbortMultipartUploadCommand,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 class BucketService {
@@ -26,71 +35,118 @@ class BucketService {
     });
   }
 
-  async getPresignedUrl(body: any) {
+  async startMultipartUpload(body: any) {
     try {
-      const ownerID = body.ownerID;
-      const filename = body.filename;
-      const contentType = body.contentType;
-      const permission = body.permission;
-      const url: string[] = [];
-      const ids: number[] = [];
+      const ownerID: number = body.ownerID;
+      const filename: string = body.filename;
+      const contentType: string = body.contentType;
+      const permission: number = body.permission;
 
-      if (!ownerID || !filename || !contentType || filename.length === 0 || contentType.length === 0 || permission === null)
+      if (
+        !ownerID ||
+        !filename ||
+        !contentType ||
+        permission === null // permission can be 0
+      )
         throw new Error('Invalid request');
 
-      for (let i = 0; i < filename.length; i++) {
-        const data = await this.repository.add({
-          ownerID,
-          filename: filename[i],
-          permission,
-        });
+      // Save to database to get Key (id)
+      const dbData = await this.repository.add({
+        ownerID,
+        filename,
+        permission,
+      });
 
-        if (!data) throw new Error('Failed to add data to database');
+      // Get upload ID
+      const r2Data = await this.r2.send(
+        new CreateMultipartUploadCommand({
+          Bucket: BucketService.R2_BUCKET_NAME,
+          Key: dbData?.id.toString(),
+          ContentType: contentType,
+        })
+      );
 
-        const presignedUrl = await getSignedUrl(
-          this.r2,
-          new PutObjectCommand({
-            Bucket: BucketService.R2_BUCKET_NAME,
-            Key: data.id.toString(),
-            ContentType: contentType[i],
-          }),
-          {
-            expiresIn: 60 * 15, // 15 minutes
-          }
-        );
+      // Create result object
+      const result = {
+        key: dbData?.id,
+        uploadID: r2Data.UploadId,
+      };
 
-        url.push(presignedUrl);
-        ids.push(data.id);
-      }
-
-      return new BaseResponse(STATUS_CODE.OK, true, 'Get presigned url successfully', { url, ids });
+      return new BaseResponse(STATUS_CODE.OK, true, 'Start multipart upload successfully', result);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
   }
 
-  async confirmUpload(body: any) {
+  async getMultipartPresignedUrl(body: any) {
     try {
-      const ids = body.ids;
+      const key: number = body.key;
+      const uploadID: string = body.uploadID;
+      const totalPart: number = body.totalPart;
 
-      if (!ids || ids.length === 0) throw new Error('Invalid request');
+      if (
+        key === null || // key can be 0
+        !uploadID ||
+        totalPart === null // totalPart can be 0
+      )
+        throw new Error('Invalid request');
 
-      for (let i = 0; i < ids.length; i++) {
-        // Check file is exist or not
-        await this.r2.send(
-          new HeadObjectCommand({
+      const presignedUrls: string[] = [];
+
+      for (let i = 1; i <= totalPart; i++) {
+        const presignedUrl = await getSignedUrl(
+          this.r2,
+          new UploadPartCommand({
             Bucket: BucketService.R2_BUCKET_NAME,
-            Key: ids[i].toString(),
-          })
+            Key: key.toString(),
+            PartNumber: i,
+            UploadId: uploadID,
+          }),
+          {
+            expiresIn: 60 * 30, // 30 minutes
+          }
         );
 
-        await this.repository.patchEntity({
-          id: ids[i],
-          uploadStatus: true,
-        });
+        presignedUrls.push(presignedUrl);
       }
 
-      return new BaseResponse(STATUS_CODE.OK, true, 'Upload confirmation successfully');
+      return new BaseResponse(STATUS_CODE.OK, true, 'Get presigned urlsuccessfully', presignedUrls);
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async finishMultipartUpload(body: any) {
+    try {
+      const key: number = body.key;
+      const uploadID: string = body.uploadID;
+      const parts: { ETag: string; PartNumber: number }[] = body.parts;
+
+      if (
+        key === null || // key can be 0
+        !uploadID ||
+        !parts ||
+        parts.length === 0
+      )
+        throw new Error('Invalid request');
+
+      await this.r2.send(
+        new CompleteMultipartUploadCommand({
+          Bucket: BucketService.R2_BUCKET_NAME,
+          Key: key.toString(),
+          MultipartUpload: {
+            Parts: parts,
+          },
+          UploadId: uploadID,
+        })
+      );
+
+      await this.repository.patchEntity({
+        id: key,
+        uploadStatus: true,
+      });
+
+      return new BaseResponse(STATUS_CODE.OK, true, 'Finish multipart upload successfully');
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -99,20 +155,20 @@ class BucketService {
   async getFile(id: number) {
     try {
       const data = await this.repository.getByEntity({ id });
-      if (!data || !data.uploadStatus) 
-        throw new Error('File does not exist');
+      if (!data || !data.uploadStatus) throw new Error('File does not exist');
 
       const url = await getSignedUrl(
         this.r2,
         new GetObjectCommand({
           Bucket: BucketService.R2_BUCKET_NAME,
           Key: id.toString(),
+          ResponseContentDisposition: `inline; filename=${data.filename}`,
         }),
         {
           expiresIn: 60 * 15, // 15 minutes
         }
       );
-      
+
       return new BaseResponse(STATUS_CODE.OK, true, 'Get file successfully', url);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
@@ -121,17 +177,16 @@ class BucketService {
 
   async deleteFile(id: number) {
     try {
+      const data = await this.repository.getByEntity({ id });
+      if (!data) throw new Error('File does not exist');
+
       await this.r2.send(
         new DeleteObjectCommand({
           Bucket: BucketService.R2_BUCKET_NAME,
           Key: id.toString(),
         })
       );
-      
-      const data = await this.repository.getByEntity({ id });
-      if (!data) 
-        throw new Error('File does not exist');
-      
+
       await this.repository.delete({ id });
 
       return new BaseResponse(STATUS_CODE.OK, true, 'Delete file successfully');
