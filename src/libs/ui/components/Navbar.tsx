@@ -24,6 +24,7 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { ButtonProps } from '@mui/material/Button';
 
 // Material UI Icons
 import PersonIcon from '@mui/icons-material/PersonRounded';
@@ -37,9 +38,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
 // Local Imports
 import { Logo } from './Logo';
 import { colors } from '../';
-import { ListItem } from '@mui/material';
 
-interface INavBarItem {
+interface INavbarPill {
   name: string;
   link?: string;
   disabled?: boolean;
@@ -51,37 +51,32 @@ interface INavBarItem {
   }[];
 }
 
-interface NavBarItemProps extends INavBarItem {
+interface NavbarPillProps extends INavbarPill {
+  active?: boolean;
+}
+interface StyledNavbarPillProps extends ButtonProps {
   active?: boolean;
 }
 
-const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })(() => ({
-  color: colors.neutral[400],
-  backgroundColor: 'transparent',
-  padding: '4px 6px',
-  fontSize: '16px',
-  '&:hover': {
-    color: colors.blue[900],
-    backgroundColor: colors.neutral[50],
-  },
-}));
-
-const StyledNavbarPillActive = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })(() => ({
-  color: colors.blue[500],
-  backgroundColor: 'transparent',
-  padding: '4px 6px',
-  fontSize: '16px',
-  '&:hover': {
-    backgroundColor: colors.blue[50],
-  },
-}));
+const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })<StyledNavbarPillProps>(
+  ({ active }) => ({
+    color: active ? colors.blue[500] : colors.neutral[400],
+    backgroundColor: 'transparent',
+    padding: '4px 6px',
+    fontSize: '16px',
+    '&:hover': {
+      color: active ? colors.blue[500] : colors.blue[900],
+      backgroundColor: active ? colors.blue[50] : colors.neutral[50],
+    },
+  })
+);
 
 const FocusedNavbarPillStyle = {
   color: colors.blue[500],
   backgroundColor: colors.blue[50],
 };
 
-function NavbarPill({ name, link, menuItems, active, disabled }: NavBarItemProps): React.JSX.Element {
+function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps): React.JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -108,30 +103,19 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavBarItemProps
 
   return (
     <Box sx={BoxStyle}>
-      {active ? (
-        <StyledNavbarPillActive
-          LinkComponent={Link}
-          href={!menuItems ? link : undefined}
-          onClick={menuItems && handleOpen}
-          endIcon={menuItems && <ExpandMoreIcon />}
-          sx={open ? FocusedNavbarPillStyle : undefined}
-          disabled={disabled}>
-          {name}
-        </StyledNavbarPillActive>
-      ) : (
-        <StyledNavbarPill
-          LinkComponent={Link}
-          href={!menuItems ? link : undefined}
-          onClick={menuItems && handleOpen}
-          endIcon={menuItems && <ExpandMoreIcon />}
-          sx={open ? FocusedNavbarPillStyle : undefined}
-          disabled={disabled}>
-          {name}
-        </StyledNavbarPill>
-      )}
+      <StyledNavbarPill
+        LinkComponent={Link}
+        href={!menuItems ? link : undefined}
+        onClick={menuItems && handleOpen}
+        endIcon={menuItems && <ExpandMoreIcon />}
+        sx={open ? FocusedNavbarPillStyle : undefined}
+        active={active}
+        disabled={disabled}>
+        {name}
+      </StyledNavbarPill>
       {menuItems && (
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
-          {menuItems?.map(
+          {menuItems.map(
             (menuItem, i, arr) =>
               i < arr.length - 1 && (
                 <MenuItem key={menuItem.name} component={Link} href={menuItem.link}>
@@ -140,33 +124,31 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavBarItemProps
               )
           )}
           <Divider />
-          {menuItems && (
-            <MenuItem
-              key={menuItems[menuItems.length - 1].name}
-              component={Link}
-              href={menuItems[menuItems.length - 1].link}>
-              {menuItems[menuItems.length - 1].name}
-            </MenuItem>
-          )}
+          <MenuItem
+            key={menuItems[menuItems.length - 1].name}
+            component={Link}
+            href={menuItems[menuItems.length - 1].link}>
+            {menuItems[menuItems.length - 1].name}
+          </MenuItem>
         </Menu>
       )}
     </Box>
   );
 }
 
-function Title(): React.JSX.Element {
-  const StyledDiv = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    columnGap: theme.spacing(2),
-    padding: theme.spacing(0, 3, 0),
-    [theme.breakpoints.down('md')]: {
-      columnGap: theme.spacing(1),
-      flexGrow: 1,
-      padding: theme.spacing(0, 2, 0),
-    },
-  }));
+const StyledDiv = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  columnGap: theme.spacing(2),
+  padding: theme.spacing(0, 3, 0),
+  [theme.breakpoints.down('md')]: {
+    columnGap: theme.spacing(1),
+    flexGrow: 1,
+    padding: theme.spacing(0, 2, 0),
+  },
+}));
 
+function Title(): React.JSX.Element {
   return (
     <StyledDiv>
       <Logo size='small' />
@@ -177,7 +159,7 @@ function Title(): React.JSX.Element {
   );
 }
 
-function UserSettings(settings: INavBarItem): React.JSX.Element {
+function UserSettings(settings: INavbarPill): React.JSX.Element {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -226,7 +208,7 @@ function UserSettings(settings: INavBarItem): React.JSX.Element {
   );
 }
 
-const defaultPages: INavBarItem[] = [
+const pages: INavbarPill[] = [
   {
     name: 'Sự kiện',
     link: '/events',
@@ -240,7 +222,7 @@ const defaultPages: INavBarItem[] = [
   { name: 'Bài đăng', link: '/posts', disabled: true },
 ];
 
-const defaultSettings: INavBarItem = {
+const settings: INavbarPill = {
   name: 'Xin chào, Ngân Trúc',
   menuItems: [
     { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
@@ -250,12 +232,18 @@ const defaultSettings: INavBarItem = {
 };
 
 export interface NavbarProps {
-  pages?: INavBarItem[];
-  settings?: INavBarItem;
   activeURL?: string;
 }
 
-function Navbar({ pages = defaultPages, settings = defaultSettings, activeURL = '' }: NavbarProps): React.JSX.Element {
+const StyledAppBar = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'sx' && prop !== 'color' })(() => ({
+  borderBottom: '1px solid #EBECED)',
+  padding: 0,
+  borderRadius: 0,
+  color: colors.blue[900],
+  backgroundColor: colors.neutral.white,
+}));
+
+function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
   const pathname = usePathname();
 
   // Responsive Drawer state manager
@@ -274,7 +262,7 @@ function Navbar({ pages = defaultPages, settings = defaultSettings, activeURL = 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <AppBar
+    <StyledAppBar
       position='static'
       elevation={0}
       sx={{ borderBottom: '1px solid #EBECED)', padding: 0, borderRadius: 0 }}
@@ -388,7 +376,7 @@ function Navbar({ pages = defaultPages, settings = defaultSettings, activeURL = 
           )}
         </Toolbar>
       </Container>
-    </AppBar>
+    </StyledAppBar>
   );
 }
 export default Navbar;

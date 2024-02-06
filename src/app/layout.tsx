@@ -25,13 +25,13 @@ export default function RootLayout({
   return (
     <html lang='en' className={beVietnamPro.className}>
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AppRouterCacheProvider>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
             <Navbar />
             {children}
-          </AppRouterCacheProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
