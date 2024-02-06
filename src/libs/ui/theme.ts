@@ -62,23 +62,6 @@ let theme = createTheme({
       defaultProps: {
         variant: 'body2',
       },
-      variants: [
-        {
-          props: { variant: 'h5' },
-          style: {
-            fontWeight: '700',
-            color: colors.blue[900],
-            textAlign: 'center',
-          },
-        },
-        {
-          props: { variant: 'body1' },
-          style: {
-            fontWeight: '400',
-            color: colors.neutral[400],
-          },
-        },
-      ],
       styleOverrides: {
         root: {
           fontFamily: '"Be Vietnam Pro", san-serif',

@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
-import { TimerRenderer } from 'react-use-precision-timer';
-import { useTimer } from 'react-use-precision-timer';
+import React, { useEffect } from 'react';
+import { TimerRenderer, useTimer } from 'react-use-precision-timer';
 
 interface CountDownProps {
   initialSeconds: number;

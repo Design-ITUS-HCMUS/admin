@@ -1,28 +1,27 @@
 'use client';
 
-// React
-import { ReactNode } from 'react';
-import Link from 'next/link';
-
 // Libs
 import { PasswordFieldWithLabel as PassField, TextFieldWithLabel as TextField } from '@/libs/ui/components';
 
 // Material UI Components
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
-import Typography from '@mui/material/Typography';
 
 // Material UI Icons
 import MailIcon from '@mui/icons-material/EmailOutlined';
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
-import AuthenLayout from '@/app/(auth)/layout';
-import { CardPage, StyledForm, SupportTextStyle, Row } from '@/app/(auth)/_components';
+import { CardPage, StyledForm, Row } from '@/app/(auth)/_components';
 
-const SignUp = () => {
+function SignUpPage () {
   return (
-    <CardPage header='Đăng ký tài khoản'>
+    <CardPage header='Đăng ký tài khoản'
+      showFooter
+      mainText='Đã có tài khoản?'
+      linkText='Đăng nhập'
+      linkHref='/sign-in'
+      >
       <StyledForm>
         <TextField
           label='Username'
@@ -62,31 +61,8 @@ const SignUp = () => {
           Đăng ký
         </Button>
       </Row>
-      <Row style={{ alignItems: 'baseline', gap: 8 }}>
-        <Typography
-          sx={{
-            ...SupportTextStyle,
-            textAlign: 'right',
-            display: 'inline-block',
-            width: 'fit-content',
-            fontWeight: '600',
-          }}>
-          Đã có tài khoản?
-        </Typography>
-        <Typography
-          component={Link}
-          href='/sign-in'
-          variant='linkPrimary'
-          sx={{ display: 'inline-block', width: 'fit-content' }}>
-          Đăng nhập
-        </Typography>
-      </Row>
     </CardPage>
   );
 };
 
-SignUp.getLayout = (page: ReactNode) => {
-  return <AuthenLayout>{page}</AuthenLayout>;
-};
-
-export default SignUp;
+export default SignUpPage;

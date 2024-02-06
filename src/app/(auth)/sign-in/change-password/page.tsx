@@ -1,7 +1,6 @@
 'use client';
 
 // React
-import { ReactNode } from 'react';
 import Link from 'next/link';
 
 // Libs
@@ -11,10 +10,9 @@ import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
 import Button from '@mui/material/Button';
 
 // Internal
-import AuthenLayout from '@/app/(auth)/layout';
 import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
 
-const ChangePassword = () => {
+function ChangePasswordPage () {
   return (
     <CardPage header='Thay đổi mật khẩu'>
       <StyledForm>
@@ -42,8 +40,4 @@ const ChangePassword = () => {
   );
 };
 
-ChangePassword.getLayout = (page: ReactNode) => {
-  return <AuthenLayout>{page}</AuthenLayout>;
-};
-
-export default ChangePassword;
+export default ChangePasswordPage;

@@ -1,23 +1,22 @@
 'use client';
 
 // React
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 // Libs
-import { OTPInput } from '@/libs/ui/components';
 import { colors } from '@/libs/ui';
+import { OTPInput } from '@/libs/ui/components';
 
 // Material UI Components
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 // Internal
-import AuthenLayout from '@/app/(auth)/layout';
-import { CardPage, CountDown, Row, SupportTextStyle } from '@/app/(auth)/_components';
+import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
 
-const OTP = () => {
+function OTPPage() {
   const theme = useTheme();
   const [otp, setOtp] = useState('');
   const [ableResend, setAbleResend] = useState(false);
@@ -27,7 +26,7 @@ const OTP = () => {
   };
 
   return (
-    <CardPage header='Xác thực mã OTP'>
+    <CardPage header='Xác thực mã OTP' showFooter mainText='Đã có tài khoản?' linkText='Đăng nhập' linkHref='/sign-in'>
       <Typography variant='body1'>
         Một mã OTP đã được gửi đến de******ub@gmail.com. Vui lòng không chia sẻ với bất kỳ ai. Nếu không nhận được
         email, bạn có thể gửi lại sau <CountDown initialSeconds={60} onComplete={enableResend} /> giây.
@@ -46,31 +45,8 @@ const OTP = () => {
           </Button>
         </Link>
       </Row>
-      <Row style={{ alignItems: 'baseline', gap: 8 }}>
-        <Typography
-          sx={{
-            ...SupportTextStyle,
-            textAlign: 'right',
-            display: 'inline-block',
-            width: 'fit-content',
-            fontWeight: '600',
-          }}>
-          Đã có tài khoản?
-        </Typography>
-        <Typography
-          component={Link}
-          href='/sign-up'
-          variant='linkPrimary'
-          sx={{ display: 'inline-block', width: 'fit-content' }}>
-          Đăng nhập
-        </Typography>
-      </Row>
     </CardPage>
   );
-};
+}
 
-OTP.getLayout = (page: ReactNode) => {
-  return <AuthenLayout>{page}</AuthenLayout>;
-};
-
-export default OTP;
+export default OTPPage;

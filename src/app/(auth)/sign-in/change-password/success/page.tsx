@@ -1,21 +1,19 @@
 'use client';
 
 // React and Next
-import { ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Material UI Components
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 // Internal
-import AuthenLayout from '@/app/(auth)/layout';
 import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
 
 const SIGN_IN_PAGE = '/sign-in';
 
-const Success = () => {
+function SuccessPage() {
   const router = useRouter();
   const backSignInPage = () => {
     router.replace(SIGN_IN_PAGE);
@@ -36,10 +34,6 @@ const Success = () => {
       </Row>
     </CardPage>
   );
-};
+}
 
-Success.getLayout = (page: ReactNode) => {
-  return <AuthenLayout>{page}</AuthenLayout>;
-};
-
-export default Success;
+export default SuccessPage;

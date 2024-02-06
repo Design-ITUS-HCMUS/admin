@@ -1,12 +1,11 @@
 'use client';
 
 // React
-import React, { CSSProperties, ReactNode } from 'react';
+import { CSSProperties } from 'react';
 
 // Material UI Components
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { TypographyProps } from '@mui/material/';
 
 // Libs
 import color from '@/libs/ui/color';
@@ -56,14 +55,3 @@ export const StyledForm = styled('div')({
   flexDirection: 'column',
   gap: '.5rem',
 });
-
-export interface CardProps {
-  children?: React.ReactNode;
-  typographyProps?: TypographyProps;
-};
-
-export interface FooterProps {
-  mainText?: ReactNode;
-  linkText?: ReactNode;
-  linkHref?: string;
-};
