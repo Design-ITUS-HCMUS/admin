@@ -4,8 +4,8 @@ import { ExpandMoreRounded } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 const StyledSelect = styled(Select)({
-  "& .MuiSelect-standard": {
-    background: "none !important",
+  '& .MuiSelect-standard': {
+    background: 'none !important',
   },
   '& .MuiSelect-icon': {
     opacity: 0,
@@ -28,14 +28,13 @@ function ExpandMoreIcon(props: SvgIconProps) {
 }
 ExpandMoreIcon.muiName = 'SvgIcon';
 
-
 export interface DropdownTextProps extends SelectProps {
-  variant?: "standard",
-  displayEmpty?: true,
+  variant?: 'standard';
+  displayEmpty?: true;
 }
 function DropdownText(props: DropdownTextProps) {
   return (
-    <StyledSelect IconComponent={ExpandMoreIcon} variant="standard" displayEmpty {...props}>
+    <StyledSelect IconComponent={ExpandMoreIcon} variant='standard' displayEmpty {...props}>
       {props.children}
     </StyledSelect>
   );

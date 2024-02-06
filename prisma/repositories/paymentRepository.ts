@@ -66,6 +66,20 @@ export default class PaymentRepository {
     }
   }
 
+  async getByBuyerID(buyerID: number) {
+    try {
+      const payment = await this.model.findMany({
+        where: {
+          buyerID,
+        },
+      });
+      return payment;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   async getCurrentID() {
     try {
       const object = await this.model.findFirst({

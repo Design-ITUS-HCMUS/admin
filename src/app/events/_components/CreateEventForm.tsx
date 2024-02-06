@@ -9,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-
 const StyledInputHeader = styled(Input)({
   fontSize: '34px',
   fontWeight: 700,
@@ -62,22 +61,22 @@ export function CreateEventForm(props: CreateEventFormProps) {
     <form onSubmit={handleSubmit} method='post' id='create-event-form'>
       <Stack spacing={2} direction='row'>
         <Stack spacing={2} sx={{ width: '100%' }}>
-          <StyledInputHeader id='name' placeholder='Outr Space' required/>
+          <StyledInputHeader id='name' placeholder='Outr Space' required />
           <TextField
             label='Khóa'
             inputProps={{
               placeholder: 'Khóa',
               required: true,
             }}></TextField>
-            <Stack spacing={1}>
+          <Stack spacing={1}>
             <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
               <Typography variant='subtitle2'>Ngày bắt đầu</Typography>
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker defaultValue={dayjs(new Date())}/>
+              <DateTimePicker defaultValue={dayjs(new Date())} />
             </LocalizationProvider>
           </Stack>
-            
+
           <Stack direction='row'>
             <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
               <Typography variant='subtitle2'>Trưởng Ban tổ chức</Typography>
