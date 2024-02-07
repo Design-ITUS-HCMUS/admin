@@ -34,6 +34,9 @@ export default class TeamRepository {
     try {
       const team = await this.model.findUnique({
         where: entity,
+        include: {
+          payment: true,
+        },
       });
       return team;
     } catch (error) {
