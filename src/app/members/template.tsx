@@ -24,6 +24,11 @@ const StyledPaper = styled(Paper)({
   minHeight: 'inherit',
 });
 
+const StyledSideBar = styled(SideBar)({
+    top: 64,
+    left: 0,
+});
+
 const SideBarItems: ISideBarItem[] = [
   {
     key: 'accounts',
@@ -57,7 +62,7 @@ export default function MembersLayout({ children }: { children: React.ReactNode 
 
   return (
     <main>
-      <SideBar
+      <StyledSideBar
         header={
           <Typography
             variant='subtitle1'

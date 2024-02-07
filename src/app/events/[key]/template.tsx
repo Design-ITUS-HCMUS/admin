@@ -25,6 +25,11 @@ const StyledPaper = styled(Paper)({
   minHeight: 'inherit',
 });
 
+const StyledSideBar = styled(SideBar)({
+  top: 64,
+  left: 0,
+});
+
 const SideBarItems: ISideBarItem[] = [
   {
     key: 'settings',
@@ -64,7 +69,7 @@ export default function EventDetailsTemplate({ children }: { children: React.Rea
 
   return (
     <main>
-      <SideBar
+      <StyledSideBar
         header={
           <Typography
             variant='subtitle1'

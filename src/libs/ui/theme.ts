@@ -104,14 +104,6 @@ let theme = createTheme({
             },
           },
         },
-        {
-          props: { color: 'info' },
-          style: {
-            '&:hover': {
-              backgroundColor: alpha(colors.neutral[100], 0.5),
-            },
-          },
-        },
       ],
       styleOverrides: {
         root: {
@@ -188,6 +180,8 @@ let theme = createTheme({
           props: { severity: 'error' },
           style: {
             color: colors.notification.error,
+            justifyContent: 'space-between',
+            alignItems: 'center',
           },
         },
       ],
@@ -196,6 +190,17 @@ let theme = createTheme({
           padding: '.5rem 1rem',
           border: '1px solid',
           borderRadius: '.5rem',
+          '& .MuiAlert-message': {
+            padding: 0,
+          },
+          '& .MuiAlert-action': {
+            padding: 0,
+            margin: 0,
+            height: '19px',
+            width: '19px',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
         },
       },
     },
