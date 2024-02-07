@@ -39,13 +39,13 @@ class PaymentService {
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if(!team.paymentId) {
+      if (!team.paymentId) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment to verify');
       }
-      if(!team.paymentProof){
+      if (!team.paymentProof) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment proof to verify');
       }
-      if(team.paymentStatus !== 1) {
+      if (team.paymentStatus !== 1) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment not paid or already verified');
       }
 
