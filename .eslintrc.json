@@ -1,6 +1,16 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:storybook/recommended", "prettier/prettier", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:storybook/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier/prettier",
+    "prettier"
+  ],
   "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "no-restricted-imports": [
       "error",
       {

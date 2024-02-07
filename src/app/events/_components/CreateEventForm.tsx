@@ -69,20 +69,20 @@ export function CreateEventForm(props: CreateEventFormProps) {
       <Stack spacing={2} direction='row'>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <StyledInputHeader id='name' placeholder='Outr Space' required />
-          <InputLayout name='key' label='Khóa' inputProps={{ placeholder: 'Khóa', required: true }} />
+          <InputLayout name='key' label='Khóa' inputprops={{ placeholder: 'Khóa', required: true }} />
           <InputLayout name='startDate' label='Ngày bắt đầu'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker defaultValue={dayjs(new Date())} format='DD/MM/YYYY hh:mm A' />
             </LocalizationProvider>
           </InputLayout>
-          <InputLayout name='leader' label='Trưởng BTC' direction='row' ratio={0.5} inputProps={{ required: true }}>
+          <InputLayout name='leader' label='Trưởng BTC' direction='row' ratio={0.5} inputprops={{ required: true }}>
             <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderLeaderValue} required>
               <MenuItem value='Võ Minh Anh Thư'>Võ Minh Anh Thư</MenuItem>
               <MenuItem value='Triệu Nhật Minh'>Triệu Nhật Minh</MenuItem>
               <MenuItem value='Võ Tuấn Tài'>Võ Tuấn Tài</MenuItem>
             </DropdownText>
           </InputLayout>
-          <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputProps={{ required: true }}>
+          <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputprops={{ required: true }}>
             <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderTypeValue} required>
               <MenuItem value='Cuộc thi'>Cuộc thi</MenuItem>
               <MenuItem value='Workshop'>Workshop</MenuItem>
@@ -91,7 +91,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
           <InputLayout
             name='facebook'
             label='Facebook'
-            inputProps={{ type: 'url', placeholder: 'www.facebook.com/outrspace' }}
+            inputprops={{ type: 'url', placeholder: 'www.facebook.com/outrspace' }}
           />
         </Stack>
         <Stack spacing={2} sx={{ width: '100%' }}>

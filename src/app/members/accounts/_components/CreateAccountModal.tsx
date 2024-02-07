@@ -39,7 +39,7 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
             <InputLayout
               name='username'
               label='Username'
-              inputProps={{
+              inputprops={{
                 placeholder: '<Gen><Họ và tên viết tắt> VD: 11nvanh',
                 required: true,
               }}
@@ -47,21 +47,21 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
             <InputLayout
               name='fullName'
               label='Họ và tên'
-              inputProps={{ placeholder: 'Nguyễn Văn Anh', required: true }}
+              inputprops={{ placeholder: 'Nguyễn Văn Anh', required: true }}
             />
             <Stack spacing={2} direction='row' sx={{ width: '100%' }}>
               <InputLayout
                 name='email'
                 label='Email'
-                inputProps={{ placeholder: 'nvananh@gmail.com', required: true }}
+                inputprops={{ placeholder: 'nvananh@gmail.com', required: true }}
               />
-              <InputLayout name='phone' label='Số điện thoại' inputProps={{ placeholder: '0909123456' }} />
+              <InputLayout name='phone' label='Số điện thoại' inputprops={{ placeholder: '0909123456' }} />
             </Stack>
             <Stack spacing={2} direction='row'>
-              <InputLayout name='studentId' label='MSSV' inputProps={{ placeholder: '21120001' }} />
-              <InputLayout name='gen' label='Gen' inputProps={{ placeholder: '11' }} />
+              <InputLayout name='studentId' label='MSSV' inputprops={{ placeholder: '21120001' }} />
+              <InputLayout name='gen' label='Gen' inputprops={{ placeholder: '11' }} />
             </Stack>
-            <InputLayout name='school' label='Trường' inputProps={{ placeholder: 'ĐH Khoa học tự nhiên' }} />
+            <InputLayout name='school' label='Trường' inputprops={{ placeholder: 'ĐH Khoa học tự nhiên' }} />
             <InputLayout name='dob' label='Ngày sinh' direction='row' ratio={0.5}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker defaultValue={dayjs(new Date())} views={['year', 'month', 'day']} format='DD/MM/YYYY' />
@@ -73,7 +73,7 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
             <InputLayout
               name='facebook'
               label='Facebook'
-              inputProps={{ type: 'url', placeholder: 'www.facebook.com/nvananh' }}
+              inputprops={{ type: 'url', placeholder: 'www.facebook.com/nvananh' }}
             />
           </Stack>
         </form>

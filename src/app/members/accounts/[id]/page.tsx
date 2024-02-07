@@ -36,7 +36,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Username'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].username,
             readOnly: readOnly,
             disabled: true,
@@ -46,7 +46,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Họ và tên'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].name,
             readOnly: readOnly,
             disabled: true,
@@ -57,7 +57,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Số điện thoại'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].profile?.phone,
             readOnly: readOnly,
           }}
@@ -66,7 +66,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Email'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].email,
             readOnly: readOnly,
             disabled: true,
@@ -77,7 +77,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='MSSV'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].profile?.studentId,
             readOnly: readOnly,
           }}
@@ -87,7 +87,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Gen'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].profile?.gen,
             readOnly: readOnly,
           }}
@@ -110,7 +110,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Facebook'
           direction='row'
           ratio={0.25}
-          inputProps={{
+          inputprops={{
             defaultValue: members[id].profile?.facebook,
             readOnly: readOnly,
           }}

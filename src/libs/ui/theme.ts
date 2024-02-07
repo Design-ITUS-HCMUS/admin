@@ -58,6 +58,14 @@ let theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          color: 'inherit',
+          textDecoration: 'none',
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variant: 'body2',

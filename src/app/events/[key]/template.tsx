@@ -14,6 +14,7 @@ import { SideBar, ISideBarItem } from '@/libs/ui';
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
   minHeight: 'calc(100vh - 64px - 48px)',
+  marginTop: '64px',
   marginLeft: '240px',
 }));
 

@@ -22,17 +22,21 @@ interface InputLayoutProps extends StackProps {
   ratio?: number;
   children?: React.ReactNode;
   helperText?: string;
-  inputProps?: InputBaseComponentProps;
+  inputprops?: InputBaseComponentProps;
 }
 
 export function InputLayout(props: InputLayoutProps) {
-  const { name, label, ratio = 0, children, helperText, inputProps } = props;
+  const { name, label, ratio = 0, children, helperText, inputprops, direction } = props;
 
-  const outlinedInputProps: OutlinedInputProps = { ...inputProps } as OutlinedInputProps;
-  const labelProps: InputLabelProps = { ...inputProps } as InputLabelProps;
+  const outlinedInputProps: OutlinedInputProps = { ...inputprops } as OutlinedInputProps;
+  const labelProps: InputLabelProps = { ...inputprops } as InputLabelProps;
   const calRatio = Math.max(0, Math.min(1, ratio));
-  const labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : 'auto';
-  const fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : 'auto';
+  let labelWidth = 'inherit';
+  let fieldsetWidth = 'inherit';
+  if (direction === 'row') {
+    labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : 'inherit';
+    fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : 'inherit';
+  }
 
   return (
     <Stack spacing={1} alignItems='baseline' sx={{ width: '100%' }} {...props}>
@@ -44,8 +48,8 @@ export function InputLayout(props: InputLayoutProps) {
         </StyledInputLabel>
       )}
       <Stack sx={{ width: fieldsetWidth }}>
-        {children ? children : <OutlinedInput inputProps={{ name: name, ...inputProps }} {...outlinedInputProps} />}
-        {helperText && <FormHelperText error={inputProps?.error}>{helperText}</FormHelperText>}
+        {children ? children : <OutlinedInput inputProps={{ name: name, ...inputprops }} {...outlinedInputProps} />}
+        {helperText && <FormHelperText error={inputprops?.error}>{helperText}</FormHelperText>}
       </Stack>
     </Stack>
   );

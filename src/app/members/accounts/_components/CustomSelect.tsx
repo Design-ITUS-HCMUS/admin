@@ -49,7 +49,7 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
   };
 
   return (
-    <InputLayout name='departments' label='Ban hoạt động' direction='row' ratio={ratio} inputProps={{ required: true }}>
+    <InputLayout name='departments' label='Ban hoạt động' direction='row' ratio={ratio} inputprops={{ required: true }}>
       <DropdownText
         name='departments'
         multiple
@@ -83,7 +83,7 @@ export function SelectRole({ ratio = 0.5, defaultValue = ROLE.MEMBER, readOnly }
   };
 
   return (
-    <InputLayout name='role' label='Vai trò' direction='row' ratio={ratio} inputProps={{ required: true }}>
+    <InputLayout name='role' label='Vai trò' direction='row' ratio={ratio} inputprops={{ required: true }}>
       <DropdownText
         name='role'
         renderValue={renderValue}
@@ -112,7 +112,7 @@ export function SelectPosition({ ratio = 0.5, defaultValue = 'Thành viên', rea
   };
 
   return (
-    <InputLayout name='position' label='Vị trí' direction='row' ratio={ratio} inputProps={{ required: true }}>
+    <InputLayout name='position' label='Vị trí' direction='row' ratio={ratio} inputprops={{ required: true }}>
       <DropdownText
         renderValue={renderValue}
         name='position'

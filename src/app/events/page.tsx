@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -16,6 +17,7 @@ import data from './events.json';
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
   minHeight: 'calc(100vh - 64px - 48px)',
+  marginTop: '64px',
 }));
 
 const StyledPaper = styled(Paper)({
@@ -23,11 +25,6 @@ const StyledPaper = styled(Paper)({
   flexDirection: 'column',
   gap: '1rem',
   minHeight: 'inherit',
-});
-
-const ButtonGroup = styled('div')({
-  display: 'flex',
-  gap: '1rem',
 });
 
 const ToolBar = styled('div')({
@@ -124,7 +121,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
         </Typography>
         <ToolBar>
           <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-          <ButtonGroup>
+          <Stack direction="row" spacing={2}>
             <Link href='/events/create'>
               <Button variant='contained' color='info'>
                 Tạo sự kiện
@@ -133,7 +130,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
             <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
               Xuất file
             </Button>
-          </ButtonGroup>
+          </Stack>
         </ToolBar>
         <EnhancedTable
           headCells={headCells}

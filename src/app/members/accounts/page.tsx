@@ -4,6 +4,7 @@ import { useState, MouseEvent } from 'react';
 
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -12,11 +13,6 @@ import IosShareRounded from '@mui/icons-material/IosShareRounded';
 import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
 import { CreateAccountModal } from './_components';
 import data from './members.json';
-
-const ButtonGroup = styled('div')({
-  display: 'flex',
-  gap: '1rem',
-});
 
 const ToolBar = styled('div')({
   display: 'flex',
@@ -79,6 +75,7 @@ export default function AccountsPage() {
   const handleMore = (_e: MouseEvent<HTMLElement>, _id: string | null) => {
     setSelectedRow(_id);
   };
+  
   return (
     <>
       <Typography variant='h6' fontWeight='600'>
@@ -86,14 +83,14 @@ export default function AccountsPage() {
       </Typography>
       <ToolBar>
         <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-        <ButtonGroup>
+        <Stack direction="row" spacing={2}>
           <Button variant='contained' color='info' onClick={() => setOpen(true)}>
             Tạo tài khoản
           </Button>
           <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
             Xuất file
           </Button>
-        </ButtonGroup>
+        </Stack>
       </ToolBar>
       {/* All members data table */}
       <EnhancedTable
