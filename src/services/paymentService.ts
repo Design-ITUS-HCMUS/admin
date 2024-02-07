@@ -21,7 +21,7 @@ class PaymentService {
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if (team.paymentId) {
+      if (team.paymentID) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment already exists');
       }
 
@@ -39,17 +39,17 @@ class PaymentService {
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if(!team.paymentId) {
+      if(!team.paymentID) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment to verify');
       }
       if(!team.paymentProof){
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment proof to verify');
       }
-      if(team.paymentStatus !== 1) {
+      if(team.payment?.paymentStatus !== 1) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment not paid or already verified');
       }
 
-      //Update the payment status to 2 (verified)
+      //Update the payment status from 0 (not verified) to 1 (verified)
       //For now, just return team data
       const response = team;
       return new BaseResponse(STATUS_CODE.OK, true, 'Payment verified', response);
