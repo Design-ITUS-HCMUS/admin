@@ -2,12 +2,19 @@
 import * as React from 'react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
-import { Box, Chip, Input, MenuItem, Stack, Typography, InputLabel, OutlinedInput } from '@mui/material';
-import { TextFieldWithLabel as TextField, DropdownText, Uploader, colors } from '@/libs/ui';
+
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Input from '@mui/material/Input';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
+import { InputLayout, DropdownText, Uploader, colors } from '@/libs/ui';
 
 const StyledInputHeader = styled(Input)({
   fontSize: '34px',
@@ -62,60 +69,34 @@ export function CreateEventForm(props: CreateEventFormProps) {
       <Stack spacing={2} direction='row'>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <StyledInputHeader id='name' placeholder='Outr Space' required />
-          <TextField
-            label='Khóa'
-            inputProps={{
-              placeholder: 'Khóa',
-              required: true,
-            }}></TextField>
-          <Stack spacing={1}>
-            <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
-              <Typography variant='subtitle2'>Ngày bắt đầu</Typography>
-            </InputLabel>
+          <InputLayout name='key' label='Khóa' inputProps={{ placeholder: 'Khóa', required: true }} />
+          <InputLayout name='startDate' label='Ngày bắt đầu'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker defaultValue={dayjs(new Date())} />
+              <DateTimePicker defaultValue={dayjs(new Date())} format='DD/MM/YYYY hh:mm A' />
             </LocalizationProvider>
-          </Stack>
-
-          <Stack direction='row' alignItems="baseline">
-            <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
-              <Typography variant='subtitle2'>Trưởng Ban tổ chức</Typography>
-            </InputLabel>
-            <DropdownText
-              labelId='leader-select-label'
-              id='leader-select'
-              renderValue={renderLeaderValue}
-              fullWidth
-              required>
+          </InputLayout>
+          <InputLayout name='leader' label='Trưởng BTC' direction='row' ratio={0.5} inputProps={{ required: true }}>
+            <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderLeaderValue} required>
               <MenuItem value='Võ Minh Anh Thư'>Võ Minh Anh Thư</MenuItem>
               <MenuItem value='Triệu Nhật Minh'>Triệu Nhật Minh</MenuItem>
               <MenuItem value='Võ Tuấn Tài'>Võ Tuấn Tài</MenuItem>
             </DropdownText>
-          </Stack>
-          <Stack direction='row' alignItems="baseline">
-            <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
-              <Typography variant='subtitle2'>Loại sự kiện</Typography>
-            </InputLabel>
-            <DropdownText
-              labelId='leader-select-label'
-              id='leader-select'
-              renderValue={renderTypeValue}
-              fullWidth
-              required>
+          </InputLayout>
+          <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputProps={{ required: true }}>
+            <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderTypeValue} required>
               <MenuItem value='Cuộc thi'>Cuộc thi</MenuItem>
               <MenuItem value='Workshop'>Workshop</MenuItem>
             </DropdownText>
-          </Stack>
-          <TextField
-            label='CTA link'
-            inputProps={{
-              placeholder: 'www.outrspace.com',
-              type: 'url',
-            }}></TextField>
+          </InputLayout>
+          <InputLayout
+            name='facebook'
+            label='Facebook'
+            inputProps={{ type: 'url', placeholder: 'www.facebook.com/outrspace' }}
+          />
         </Stack>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <Uploader
-            inputProps={{ onChange: handleUpload, accept: 'svg, png, jpg, jpeg, gif' }}
+            inputProps={{ onChange: handleUpload, accept: 'svg, png, jpg, jpeg, gif', name: 'thumbnail' }}
             placeholder='SVG, PNG, JPG or GIF (1400x700px)'
           />
           <Box position='relative' sx={{ width: '100%', aspectRatio: 2 }}>

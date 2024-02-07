@@ -2,16 +2,28 @@
 import * as React from 'react';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import InputLabel from '@mui/material/InputLabel';
-import { DropdownText, colors } from '@/libs/ui';
 import { SelectChangeEvent } from '@mui/material/Select';
+
+import { DropdownText, InputLayout, colors } from '@/libs/ui';
 import { ROLE } from '@/utils';
 
-export function SelectDepartment() {
-  const [departments, setDepartments] = React.useState<string[]>([]);
-  const options = ['Content', 'Drawing', 'Graphic', 'Photography', 'Video'];
+interface CustomSelectProps {
+  ratio?: number;
+  defaultValue?: number | string | string[];
+  readOnly?: boolean;
+}
+
+export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: CustomSelectProps) {
+  const [departments, setDepartments] = React.useState<string[]>(defaultValue as string[]);
+  const options = [
+      { key: 'content', value: 'Content' },
+      { key: 'drawing', value: 'Drawing' },
+      { key: 'graphic', value: 'Graphic' },
+      { key: 'photography', value: 'Photography' },
+      { key: 'video', value: 'Video' }
+    ];
+
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     const newValue = event.target.value as string[] | string;
     setDepartments(
@@ -23,47 +35,39 @@ export function SelectDepartment() {
   const renderValue = () => {
     if (departments.length > 0) {
       const value = departments
-        .filter((item, id) => id < 2)
+        .filter((_item, id) => id < 2)
         .map((department) => <Chip key={department} label={<Typography>{department}</Typography>} size='small' />);
       value.length < departments.length &&
-        value.push(<Typography component='span'>+{departments.length - value.length}</Typography>);
+        value.push(<Typography component='span' key="plus">+{departments.length - value.length}</Typography>);
       return value;
     }
     return (
       <Typography color={colors.neutral[200]} fontWeight='regular'>
-        Chọn một hoặc nhiều ban hoạt động
+        Chọn một hoặc nhiều ban
       </Typography>
     );
   };
 
   return (
-    <Stack direction='row'>
-      <InputLabel id='department-select-label' sx={{ width: '50%' }} required>
-        <Typography variant='subtitle2' component='span'>
-          Ban hoạt động
-        </Typography>
-      </InputLabel>
+    <InputLayout name='departments' label='Ban hoạt động' direction='row' ratio={ratio} inputProps={{ required: true }}>
       <DropdownText
-        labelId='department-select-label'
-        id='department-select'
-        fullWidth
+        name='departments'
         multiple
         value={departments}
-        defaultValue={[]}
         onChange={handleChange}
-        renderValue={renderValue}
-        sx={{ width: '50%' }}>
+        inputProps={{ required: true, readOnly: readOnly }}
+        renderValue={renderValue}>
         {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
+          <MenuItem key={option.key} value={option.value}>
+            {option.value}
           </MenuItem>
         ))}
       </DropdownText>
-    </Stack>
+    </InputLayout>
   );
 }
 
-export function SelectRole() {
+export function SelectRole({ ratio = 0.5, defaultValue = ROLE.MEMBER, readOnly }: CustomSelectProps) {
   const ROLE_NAME: any = {
     [ROLE.ADMIN]: 'Admin',
     [ROLE.MEMBER]: 'Member',
@@ -79,31 +83,24 @@ export function SelectRole() {
   };
 
   return (
-    <Stack direction='row'>
-      <InputLabel id='role-select-label' sx={{ width: '100%' }} required>
-        <Typography variant='subtitle2' component='span'>
-          Vai trò
-        </Typography>
-      </InputLabel>
+    <InputLayout name='role' label='Vai trò' direction='row' ratio={ratio} inputProps={{ required: true }}>
       <DropdownText
-        labelId='role-select-label'
-        id='role-select'
+        name='role'
         renderValue={renderValue}
-        defaultValue={ROLE.MEMBER}
-        fullWidth
-        required>
-        <MenuItem key='Admin' value={ROLE.ADMIN}>
+        defaultValue={defaultValue as typeof ROLE}
+        inputProps={{ required: true, readOnly: readOnly }}>
+        <MenuItem key='role-Admin' value={ROLE.ADMIN}>
           Admin
         </MenuItem>
-        <MenuItem key='Member' value={ROLE.MEMBER}>
+        <MenuItem key='role-Member' value={ROLE.MEMBER}>
           Member
         </MenuItem>
       </DropdownText>
-    </Stack>
+    </InputLayout>
   );
 }
 
-export function SelectPosition() {
+export function SelectPosition({ ratio = 0.5, defaultValue = 'Thành viên', readOnly }: CustomSelectProps) {
   const options = ['Thành viên', 'Trưởng ban', 'Thành viên BCN', 'Phó chủ nhiệm', 'Chủ nhiệm'];
   const renderValue = (value: any) => {
     if (value) return <Typography>{value}</Typography>;
@@ -115,26 +112,18 @@ export function SelectPosition() {
   };
 
   return (
-    <Stack direction='row'>
-      <InputLabel id='position-select-label' sx={{ width: '100%' }} required>
-        <Typography variant='subtitle2' component='span'>
-          Vị trí
-        </Typography>
-      </InputLabel>
+    <InputLayout name='position' label='Vị trí' direction='row' ratio={ratio} inputProps={{ required: true }}>
       <DropdownText
-        labelId='position-select-label'
-        id='leader-select'
         renderValue={renderValue}
         name='position'
-        defaultValue='Thành viên'
-        fullWidth
-        required>
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
+        defaultValue={defaultValue}
+        inputProps={{ required: true, readOnly: readOnly }}>
+        {options.map((option, index) => (
+          <MenuItem key={`position-${index}`} value={option}>
             {option}
           </MenuItem>
         ))}
       </DropdownText>
-    </Stack>
+    </InputLayout>
   );
 }

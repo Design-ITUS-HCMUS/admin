@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Button, ButtonProps, Stack, Typography } from '@mui/material';
+import Button, { ButtonProps } from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { UploadFile } from '@mui/icons-material';
 import { colors } from '@/libs/ui';
 

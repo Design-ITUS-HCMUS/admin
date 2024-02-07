@@ -5,11 +5,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-
 import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
 import SettingsRounded from '@mui/icons-material/SettingsRounded';
 
 import { SideBar, ISideBarItem } from '@/libs/ui';
+
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
   minHeight: 'calc(100vh - 64px - 48px)',
@@ -49,7 +49,7 @@ export default function MembersLayout({ children }: { children: React.ReactNode 
   }, [pathname, baseSegment]);
 
   const handleClick = (key: string) => {
-    if (key === active) return;
+    if (key === active && `${baseSegment}/${key}` === pathname) return;
     router.push(`${baseSegment}/${key}`);
     setActive(key);
   };

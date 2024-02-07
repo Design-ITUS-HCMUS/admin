@@ -8,15 +8,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import InputLabel from '@mui/material/InputLabel';
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import { TextFieldWithLabel as TextField } from '@/libs/ui';
-import { SelectDepartment, SelectRole, SelectPosition } from './SelectInput';
+import { InputLayout } from '@/libs/ui';
+import { SelectDepartment, SelectRole, SelectPosition } from './CustomSelect';
 
 interface CreateAccountModalProps {
   open: boolean;
@@ -36,56 +34,47 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
         Tạo tài khoản
       </DialogTitle>
       <DialogContent id='alert-dialog-description'>
-        <form onSubmit={handleSubmit} method='post' id='create-member-form'>
+        <form onSubmit={handleSubmit} id='create-member-form'>
           <Stack spacing={2}>
-            <TextField
+            <InputLayout
+              name='username'
               label='Username'
-              labelProps={{ required: true }}
-              inputProps={{ placeholder: '<Gen><Họ và tên viết tắt> VD: 11nvanh' }}
+              inputProps={{
+                placeholder: '<Gen><Họ và tên viết tắt> VD: 11nvanh',
+                required: true,
+              }}
             />
-            <TextField
+            <InputLayout
+              name='fullName'
               label='Họ và tên'
-              labelProps={{ required: true }}
-              inputProps={{ placeholder: 'Nguyễn Văn Anh' }}
+              inputProps={{ placeholder: 'Nguyễn Văn Anh', required: true }}
             />
             <Stack spacing={2} direction='row' sx={{ width: '100%' }}>
-              <TextField
+              <InputLayout
+                name='email'
                 label='Email'
-                containerStyle={{ width: '100%' }}
-                inputProps={{ placeholder: 'nvananh@gmail.com' }}
+                inputProps={{ placeholder: 'nvananh@gmail.com', required: true }}
               />
-              <TextField
-                label='Số điện thoại'
-                containerStyle={{ width: '100%' }}
-                inputProps={{ placeholder: '0909123456' }}
-              />
+              <InputLayout name='phone' label='Số điện thoại' inputProps={{ placeholder: '0909123456' }} />
             </Stack>
             <Stack spacing={2} direction='row'>
-              <TextField label='MSSV' containerStyle={{ width: '100%' }} inputProps={{ placeholder: '21120001' }} />
-              <TextField
-                label='Gen'
-                labelProps={{ required: true }}
-                containerStyle={{ width: '100%' }}
-                inputProps={{ placeholder: '11' }}
-              />
+              <InputLayout name='studentId' label='MSSV' inputProps={{ placeholder: '21120001' }} />
+              <InputLayout name='gen' label='Gen' inputProps={{ placeholder: '11' }} />
             </Stack>
-            <TextField
-              label='Trường'
-              containerStyle={{ width: '100%' }}
-              inputProps={{ placeholder: 'ĐH Khoa học tự nhiên' }}
-            />
-            <Stack spacing={1}>
-              <InputLabel id='leader-select-label' sx={{ width: '100%' }}>
-                <Typography variant='subtitle2'>Ngày sinh</Typography>
-              </InputLabel>
+            <InputLayout name='school' label='Trường' inputProps={{ placeholder: 'ĐH Khoa học tự nhiên' }} />
+            <InputLayout name='dob' label='Ngày sinh' direction='row' ratio={0.5}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker defaultValue={dayjs(new Date())} />
+                <DateTimePicker defaultValue={dayjs(new Date())} views={['year', 'month', 'day']} format='DD/MM/YYYY' />
               </LocalizationProvider>
-            </Stack>
+            </InputLayout>
             <SelectDepartment />
             <SelectRole />
             <SelectPosition />
-            <TextField label='Facebook' inputProps={{ type: 'url', placeholder: 'www.facebook.com/nvananh' }} />
+            <InputLayout
+              name='facebook'
+              label='Facebook'
+              inputProps={{ type: 'url', placeholder: 'www.facebook.com/nvananh' }}
+            />
           </Stack>
         </form>
       </DialogContent>

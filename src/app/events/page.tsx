@@ -2,13 +2,11 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 
-import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import FilterListRounded from '@mui/icons-material/FilterListRounded';
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
 import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui';
@@ -132,12 +130,6 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
                 Tạo sự kiện
               </Button>
             </Link>
-            {/* Right now, there is no filter feature
-             <Badge badgeContent={11} max={9} color='primary'>
-              <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
-                Bộ lọc
-              </Button>
-            </Badge> */}
             <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
               Xuất file
             </Button>

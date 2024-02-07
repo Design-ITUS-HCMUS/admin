@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useState, MouseEvent } from 'react';
 
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -11,7 +10,6 @@ import { styled } from '@mui/material/styles';
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
 import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
-import { Order, stableSort, getComparator } from '@/utils';
 import { CreateAccountModal } from './_components';
 import data from './members.json';
 
@@ -58,17 +56,18 @@ export default function AccountsPage() {
   const refactorData = (data: any): ITableCell[] => {
     return data.map((item: any) => {
       const newData: ITableCell = {
-        ...item,
         _id: item.id,
         name: (
           <Typography sx={{ color: 'primary.main' }}>
             <Link href={`/events/${item.key}`}>{item.name}</Link>
           </Typography>
         ),
+        gen: item.profile?.gen,
+        department: item.profile?.departments.join(', '), // join array to string
         facebook: (
           <Link href={`/events/${item.facebook}`}>
             <Typography sx={{ color: 'primary.main', maxWidth: '250px' }} textOverflow='ellipsis' overflow='hidden'>
-              {item.facebook}
+              {item.profile?.facebook}
             </Typography>
           </Link>
         ),
@@ -77,7 +76,7 @@ export default function AccountsPage() {
     }) as ITableCell[];
   };
 
-  const handleMore = (e: MouseEvent<HTMLElement>, _id: string | null) => {
+  const handleMore = (_e: MouseEvent<HTMLElement>, _id: string | null) => {
     setSelectedRow(_id);
   };
   return (
