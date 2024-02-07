@@ -42,7 +42,7 @@ class PaymentService {
       if(!team.paymentID) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment to verify');
       }
-      if(!team.paymentProof){
+      if (!team.paymentProof) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment proof to verify');
       }
       if(team.payment?.paymentStatus !== 1) {
