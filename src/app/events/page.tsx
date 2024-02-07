@@ -121,7 +121,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
         </Typography>
         <ToolBar>
           <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-          <Stack direction="row" spacing={2}>
+          <Stack direction='row' spacing={2}>
             <Link href='/events/create'>
               <Button variant='contained' color='info'>
                 Tạo sự kiện

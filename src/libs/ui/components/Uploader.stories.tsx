@@ -29,8 +29,7 @@ export const Default: Story = {
   },
   argTypes: {
     buttonProps: {
-      description: (
-        `<div>
+      description: `<div>
           Extends from <code>ButtonProps</code> of MUI with additional props:
           <li>
             <code>state</code>: Custom state of uploader <code>resing | error</code>
@@ -38,18 +37,15 @@ export const Default: Story = {
           <li>
             <code>onUpload</code>: Custom event handler, executed when a file is uploaded
           </li>
-        </div>`
-      ),
+        </div>`,
     },
     inputProps: {
-      description: (
-        `<div>
+      description: `<div>
           Uploader has a hidden input element to handle file upload. This prop \
           controls that input, you can custom the input element's performance, such as \
           <code>multiple</code>, <code>required</code>, etc.
-        </div>`
-      ),
-    }
+        </div>`,
+    },
   },
   render: (args: any) => <Uploader {...args} />,
 };

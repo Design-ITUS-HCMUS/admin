@@ -12,26 +12,14 @@ interface CardProps {
   linkHref?: string;
 }
 
-export const CardPage = ({
-  header,
-  children,
-  showFooter,
-  mainText,
-  linkText,
-  linkHref,
-}: CardProps) => {
+export const CardPage = ({ header, children, showFooter, mainText, linkText, linkHref }: CardProps) => {
   return (
     <>
       <CardHeader>
         <div dangerouslySetInnerHTML={{ __html: header }} />
       </CardHeader>
       {children}
-      {showFooter && 
-        <CardFooter
-          mainText={mainText || ''}
-          linkText={linkText || ''}
-          linkHref={linkHref || ''}
-        />}
+      {showFooter && <CardFooter mainText={mainText || ''} linkText={linkText || ''} linkHref={linkHref || ''} />}
     </>
   );
 };

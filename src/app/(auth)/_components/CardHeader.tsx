@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 interface CardHeaderProps {
   children?: React.ReactNode;
   typographyProps?: TypographyProps;
-};
+}
 
 const CardHeaderWrapper = styled(Typography)({
   display: 'flex',

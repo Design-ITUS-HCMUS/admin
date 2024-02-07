@@ -16,14 +16,9 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 // Internal
 import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
 
-function ForgetPasswordPage () {
+function ForgetPasswordPage() {
   return (
-    <CardPage header='Quên mật khẩu'
-      showFooter
-      mainText='Chưa có tài khoản?'
-      linkText='Đăng ký'
-      linkHref='/sign-up'
-    >
+    <CardPage header='Quên mật khẩu' showFooter mainText='Chưa có tài khoản?' linkText='Đăng ký' linkHref='/sign-up'>
       <StyledForm>
         <TextField
           label='Username'
@@ -45,6 +40,6 @@ function ForgetPasswordPage () {
       </Row>
     </CardPage>
   );
-};
+}
 
 export default ForgetPasswordPage;

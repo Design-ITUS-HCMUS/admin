@@ -25,8 +25,8 @@ const StyledPaper = styled(Paper)({
 });
 
 const StyledSideBar = styled(SideBar)({
-    top: 64,
-    left: 0,
+  top: 64,
+  left: 0,
 });
 
 const SideBarItems: ISideBarItem[] = [

@@ -12,7 +12,7 @@ import { CreateEventForm } from '../_components';
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
   minHeight: 'calc(100vh - 64px - 48px)',
-  marginTop: "64px",
+  marginTop: '64px',
 }));
 
 const StyledPaper = styled(Paper)({
@@ -36,7 +36,7 @@ export default function EventCreatePage() {
             </Typography>
             <CreateEventForm onSubmit={handleSubmit} />
             <Stack direction='row' spacing={2} justifyContent='flex-end' mt={2}>
-              <Button component={Link} href="/events" variant='text' color='primary' size='medium'>
+              <Button component={Link} href='/events' variant='text' color='primary' size='medium'>
                 Cancel
               </Button>
               <Button size='medium' form='create-event-form' type='submit'>

@@ -24,7 +24,9 @@ function formatSeconds(seconds: number): string {
 }
 
 export const CountDown = ({ initialSeconds, onComplete }: CountDownProps) => {
-  const completeCountDown = React.useCallback(() => { onComplete(); }, []);
+  const completeCountDown = React.useCallback(() => {
+    onComplete();
+  }, []);
 
   const timer = useTimer(
     {

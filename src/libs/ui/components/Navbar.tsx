@@ -114,7 +114,9 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
         sx={open ? FocusedNavbarPillStyle : undefined}
         active={active}
         disabled={disabled}>
-        <Typography variant="subtitle1" fontWeight={600}>{name}</Typography>
+        <Typography variant='subtitle1' fontWeight={600}>
+          {name}
+        </Typography>
       </StyledNavbarPill>
       {menuItems && (
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
@@ -240,7 +242,7 @@ export interface NavbarProps {
   activeURL?: string;
 }
 
-const StyledAppBar = styled(AppBar)(({theme}) => ({
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
   padding: 0,
   borderRadius: 0,
@@ -267,9 +269,7 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <StyledAppBar
-      position='fixed'
-      elevation={0}>
+    <StyledAppBar position='fixed' elevation={0}>
       <Container maxWidth={false} disableGutters>
         <Toolbar disableGutters>
           <Title />

@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 // Internal
 import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
 
-function ChangePasswordPage () {
+function ChangePasswordPage() {
   return (
     <CardPage header='Thay đổi mật khẩu'>
       <StyledForm>
@@ -38,6 +38,6 @@ function ChangePasswordPage () {
       </Row>
     </CardPage>
   );
-};
+}
 
 export default ChangePasswordPage;

@@ -17,12 +17,12 @@ interface CustomSelectProps {
 export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: CustomSelectProps) {
   const [departments, setDepartments] = React.useState<string[]>(defaultValue as string[]);
   const options = [
-      { key: 'content', value: 'Content' },
-      { key: 'drawing', value: 'Drawing' },
-      { key: 'graphic', value: 'Graphic' },
-      { key: 'photography', value: 'Photography' },
-      { key: 'video', value: 'Video' }
-    ];
+    { key: 'content', value: 'Content' },
+    { key: 'drawing', value: 'Drawing' },
+    { key: 'graphic', value: 'Graphic' },
+    { key: 'photography', value: 'Photography' },
+    { key: 'video', value: 'Video' },
+  ];
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     const newValue = event.target.value as string[] | string;
@@ -38,7 +38,11 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
         .filter((_item, id) => id < 2)
         .map((department) => <Chip key={department} label={<Typography>{department}</Typography>} size='small' />);
       value.length < departments.length &&
-        value.push(<Typography component='span' key="plus">+{departments.length - value.length}</Typography>);
+        value.push(
+          <Typography component='span' key='plus'>
+            +{departments.length - value.length}
+          </Typography>
+        );
       return value;
     }
     return (

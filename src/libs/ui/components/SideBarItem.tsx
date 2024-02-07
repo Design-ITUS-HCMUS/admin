@@ -29,7 +29,11 @@ export function SideBarItem({ icon, label, active = false, onClick }: SideBarIte
 
   return (
     <Container active={active}>
-      <MenuItem key={`${active?'1':'0'}`} selected={active} sx={{ padding: 1, borderRadius: '4px' }} onClick={onClick}>
+      <MenuItem
+        key={`${active ? '1' : '0'}`}
+        selected={active}
+        sx={{ padding: 1, borderRadius: '4px' }}
+        onClick={onClick}>
         <ListItemIcon
           sx={{
             '&.MuiListItemIcon-root': {

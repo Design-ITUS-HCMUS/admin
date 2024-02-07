@@ -75,7 +75,7 @@ export default function AccountsPage() {
   const handleMore = (_e: MouseEvent<HTMLElement>, _id: string | null) => {
     setSelectedRow(_id);
   };
-  
+
   return (
     <>
       <Typography variant='h6' fontWeight='600'>
@@ -83,7 +83,7 @@ export default function AccountsPage() {
       </Typography>
       <ToolBar>
         <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-        <Stack direction="row" spacing={2}>
+        <Stack direction='row' spacing={2}>
           <Button variant='contained' color='info' onClick={() => setOpen(true)}>
             Tạo tài khoản
           </Button>
