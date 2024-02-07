@@ -16,7 +16,7 @@ import CommonService from '@/services/commonService';
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               usernameOrEmail:
  *                 type: string
  *                 example: Design_ITUS
  *               password:
@@ -25,17 +25,10 @@ import CommonService from '@/services/commonService';
  *     responses:
  *       200:
  *         description: Login successfully.The token is returned in a cookie named `Token`. You need to include this cookie in subsequent requests.
- *         headers:
- *            Set-cookie:
- *              schema:
- *                type:string
- *                example:"Token=NgI7w2gw28_RtBhyWUErNwQY; Path=/; Secure; HttpOnly"
  *       400:
  *         description: Missing username or password.
  *       403:
- *         description: Invalid password.
- *       404:
- *         description: Not found username.
+ *         description: Invalid username or password.
  *       500:
  *         description: Error message.
  */

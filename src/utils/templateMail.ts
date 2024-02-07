@@ -1,5 +1,5 @@
-export const templateSendOTP = {
-  subject: 'OTP for your account',
+export const templateRegister = {
+  subject: 'Register account',
   text: 'Your OTP is {OTP}',
   html: '<p>Your OTP is <b>{OTP}</b></p>'
 }

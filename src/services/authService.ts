@@ -4,7 +4,7 @@ import CommonService from '@/services/commonService';
 import UserRepository from '@repositories/userRepository';
 import { AccountInformation, User, SendOTP, ResetPassword } from '@/interfaces/user';
 import BaseResponse from '@/utils/baseResponse';
-import { STATUS_CODE, TYPE_OTP, areAllFieldsNotNull, templateSendOTP, templateResetPassword } from '@/utils';
+import { STATUS_CODE, TYPE_OTP, templateRegister, templateResetPassword } from '@/utils';
 
 class AuthService {
   private repository: UserRepository;
@@ -33,7 +33,7 @@ class AuthService {
       const queryField = this.getQueryField(usernameOrEmail);
       const user = await this.repository.getByEntity(queryField);
       if (!user) {
-        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "Account not found");
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Account not found");
       }
       const OTP = await this.sendOTP({ email: user.email, type: TYPE_OTP.RESET_PASSWORD });
       return new BaseResponse(STATUS_CODE.OK, true, "Send OTP successfully", { OTP });
@@ -55,11 +55,8 @@ class AuthService {
       if (!isMatched) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Invalid OTP");
       }
-      if (!areAllFieldsNotNull(data)) {
-        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "Missing username, email or password");
-      }
       const { username, email, password } = data;
-      const user = await this.createUser(username, email, password, data.profile);
+      const user = await this.createUser(username, email, password);
       return user ? new BaseResponse(STATUS_CODE.OK, true, "User created successfully") : new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "Create user account failed");
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
@@ -67,9 +64,6 @@ class AuthService {
   }
   async login(data: AccountInformation) {
     try {
-      if (!areAllFieldsNotNull(data)) {
-        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "Missing username (email) or password");
-      }
       const existedUser = await this.authenticateUser(data.usernameOrEmail, data.password);
       if (!existedUser) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Invalid username (email) or password");
@@ -86,9 +80,9 @@ class AuthService {
       const queryField = this.getQueryField(data.usernameOrEmail);
       const existedUser = await this.repository.getByEntity(queryField);
       if (!existedUser) {
-        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, "Account not found");
+        return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "Account not found");
       }
-      const isMatched = await bcrypt.compare(data.password, existedUser.password);
+      const isMatched = await bcrypt.compare(data.password, existedUser?.password);
       if (isMatched) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "New password must be different from old password");
       }
@@ -101,7 +95,7 @@ class AuthService {
   }
   private async sendOTP(data: SendOTP) {
     try {
-      const templateType = data.type === TYPE_OTP.REGISTER ? templateSendOTP : templateResetPassword;
+      const templateType = data.type === TYPE_OTP.REGISTER ? templateRegister : templateResetPassword;
       const OTP = CommonService.generateOTP();
       const html= CommonService.replacePlaceholder(templateType.html, { OTP });
       const text= CommonService.replacePlaceholder(templateType.text, { OTP });
@@ -111,7 +105,7 @@ class AuthService {
       return null;
     }
   }
-  private async createUser(username: string, email: string, password: string, profile?: Object) {
+   async createUser(username: string, email: string, password: string, profile?: Object) {
     try {
       password = await bcrypt.hash(password, this.saltRounds);
       return await this.repository.add({ username, email, password, profile });
@@ -131,7 +125,7 @@ class AuthService {
     }
     return existedUser;
   }
-  private async checkExistedUser(username: string, email: string) {
+   async checkExistedUser(username: string, email: string) {
     const existedUserName = await this.repository.getByEntity({ username });
     const existedEmail = await this.repository.getByEntity({ email });
     return { existedUserName, existedEmail };

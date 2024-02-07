@@ -7,7 +7,14 @@ import AuthService from '@/services/authService';
  *   post:
  *     tags:
  *       - Authentication
- *     description: Create account for user
+ *     description: Create account for user.
+ *     parameters:
+ *     - in: cookie
+ *     name: OTP
+ *     required: true
+ *     schema:
+ *     type: string
+ *     example: 123456
  *     requestBody:
  *       required: true
  *       content:
@@ -24,13 +31,14 @@ import AuthService from '@/services/authService';
  *               password:
  *                  type: string
  *                  example: 12345678
+ *               OTP:
+ *                  type: string
+ *                  example: 123456
  *     responses:
  *       200:
  *         description: Creating account successfully.
- *       400:
- *         description: Missing required information (username, email, or password).
- *       409:
- *         description: Existed username or email.
+ *       403:
+ *         description: Invalid OTP.
  *       500:
  *         description: Error message.
  */
