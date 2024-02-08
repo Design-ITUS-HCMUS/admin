@@ -55,7 +55,7 @@ export default function AccountsPage() {
         _id: item.id,
         name: (
           <Typography sx={{ color: 'primary.main' }}>
-            <Link href={`/events/${item.key}`}>{item.name}</Link>
+            <Link href={`/members/account/${item.id}`}>{item.name}</Link>
           </Typography>
         ),
         gen: item.profile?.gen,
