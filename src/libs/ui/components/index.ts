@@ -4,6 +4,8 @@ export * from './DropdownText';
 export * from './EnhancedTable';
 export * from './FullscreenImage';
 export * from './Logo';
+export * from './OTPInput';
+export * from './PasswordFieldWithLabel';
 export * from './ProgressTag';
 export * from './Search';
 export * from './TextFieldWithLabel';

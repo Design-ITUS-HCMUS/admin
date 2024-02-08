@@ -11,6 +11,5 @@ model Payment {
   paidAt        DateTime?
   createdAt     DateTime  @default(now())
   paymentStatus Int       @default(0) // 0 = Unpaid/Cancelled, 1 = Paid, 2 = Waiting for Confirmation, 3 = Cancelled
-  teamID        Int?      @unique
-  team          Team?     @relation(fields: [teamID], references: [id])
+  team          Team?     
 }

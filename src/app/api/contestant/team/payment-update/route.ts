@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import payOSPaymentService from '@/services/payOSPaymentService';
 import paymentService from '@/services/paymentService';
 
 /**
  * @swagger
- * /api/payment/verify:
- *   patch:
+ * /api/contestant/team/payment-update:
+ *   post:
  *     tags:
  *       - Payment
- *     description: Verify and update payment status.
+ *     description: Update payment status when the transaction is first created.
  *     requestBody:
  *       required: true
  *       content:
@@ -15,8 +16,12 @@ import paymentService from '@/services/paymentService';
  *           schema:
  *             type: object
  *             required:
+ *               - buyerID
  *               - teamID
  *             properties:
+ *               buyerID:
+ *                 type: integer
+ *                 default: 1
  *               teamID:
  *                 type: integer
  *                 default: 1
@@ -27,11 +32,19 @@ import paymentService from '@/services/paymentService';
  *         description: Error message
  */
 
-export async function PATCH(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const response = await paymentService.verifyPayment(body);
+    body.description = 'OUTRSPACE8';
+    body.items = [
+      {
+        name: 'Phí tham gia Outrspace',
+        quantity: 1,
+        price: 10000,
+      },
+    ];
 
+    const response = await paymentService.createTransaction(body);
     if (response === undefined) throw new Error('Empty response');
     return NextResponse.json(response.responseBody(), { status: response.status });
   } catch (err: any) {

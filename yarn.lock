@@ -9038,6 +9038,7 @@ __metadata:
     react: "npm:^18"
     react-dom: "npm:^18"
     react-redux: "npm:^9.1.0"
+    react-use-precision-timer: "npm:^3.4.5"
     storybook: "npm:^7.6.10"
     swagger-ui-react: "npm:^5.11.2"
     tsconfig-paths-webpack-plugin: "npm:^4.1.0"
@@ -13293,8 +13294,8 @@ __metadata:
   linkType: hard
 
 "lint-staged@npm:^15.2.0":
-  version: 15.2.2
-  resolution: "lint-staged@npm:15.2.2"
+  version: 15.2.1
+  resolution: "lint-staged@npm:15.2.1"
   dependencies:
     chalk: "npm:5.3.0"
     commander: "npm:11.1.0"
@@ -13308,7 +13309,7 @@ __metadata:
     yaml: "npm:2.3.4"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: a1ba6c7ee53e30a0f6ea9a351d95d3d0d2be916a41b561e22907e9ea513eb18cb3dbe65bff3ec13fad15777999efe56b2e2a95427e31d12a9b7e7948c3630ee2
+  checksum: 7da93825bebe61afce4ebfce4a2e61fb15dd24e48d117ee2dbcabd88f5d83f2b0ab210228d5d8c45c9d6a0412cb9e781c751f41a663b94b36876a8723aaf1f34
   languageName: node
   linkType: hard
 
@@ -15929,6 +15930,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-sub-unsub@npm:^2.1.6":
+  version: 2.1.11
+  resolution: "react-sub-unsub@npm:2.1.11"
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0
+  checksum: ce262fd871301baa4232c10c9e9b49170785dcfd016955917db3711c5f1dc069163ecd99d10f0c746e8c31eb9e2c31dba1e5eec9adb0a12eb1effe5b7adbe717
+  languageName: node
+  linkType: hard
+
 "react-syntax-highlighter@npm:^15.5.0":
   version: 15.5.0
   resolution: "react-syntax-highlighter@npm:15.5.0"
@@ -15956,6 +15967,18 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
+  languageName: node
+  linkType: hard
+
+"react-use-precision-timer@npm:^3.4.5":
+  version: 3.4.5
+  resolution: "react-use-precision-timer@npm:3.4.5"
+  dependencies:
+    react-sub-unsub: "npm:^2.1.6"
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0
+    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0
+  checksum: 00c57413fbf6de87d729a909feec250eae6ab0c867ab075f153b6a8f3f2328d636ea7ff8347dfc2cdbcb205393db33c0fe585cb040d944b861319fd757b039bb
   languageName: node
   linkType: hard
 

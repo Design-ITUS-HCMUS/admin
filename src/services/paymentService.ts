@@ -21,7 +21,7 @@ class PaymentService {
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if (team.paymentId) {
+      if (team.paymentID) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment already exists');
       }
 
@@ -35,23 +35,22 @@ class PaymentService {
   async verifyPayment(body: any) {
     try {
       const teamId = body.teamID;
-      const team = await this.teamRepository.getByEntity({ id: teamId });
+      const team = await this.teamRepository.getByEntity({ id: teamId }, { payment: true });
       if (!team) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Team does not exist');
       }
-      if (!team.paymentId) {
+      if (!team.paymentID) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment to verify');
       }
       if (!team.paymentProof) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'No payment proof to verify');
       }
-      if (team.paymentStatus !== 1) {
+      if (team.payment?.paymentStatus !== 1) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Payment not paid or already verified');
       }
 
-      //Update the payment status to 2 (verified)
-      //For now, just return team data
-      const response = team;
+      //Update the payment status from false (not verified) to true (verified)
+      const response = await this.teamRepository.update(teamId, { paymentStatus: true });
       return new BaseResponse(STATUS_CODE.OK, true, 'Payment verified', response);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

@@ -30,10 +30,11 @@ export default class TeamRepository {
     }
   }
 
-  async getByEntity(entity: Prisma.TeamWhereUniqueInput) {
+  async getByEntity(entity: Prisma.TeamWhereUniqueInput, include: Prisma.TeamInclude = {}) {
     try {
       const team = await this.model.findUnique({
         where: entity,
+        include,
       });
       return team;
     } catch (error) {

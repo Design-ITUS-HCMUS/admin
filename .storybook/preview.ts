@@ -1,7 +1,7 @@
 import type { Preview, ReactRenderer } from '@storybook/react';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { ThemeProvider } from '@mui/material/styles';
-// import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../src/libs/ui'; // Import your custom theme configs
 
 const preview: Preview = {
@@ -22,7 +22,7 @@ const preview: Preview = {
       },
       defaultTheme: 'light',
       Provider: ThemeProvider,
-      // GlobalStyles: CssBaseline,
+      GlobalStyles: CssBaseline,
     }),
   ],
 };

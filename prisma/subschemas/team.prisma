@@ -6,6 +6,7 @@ model Team {
   paymentStatus Boolean        @default(false) // false = Unverified, true = Verified
   paymentProof  Int?
   submission    Int[]
-  paymentID     Payment?
+  paymentID     Int?           @unique
+  payment       Payment?       @relation(fields: [paymentID], references: [id])
   accountEvents AccountEvent[]
 }
