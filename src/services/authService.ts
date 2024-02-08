@@ -22,7 +22,7 @@ class AuthService {
       if (existedEmail) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, "Email existed");
       }
-      const OTP = await this.sendOTP({ email, type: TYPE_OTP.REGISTER });
+      const OTP = await this.sendOTP({ email, username, type: TYPE_OTP.REGISTER });
       return new BaseResponse(STATUS_CODE.OK, true, "Send OTP successfully", { OTP });
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
@@ -35,7 +35,8 @@ class AuthService {
       if (!user) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Account not found");
       }
-      const OTP = await this.sendOTP({ email: user.email, type: TYPE_OTP.RESET_PASSWORD });
+      const { email, username } = user;
+      const OTP = await this.sendOTP({ email, username, type: TYPE_OTP.RESET_PASSWORD });
       return new BaseResponse(STATUS_CODE.OK, true, "Send OTP successfully", { OTP });
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
@@ -97,7 +98,7 @@ class AuthService {
     try {
       const templateType = data.type === TYPE_OTP.REGISTER ? templateRegister : templateResetPassword;
       const OTP = CommonService.generateOTP();
-      const html= CommonService.replacePlaceholder(templateType.html, { OTP });
+      const html= CommonService.replacePlaceholder(templateType.html, { OTP, username: data.username });
       const text= CommonService.replacePlaceholder(templateType.text, { OTP });
       await CommonService.sendEmail({ to: data.email, text, subject: templateType.subject, html });
       return await bcrypt.hash(OTP, this.saltRounds);

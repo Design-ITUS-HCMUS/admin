@@ -11,6 +11,7 @@ export interface AccountInformation {
 }
 export interface SendOTP {
   email: string;
+  username: string;
   type: number;
 }
 export interface ResetPassword {
