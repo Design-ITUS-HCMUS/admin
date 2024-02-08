@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import UserService from '@/services/userService';
+import { NextResponse, NextRequest } from 'next/server';
+import AuthService from '@/services/authService';
 
 /**
  * @swagger
- * /api/user/registration:
+ * /api/auth/resetPassword:
  *   post:
  *     tags:
- *       - User
- *     description: Create account for user
+ *       - Authentication
+ *     description: Update new password for user's account.
  *     requestBody:
  *       required: true
  *       content:
@@ -15,26 +15,22 @@ import UserService from '@/services/userService';
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               usernameOrEmail:
  *                 type: string
  *                 example: Design_ITUS
- *               email:
- *                 type: string
- *                 example: DesignITUS@gmail.com
  *               password:
  *                  type: string
  *                  example: 12345678
  *     responses:
  *       200:
- *         description: Creating account successfully.
- *       409:
- *         description: Existed username or email.
+ *         description: Change password successfully.
+ *       403:
+ *         description: New password must be different from old password.
  *       500:
  *         description: Error message.
  */
-
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const res = await UserService.createUser(data);
+  const res = await AuthService.resetPassword(data);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
