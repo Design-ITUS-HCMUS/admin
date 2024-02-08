@@ -14,14 +14,14 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 // Internal
 import { CardPage, StyledForm, Row } from '@/app/(auth)/_components';
 
-function SignUpPage () {
+function SignUpPage() {
   return (
-    <CardPage header='Đăng ký tài khoản'
+    <CardPage
+      header='Đăng ký tài khoản'
       showFooter
       mainText='Đã có tài khoản?'
       linkText='Đăng nhập'
-      linkHref='/sign-in'
-      >
+      linkHref='/sign-in'>
       <StyledForm>
         <TextField
           label='Username'
@@ -63,6 +63,6 @@ function SignUpPage () {
       </Row>
     </CardPage>
   );
-};
+}
 
 export default SignUpPage;

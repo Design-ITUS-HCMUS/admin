@@ -22,7 +22,7 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 // Internal
 import { CardPage, Row, StyledForm, SupportTextStyle } from '@/app/(auth)/_components';
 
-function SignInPage () {
+function SignInPage() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -100,6 +100,6 @@ function SignInPage () {
       </Row>
     </CardPage>
   );
-};
+}
 
 export default SignInPage;

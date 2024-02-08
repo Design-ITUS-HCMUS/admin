@@ -3,7 +3,6 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/libs/ui/theme';
 import { Be_Vietnam_Pro } from 'next/font/google';
-import Navbar from '@/libs/ui/components/Navbar';
 import { CssBaseline } from '@mui/material';
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -28,7 +27,6 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Navbar />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
