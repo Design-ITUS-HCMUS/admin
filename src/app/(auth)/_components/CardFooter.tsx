@@ -14,10 +14,9 @@ interface CardFooterProps {
   mainText?: string;
   linkText?: string;
   linkHref?: string;
-};
+}
 
 export const CardFooter = ({ mainText, linkText, linkHref }: CardFooterProps) => {
-
   return (
     <Row style={{ alignItems: 'baseline', gap: 8 }}>
       <Typography

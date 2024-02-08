@@ -32,12 +32,11 @@ export interface DropdownTextProps extends SelectProps {
   variant?: 'standard';
   displayEmpty?: true;
 }
-function DropdownText(props: DropdownTextProps) {
+
+export function DropdownText(props: DropdownTextProps) {
   return (
     <StyledSelect IconComponent={ExpandMoreIcon} variant='standard' displayEmpty {...props}>
       {props.children}
     </StyledSelect>
   );
 }
-
-export { DropdownText, ExpandMoreIcon };

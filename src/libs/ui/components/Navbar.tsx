@@ -63,10 +63,15 @@ const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 
     color: active ? colors.blue[500] : colors.neutral[400],
     backgroundColor: 'transparent',
     padding: '4px 6px',
-    fontSize: '16px',
+    '&.Mui-disabled': {
+      backgroundColor: 'transparent',
+    },
     '&:hover': {
       color: active ? colors.blue[500] : colors.blue[900],
       backgroundColor: active ? colors.blue[50] : colors.neutral[50],
+    },
+    '& .MuiButton-endIcon': {
+      marginLeft: 0,
     },
   })
 );
@@ -94,11 +99,9 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
     display: 'flex',
     height: '64px',
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
     borderBottom: active ? '4px solid ' + colors.blue[500] : 'none',
-    borderRadius: '4px',
-    mr: 4,
+    mr: 3,
   };
 
   return (
@@ -111,7 +114,9 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
         sx={open ? FocusedNavbarPillStyle : undefined}
         active={active}
         disabled={disabled}>
-        {name}
+        <Typography variant='subtitle1' fontWeight={600}>
+          {name}
+        </Typography>
       </StyledNavbarPill>
       {menuItems && (
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
@@ -141,10 +146,12 @@ const StyledDiv = styled('div')(({ theme }) => ({
   alignItems: 'center',
   columnGap: theme.spacing(2),
   padding: theme.spacing(0, 3, 0),
+  marginRight: theme.spacing(4),
   [theme.breakpoints.down('md')]: {
     columnGap: theme.spacing(1),
     flexGrow: 1,
     padding: theme.spacing(0, 2, 0),
+    marginRight: 0,
   },
 }));
 
@@ -235,12 +242,12 @@ export interface NavbarProps {
   activeURL?: string;
 }
 
-const StyledAppBar = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'sx' && prop !== 'color' })(() => ({
-  borderBottom: '1px solid #EBECED)',
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  borderBottom: `2px solid ${theme.palette.divider}`,
   padding: 0,
   borderRadius: 0,
   color: colors.blue[900],
-  backgroundColor: colors.neutral.white,
+  backgroundColor: theme.palette.background.paper,
 }));
 
 function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
@@ -262,18 +269,14 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <StyledAppBar
-      position='static'
-      elevation={0}
-      sx={{ borderBottom: '1px solid #EBECED)', padding: 0, borderRadius: 0 }}
-      color='default'>
+    <StyledAppBar position='fixed' elevation={0}>
       <Container maxWidth={false} disableGutters>
         <Toolbar disableGutters>
           <Title />
           {/* Responsive -> Visible only on MD and above */}
           {!isMobile ? (
             <>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+              <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'baseline' }}>
                 {pages.map((page, index) => (
                   <NavbarPill
                     {...page}
@@ -282,10 +285,8 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                     disabled={page.disabled}
                   />
                 ))}
-                <Button LinkComponent={Link} href='/events/create' sx={{ height: 'fit-content' }}>
-                  <Typography variant='subtitle1' fontWeight={600}>
-                    Tạo sự kiện
-                  </Typography>
+                <Button LinkComponent={Link} href='/events/create'>
+                  Tạo sự kiện
                 </Button>
               </Box>
               <UserSettings {...settings} />
@@ -364,10 +365,7 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                       )
                     )}
                     <ListItemButton component={Link} href='/events/create'>
-                      <ListItemText
-                        primary='Tạo sự kiện'
-                        primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }}
-                      />
+                      Tạo sự kiện
                     </ListItemButton>
                   </List>
                 </Box>

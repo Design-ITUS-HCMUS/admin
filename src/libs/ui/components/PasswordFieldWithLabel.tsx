@@ -37,7 +37,11 @@ export const PasswordFieldWithLabel = ({ label, containerStyle, inputProps }: Pa
         type={showPassword ? 'text' : 'password'}
         endAdornment={
           <InputAdornment position='end'>
-            <IconButton onClick={togglePasswordVisibility} edge='end' sx={{ color: color.neutral[100], padding: '12px' }} disableRipple>
+            <IconButton
+              onClick={togglePasswordVisibility}
+              edge='end'
+              sx={{ color: color.neutral[100], padding: '12px' }}
+              disableRipple>
               {showPassword ? <ShowIcon /> : <HideIcon />}
             </IconButton>
           </InputAdornment>

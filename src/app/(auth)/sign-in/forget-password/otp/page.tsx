@@ -16,7 +16,7 @@ import { useTheme } from '@mui/material/styles';
 // Internal
 import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
 
-function OTPPage () {
+function OTPPage() {
   const theme = useTheme();
   const [otp, setOtp] = useState('');
   const [ableResend, setAbleResend] = useState(false);
@@ -26,12 +26,7 @@ function OTPPage () {
   };
 
   return (
-    <CardPage header='Xác thực mã OTP'
-      showFooter
-      mainText='Chưa có tài khoản?'
-      linkText='Đăng ký'
-      linkHref='/sign-up'
-    >
+    <CardPage header='Xác thực mã OTP' showFooter mainText='Chưa có tài khoản?' linkText='Đăng ký' linkHref='/sign-up'>
       <Typography variant='body1'>
         Một mã OTP đã được gửi đến de******ub@gmail.com. Vui lòng không chia sẻ với bất kỳ ai. Nếu không nhận được
         email, bạn có thể gửi lại sau <CountDown initialSeconds={60} onComplete={enableResend} /> giây.
@@ -52,6 +47,6 @@ function OTPPage () {
       </Row>
     </CardPage>
   );
-};
+}
 
 export default OTPPage;

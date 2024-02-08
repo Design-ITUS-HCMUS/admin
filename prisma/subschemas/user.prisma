@@ -8,5 +8,5 @@ model User {
   role          Role           @relation(fields: [roleID], references: [id])
   roleID        Int            @default(2) // role of user
   accountEvents AccountEvent[] // list of events that user has joined
-  profile       Profile?        
+  profile       Profile?
 }

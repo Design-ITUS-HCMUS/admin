@@ -6,10 +6,11 @@ enum LogoSize {
   'large' = 60,
 }
 
-type LogoProps = {
+interface LogoProps {
   size: keyof typeof LogoSize;
   imgStyle?: React.CSSProperties;
-};
+}
+
 export function Logo({ size = 'medium', imgStyle }: LogoProps) {
   return (
     <Image
