@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * @swagger
- * /api/member?id={id}:
+ * /api/member?accountEventID={id}:
  *   get:
  *     tags:
  *       - Organizer
  *     description: Get event info by ID.
  *     parameters:
  *      - in: query
- *        name: id
+ *        name: accountEventID
  *        description: ID of organizer (accountEvent)
  *        required: true
  *        schema:
@@ -26,7 +26,7 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 
 export async function GET(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get('id');
+  const id = req.nextUrl.searchParams.get('accountEventID');
   const res = await MemberService.getEventInfoById(Number(id));
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

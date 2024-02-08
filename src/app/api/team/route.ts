@@ -19,6 +19,8 @@ import TeamService from '@/services/teamService';
  *    responses:
  *      200:
  *        description: Get team successfully.
+ *      404:
+ *        description: Team not found.
  *      500:
  *        description: Error message.
  */

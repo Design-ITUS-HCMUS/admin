@@ -35,6 +35,7 @@ class AccountEventService {
       const accountEvents = await this.repository.getManyByEntity(
         { eventID, teamID: { not: null } },
         {
+          id: true,
           team: {
             select: {
               name: true,
@@ -69,6 +70,7 @@ class AccountEventService {
       const accountEvents = await this.repository.getManyByEntity(
         { eventID, teamID: null },
         {
+          id: true,
           role: {
             select: {
               name: true,
