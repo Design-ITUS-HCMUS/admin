@@ -1,9 +1,10 @@
+import { forwardRef } from 'react';
 import InputLabel, { InputLabelProps } from '@mui/material/InputLabel';
-import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
+import OutlinedInput, { OutlinedInputProps, InputBaseComponentProps } from '@mui/material/OutlinedInput';
 import Stack, { StackProps } from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-type Props = {
+export type TextFieldWithLabelProps = {
   label: string;
   containerStyle?: React.CSSProperties;
   containerProps?: StackProps;
@@ -11,7 +12,7 @@ type Props = {
   inputProps?: OutlinedInputProps;
 };
 
-export const TextFieldWithLabel = ({ label, containerStyle, containerProps, labelProps, inputProps }: Props) => {
+export const TextFieldWithLabel = forwardRef(({ label, containerStyle, containerProps, labelProps, outlinedInputProps }: TextFieldWithLabelProps, ref:React.Ref<HTMLInputElement>) => {
   return (
     <Stack spacing={1} style={{ ...containerStyle }} {...containerProps}>
       <InputLabel {...labelProps}>
@@ -19,7 +20,7 @@ export const TextFieldWithLabel = ({ label, containerStyle, containerProps, labe
           {label}
         </Typography>
       </InputLabel>
-      <OutlinedInput {...inputProps} />
+      <OutlinedInput {...outlinedInputProps} inputRef={ref}/>
     </Stack>
   );
-};
+});
