@@ -3,9 +3,7 @@ import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
 import {
   S3Client,
-  PutObjectCommand,
   GetObjectCommand,
-  HeadObjectCommand,
   DeleteObjectCommand,
   CreateMultipartUploadCommand,
   UploadPartCommand,
@@ -147,6 +145,33 @@ class BucketService {
       });
 
       return new BaseResponse(STATUS_CODE.OK, true, 'Finish multipart upload successfully');
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async abortMultipartUpload(body: any) {
+    try {
+      const key: number = body.key;
+      const uploadID: string = body.uploadID;
+
+      if (
+        key === null || // key can be 0
+        !uploadID
+      )
+        throw new Error('Invalid request');
+
+      await this.r2.send(
+        new AbortMultipartUploadCommand({
+          Bucket: BucketService.R2_BUCKET_NAME,
+          Key: key.toString(),
+          UploadId: uploadID,
+        })
+      );
+
+      await this.repository.delete({ id: key });
+
+      return new BaseResponse(STATUS_CODE.OK, true, 'Abort multipart upload successfully');
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }

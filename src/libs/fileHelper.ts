@@ -1,14 +1,19 @@
 import axios from 'axios';
+import { abort } from 'process';
 
 export async function uploadFile(files: File[], permission: number = 0) {
+  // Default size per part (8MB/part)
+  const partSize = 1024 * 1024 * 8;
+
+  // Default arr to store file IDs
+  const ids: number[] = [];
+
+  // UploadID and key -> null
+  let uploadID: string | null = null;
+  let key: number | null = null;
+
   try {
     if (files.length === 0) return [];
-
-    // Set default size per part (8MB/part)
-    const partSize = 1024 * 1024 * 8;
-
-    // Default arr to store file IDs
-    const ids: number[] = [];
 
     // Change later to get real user ID
     const ownerID = 1;
@@ -21,8 +26,8 @@ export async function uploadFile(files: File[], permission: number = 0) {
         contentType: file.type,
         permission,
       });
-      const uploadID = uploadIDResponse.data.data.uploadID;
-      const key = uploadIDResponse.data.data.key;
+      uploadID = uploadIDResponse.data.data.uploadID;
+      key = uploadIDResponse.data.data.key;
 
       // Get presigned URL for all parts
       const presignedUrlResponse = await axios.post('/api/file/upload/presigned-url', {
@@ -40,11 +45,7 @@ export async function uploadFile(files: File[], permission: number = 0) {
         const end = Math.min((i + 1) * partSize, file.size);
         const blob = file.slice(start, end);
 
-        const singlePart = axios.put(presignedUrls[i], blob, {
-          headers: {
-            'Content-Type': file.type,
-          },
-        });
+        const singlePart = axios.put(presignedUrls[i], blob);
 
         promises.push(singlePart);
       }
@@ -66,12 +67,26 @@ export async function uploadFile(files: File[], permission: number = 0) {
       });
 
       // Push file ID to array
-      ids.push(key);
+      ids.push(Number(key));
     }
 
     return ids;
   } catch (error) {
-    return null;
+    try {
+      // If failed to upload file -> Rollback
+      // Delete uploaded files
+      await deleteFile(ids);
+
+      // Abort current upload file
+      await axios.post('/api/file/upload/abort', {
+        key,
+        uploadID,
+      });
+
+      return null;
+    } catch (error) {
+      return null;
+    }
   }
 }
 
