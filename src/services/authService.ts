@@ -82,7 +82,7 @@ class AuthService {
       if (!existedUser) {
         return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "Account not found");
       }
-      const isMatched = await bcrypt.compare(data.password, existedUser?.password);
+      const isMatched = await bcrypt.compare(data.password, existedUser.password);
       if (isMatched) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "New password must be different from old password");
       }

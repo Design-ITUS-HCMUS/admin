@@ -8,13 +8,6 @@ import AuthService from '@/services/authService';
  *     tags:
  *       - Authentication
  *     description: Create account for user.
- *     parameters:
- *     - in: cookie
- *     name: OTP
- *     required: true
- *     schema:
- *     type: string
- *     example: 123456
  *     requestBody:
  *       required: true
  *       content:

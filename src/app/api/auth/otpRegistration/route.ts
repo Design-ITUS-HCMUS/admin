@@ -25,6 +25,12 @@ import CommonService from '@/services/commonService';
  *     responses:
  *       200:
  *         description: Send otp successfully.The otp is returned in a cookie named `OTP` which expired in 5 minutes. You need to include this cookie in `registration` requests.
+ *         headers:
+ *           Set-Cookie:
+ *             description: Set-Cookie header to save OTP in cookie.
+ *             schema:
+ *               type: string
+ *               example: OTP=123456; Path=/; HttpOnly; Secure; Expires=Thursday, 21 Oct 2021 08:00:00 GMT
  *       409:
  *          description: Existed email or username.
  *       500:

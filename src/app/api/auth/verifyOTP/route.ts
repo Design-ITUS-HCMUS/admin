@@ -34,5 +34,5 @@ export async function POST(req:NextRequest) {
   if (res.status === 200) {
     response.cookies.delete('OTP');
   }
-  return NextResponse.json(res.responseBody(), { status: res.status });
+  return response;
 }
