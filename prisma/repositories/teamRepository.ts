@@ -1,6 +1,6 @@
-import { DefaultArgs } from '@prisma/client/runtime/library';
 import { prisma } from '../client';
 import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export default class TeamRepository {
   private model: Prisma.TeamDelegate<DefaultArgs>;
@@ -15,7 +15,7 @@ export default class TeamRepository {
       });
       return newTeam;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -25,36 +25,57 @@ export default class TeamRepository {
       const allTeams = await this.model.findMany();
       return allTeams;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
 
-  async getByEntity(entity: Prisma.TeamWhereUniqueInput) {
+  async getByEntity(entity: Prisma.TeamWhereUniqueInput, include: Prisma.TeamInclude = {}) {
     try {
       const team = await this.model.findUnique({
         where: entity,
-        include: {
-          payment: true,
-        },
+        include,
       });
       return team;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return null;
+    }
+  }
+
+  async getManyByEntity(entity: Prisma.TeamWhereInput) {
+    try {
+      const teams = await this.model.findMany({
+        where: entity,
+      });
+      return teams;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  async update(id: number, entity: Prisma.TeamUpdateInput) {
+    try {
+      const updatedTeam = await this.model.update({
+        where: { id },
+        data: entity,
+      });
+      return updatedTeam;
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }
 
   async delete(id: number) {
     try {
-      const deleteTeam = await this.model.delete({
-        where: {
-          id: id,
-        },
+      const deletedTeam = await this.model.delete({
+        where: { id },
       });
-      return deleteTeam;
+      return deletedTeam;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

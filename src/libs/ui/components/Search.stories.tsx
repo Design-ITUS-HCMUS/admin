@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import * as React from 'react';
-import { Typography } from '@mui/material';
 import { Search } from './Search';
 
 const meta: Meta<typeof Search> = {

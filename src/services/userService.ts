@@ -19,8 +19,8 @@ class UserService {
   async createUser(data: User) {
     try {
       const { username, email, password } = data;
-      if(!username || !email || !password) {
-        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "Missed information");
+      if (!username || !email || !password) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'Missed information');
       }
       const existedUserName = await this.repository.getByEntity({ username });
       if (existedUserName) {
@@ -104,11 +104,11 @@ class UserService {
 
   async deleteUsers(ids: number[]) {
     try {
-      if(ids === null || ids === undefined) {
-        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "Missing value");
+      if (ids === null || ids === undefined) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'Missing value');
       }
-      if(ids.length === 0) {
-        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, "List ids can not be empty")
+      if (ids.length === 0) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'List ids can not be empty');
       }
       const deletedUsers = await this.repository.delete(ids);
       return new BaseResponse(STATUS_CODE.OK, true, 'Users deleted', deletedUsers);

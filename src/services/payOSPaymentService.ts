@@ -30,7 +30,7 @@ class PayOSPaymentService {
       let orderCode = (await this.repository.getCurrentID()) + 1;
 
       // Start timer
-      const startTime = Date.now();
+      // const startTime = Date.now();
 
       while (true) {
         // If time out (1 min) -> Return error

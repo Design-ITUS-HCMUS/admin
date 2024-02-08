@@ -16,7 +16,7 @@ export default function EventCreateModal() {
     router.back();
   }
 
-  function handleSubmit(formData: FormData) {}
+  function handleSubmit(_formData: FormData) {}
 
   return (
     <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth PaperProps={{ variant: 'section' }}>

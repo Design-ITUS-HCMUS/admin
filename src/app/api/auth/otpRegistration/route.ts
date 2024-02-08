@@ -37,18 +37,18 @@ import CommonService from '@/services/commonService';
  *         description: Error message.
  */
 export async function POST(req: NextRequest) {
-    const { email, username } = await req.json();
-    const res = await AuthService.sendOtpToRegister(email, username);
-    const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'OTP');
-    const response = NextResponse.json(body, { status: res.status });
-    if (value) {
-        response.cookies.set({
-            name: 'OTP',
-            value,
-            httpOnly: true,
-            secure: true,
-            expires: new Date(Date.now() + 5 * 60 * 1000 + 7 * 3600 * 1000), // 5 minutes in GMT+7
-        });
-    }
-    return response;
+  const { email, username } = await req.json();
+  const res = await AuthService.sendOtpToRegister(email, username);
+  const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'OTP');
+  const response = NextResponse.json(body, { status: res.status });
+  if (value) {
+    response.cookies.set({
+      name: 'OTP',
+      value,
+      httpOnly: true,
+      secure: true,
+      expires: new Date(Date.now() + 5 * 60 * 1000 + 7 * 3600 * 1000), // 5 minutes in GMT+7
+    });
+  }
+  return response;
 }
