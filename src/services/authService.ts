@@ -17,13 +17,13 @@ class AuthService {
     try {
       const { existedUserName, existedEmail } = await this.checkExistedUser(username, email);
       if (existedUserName) {
-        return new BaseResponse(STATUS_CODE.CONFLICT, false, "Username existed");
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Username existed');
       }
       if (existedEmail) {
-        return new BaseResponse(STATUS_CODE.CONFLICT, false, "Email existed");
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Email existed');
       }
       const OTP = await this.sendOTP({ email, username, type: TYPE_OTP.REGISTER });
-      return new BaseResponse(STATUS_CODE.OK, true, "Send OTP successfully", { OTP });
+      return new BaseResponse(STATUS_CODE.OK, true, 'Send OTP successfully', { OTP });
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -33,11 +33,11 @@ class AuthService {
       const queryField = this.getQueryField(usernameOrEmail);
       const user = await this.repository.getByEntity(queryField);
       if (!user) {
-        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Account not found");
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Account not found');
       }
       const { email, username } = user;
       const OTP = await this.sendOTP({ email, username, type: TYPE_OTP.RESET_PASSWORD });
-      return new BaseResponse(STATUS_CODE.OK, true, "Send OTP successfully", { OTP });
+      return new BaseResponse(STATUS_CODE.OK, true, 'Send OTP successfully', { OTP });
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -45,7 +45,9 @@ class AuthService {
   async verifyOTP(inputOTP: string, OTP: string) {
     try {
       const isMatched = await bcrypt.compare(inputOTP, OTP);
-      return isMatched ? new BaseResponse(STATUS_CODE.OK, true, "Verify OTP successfully") : new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Invalid OTP");
+      return isMatched
+        ? new BaseResponse(STATUS_CODE.OK, true, 'Verify OTP successfully')
+        : new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Invalid OTP');
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -54,11 +56,13 @@ class AuthService {
     try {
       const isMatched = await bcrypt.compare(data.OTP, OTP);
       if (!isMatched) {
-        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Invalid OTP");
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Invalid OTP');
       }
       const { username, email, password } = data;
       const user = await this.createUser(username, email, password);
-      return user ? new BaseResponse(STATUS_CODE.OK, true, "User created successfully") : new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "Create user account failed");
+      return user
+        ? new BaseResponse(STATUS_CODE.OK, true, 'User created successfully')
+        : new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Create user account failed');
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -67,11 +71,11 @@ class AuthService {
     try {
       const existedUser = await this.authenticateUser(data.usernameOrEmail, data.password);
       if (!existedUser) {
-        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "Invalid username (email) or password");
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Invalid username (email) or password');
       }
-      const { id, roleID } = existedUser
+      const { id, roleID } = existedUser;
       const token = await this.generateToken(id, roleID);
-      return new BaseResponse(STATUS_CODE.OK, true, "login successfully", { id, roleID, token });
+      return new BaseResponse(STATUS_CODE.OK, true, 'login successfully', { id, roleID, token });
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -81,15 +85,17 @@ class AuthService {
       const queryField = this.getQueryField(data.usernameOrEmail);
       const existedUser = await this.repository.getByEntity(queryField);
       if (!existedUser) {
-        return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "Account not found");
+        return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Account not found');
       }
       const isMatched = await bcrypt.compare(data.password, existedUser.password);
       if (isMatched) {
-        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, "New password must be different from old password");
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'New password must be different from old password');
       }
       const newPassword = await bcrypt.hash(data.password, this.saltRounds);
       const updatePwd = await this.repository.update({ password: newPassword, id: existedUser.id });
-      return updatePwd ? new BaseResponse(STATUS_CODE.OK, true, "update password successfully") : new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, "fail to update password")
+      return updatePwd
+        ? new BaseResponse(STATUS_CODE.OK, true, 'update password successfully')
+        : new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'fail to update password');
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
@@ -98,15 +104,15 @@ class AuthService {
     try {
       const templateType = data.type === TYPE_OTP.REGISTER ? templateRegister : templateResetPassword;
       const OTP = CommonService.generateOTP();
-      const html= CommonService.replacePlaceholder(templateType.html, { OTP, username: data.username });
-      const text= CommonService.replacePlaceholder(templateType.text, { OTP });
+      const html = CommonService.replacePlaceholder(templateType.html, { OTP, username: data.username });
+      const text = CommonService.replacePlaceholder(templateType.text, { OTP });
       await CommonService.sendEmail({ to: data.email, text, subject: templateType.subject, html });
       return await bcrypt.hash(OTP, this.saltRounds);
     } catch (err: any) {
       return null;
     }
   }
-   async createUser(username: string, email: string, password: string, profile?: Object) {
+  async createUser(username: string, email: string, password: string, profile?: Object) {
     try {
       password = await bcrypt.hash(password, this.saltRounds);
       return await this.repository.add({ username, email, password, profile });
@@ -117,16 +123,16 @@ class AuthService {
   private async authenticateUser(usernameOrEmail: string, password: string) {
     const queryField = this.getQueryField(usernameOrEmail);
     const existedUser = await this.repository.getByEntity(queryField);
-    if(!existedUser) {
+    if (!existedUser) {
       return null;
     }
     const isMatched = await bcrypt.compare(password, existedUser.password);
-    if(!isMatched) {
+    if (!isMatched) {
       return null;
     }
     return existedUser;
   }
-   async checkExistedUser(username: string, email: string) {
+  async checkExistedUser(username: string, email: string) {
     const existedUserName = await this.repository.getByEntity({ username });
     const existedEmail = await this.repository.getByEntity({ email });
     return { existedUserName, existedEmail };
@@ -134,11 +140,11 @@ class AuthService {
   private async generateToken(id: number, role: number) {
     return await new SignJWT({ id, role })
       .setProtectedHeader({
-        alg: "HS256",
-        typ: "JWT"
+        alg: 'HS256',
+        typ: 'JWT',
       })
       .setIssuedAt()
-      .setExpirationTime(process.env.JWT_EXPIRATION_TIME || "1h")
+      .setExpirationTime(process.env.JWT_EXPIRATION_TIME || '1h')
       .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY));
   }
   private getQueryField(usernameOrEmail: string) {

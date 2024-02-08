@@ -14,8 +14,8 @@ class AccountEventService {
 
   async createAccountEvent(data: AccountEvent) {
     try {
-      const { userId, eventID } = data;
-      const existedAccountEvent = await this.repository.getByEntity({ userId, eventID });
+      const { userID, eventID } = data;
+      const existedAccountEvent = await this.repository.getByEntity({ userID, eventID });
       if (existedAccountEvent) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'AccountEvent already exists');
       }
@@ -33,7 +33,7 @@ class AccountEventService {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
       const accountEvents = await this.repository.getManyByEntity(
-        { eventID, teamID: { not: null } },
+        { eventID, user: { roleID: 3 } },
         {
           id: true,
           team: {
@@ -68,7 +68,7 @@ class AccountEventService {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
       const accountEvents = await this.repository.getManyByEntity(
-        { eventID, teamID: null },
+        { eventID, user: { roleID: { not: 3 } } },
         {
           id: true,
           role: {

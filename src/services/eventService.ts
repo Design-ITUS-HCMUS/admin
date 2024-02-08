@@ -12,8 +12,11 @@ class EventService {
 
   async createEvent(data: Event) {
     try {
-      const { name } = data;
-      const existedEvent = await this.repository.getByEntity({ name });
+      const { key } = data;
+      if (!key) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'Key is required');
+      }
+      const existedEvent = await this.repository.getByEntity({ key });
       if (existedEvent) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Event already exists');
       }

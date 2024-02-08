@@ -1,7 +1,7 @@
 model Event {
   id            Int            @id @default(autoincrement())
-  name          String         @unique
-  key           String
+  name          String         
+  key           String         @unique
   tag           String[]
   start         DateTime       @db.Date
   end           DateTime?      @db.Date

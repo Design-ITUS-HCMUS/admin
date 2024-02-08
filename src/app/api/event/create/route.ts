@@ -39,6 +39,8 @@ import EventService from '@/services/eventService';
  *   responses:
  *    200:
  *      description: Create event successfully.
+ *    400:
+ *      description: Bad request.
  *    409:
  *      description: Event already exists.
  *    500:

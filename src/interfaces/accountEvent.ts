@@ -3,5 +3,5 @@ export interface AccountEvent {
   roleID: any;
   teamID?: any;
   department?: string;
-  userId?: any;
+  userID?: any;
 }

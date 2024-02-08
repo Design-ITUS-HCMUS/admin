@@ -33,17 +33,17 @@ import CommonService from '@/services/commonService';
  *         description: Error message.
  */
 export async function POST(req: NextRequest) {
-    const data = await req.json();
-    const res = await AuthService.login(data);
-    const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'token');
-    const response = NextResponse.json(body, { status: res.status });
-    if (value) {
-      response.cookies.set({
-        name: 'token',
-        value,
-        httpOnly: true,
-        secure: true,
-      });
-    }
-    return response;
+  const data = await req.json();
+  const res = await AuthService.login(data);
+  const { value, body } = CommonService.getDataToSaveInCookie(res.responseBody(), 'token');
+  const response = NextResponse.json(body, { status: res.status });
+  if (value) {
+    response.cookies.set({
+      name: 'token',
+      value,
+      httpOnly: true,
+      secure: true,
+    });
+  }
+  return response;
 }

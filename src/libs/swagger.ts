@@ -20,7 +20,7 @@ export const getApiDocs = async () => {
             type: 'apiKey',
             in: 'cookie',
             name: 'OTP',
-          }
+          },
         },
       },
       security: [],
