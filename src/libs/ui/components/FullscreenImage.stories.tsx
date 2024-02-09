@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
 import { FullscreenImage } from './FullscreenImage';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof FullscreenImage> = {
   component: FullscreenImage,

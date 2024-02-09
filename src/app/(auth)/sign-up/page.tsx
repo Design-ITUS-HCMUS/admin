@@ -1,8 +1,6 @@
 'use client';
 
 // Libs
-import { PasswordFieldWithLabel as PassField, TextFieldWithLabel as TextField } from '@/libs/ui/components';
-
 // Material UI Components
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -12,7 +10,8 @@ import MailIcon from '@mui/icons-material/EmailOutlined';
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
-import { CardPage, StyledForm, Row } from '@/app/(auth)/_components';
+import { CardPage, Row,StyledForm } from '@/app/(auth)/_components';
+import { PasswordFieldWithLabel as PassField, TextFieldWithLabel as TextField } from '@/libs/ui/components';
 
 function SignUpPage() {
   return (

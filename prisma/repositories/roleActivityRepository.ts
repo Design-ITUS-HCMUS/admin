@@ -1,6 +1,7 @@
+import { prisma } from '../client';
+
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
-import { prisma } from '../client';
 
 export default class RoleActivityRepository {
   private model: Prisma.RoleActivityDelegate<DefaultArgs>;

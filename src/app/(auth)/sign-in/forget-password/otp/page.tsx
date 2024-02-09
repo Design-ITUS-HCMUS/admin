@@ -4,17 +4,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// Libs
-import { colors } from '@/libs/ui';
-import { OTPInput } from '@/libs/ui/components';
-
 // Material UI Components
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 // Internal
 import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
+// Libs
+import { colors } from '@/libs/ui';
+import { OTPInput } from '@/libs/ui/components';
 
 function OTPPage() {
   const theme = useTheme();

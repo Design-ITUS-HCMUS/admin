@@ -1,7 +1,7 @@
 // Replace your-framework with the name of your framework
-import type { Meta, StoryObj } from '@storybook/react';
-
 import Navbar, { NavbarProps } from './Navbar';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<NavbarProps> = {
   component: Navbar,

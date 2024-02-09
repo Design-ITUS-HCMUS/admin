@@ -1,7 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
 import { TextFieldWithLabel } from './TextFieldWithLabel';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TextFieldWithLabel> = {
   component: TextFieldWithLabel,

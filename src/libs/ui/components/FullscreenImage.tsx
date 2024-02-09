@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image, { ImageProps } from 'next/image';
+
 import { styled } from '@mui/material/styles';
 
 const BGImage = styled(Image)({

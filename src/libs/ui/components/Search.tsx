@@ -1,4 +1,5 @@
-import { OutlinedInput, OutlinedInputProps, InputAdornment } from '@mui/material';
+import { InputAdornment,OutlinedInput, OutlinedInputProps } from '@mui/material';
+
 import { SearchOutlined } from '@mui/icons-material';
 
 interface SearchProps {

@@ -1,7 +1,8 @@
 'use client';
 import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
-import colors from './color';
 import { ThemeOptions } from '@mui/material/styles';
+
+import colors from './color';
 
 let theme = createTheme({
   palette: {

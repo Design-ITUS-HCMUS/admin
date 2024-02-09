@@ -1,8 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
-import { SideBarItem } from './SideBarItem';
+
 import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
+
+import { SideBarItem } from './SideBarItem';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SideBarItem> = {
   component: SideBarItem,

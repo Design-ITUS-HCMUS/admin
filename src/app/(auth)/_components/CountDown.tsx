@@ -38,7 +38,7 @@ export const CountDown = ({ initialSeconds, onComplete }: CountDownProps) => {
 
   useEffect(() => {
     timer.start();
-  }, []);
+  });
 
   return (
     <TimerRenderer

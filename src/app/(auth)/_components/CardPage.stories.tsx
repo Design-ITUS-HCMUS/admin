@@ -1,33 +1,18 @@
 // React
 import * as React from 'react';
+
+import InputAdornment from '@mui/material/InputAdornment';
+import PersonIcon from '@mui/icons-material/PersonRounded';
+import { CardPage } from '@/app/(auth)/_components';
+import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Libs
-import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
-
-// Material UI Components
-import InputAdornment from '@mui/material/InputAdornment';
-
-// Material UI Icons
-import PersonIcon from '@mui/icons-material/PersonRounded';
-
-// Internal
-import { CardPage } from '@/app/(auth)/_components';
 const meta: Meta<typeof CardPage> = {
+  title: 'Pages/Auth/CardPage',
   component: CardPage,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-export const Default: Story = {
-  name: 'Card Page',
+  parameters: {
+    layout: 'centered',
+  },
   args: {
     header: 'Câu lạc bộ học thuật thiết kế <br /> Design ITUS',
     children: (
@@ -47,5 +32,9 @@ export const Default: Story = {
     linkText: 'Đăng ký',
     linkHref: '/sign-up',
   },
-  render: (args: any) => <CardPage {...args} />,
+};
+
+export default meta;
+export const Default: StoryObj = {
+  name: 'CardPage',
 };

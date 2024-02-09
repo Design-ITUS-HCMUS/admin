@@ -10,12 +10,42 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencie
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
     "no-restricted-imports": [
-      "error",
+      "warn",
       {
         "patterns": ["@mui/*/*/*"]
       }
     ]
-  }
+  },
+  "plugins": ["simple-import-sort"],
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "warn",
+          {
+            "groups": [
+              // Packages `react` related packages come first.
+              ["^react.*", "^next.*"],
+              // @mui/material/* imports
+              ["^@mui/material.*"],
+              // @mui/icons-material/* imports
+              ["^@mui/icons-material.*"],
+              // Side effect imports.
+              ["^\\u0000"],
+              // Parent imports. Put `..` second.
+              // Other relative imports. Put same-folder imports and `.` last.
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              // Style imports.
+              ["^.+\\.?(css)$"]
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

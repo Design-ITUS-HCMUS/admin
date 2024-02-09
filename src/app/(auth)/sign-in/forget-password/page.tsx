@@ -3,9 +3,6 @@
 // React
 import Link from 'next/link';
 
-// Libs
-import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
-
 // Material UI Components
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,6 +12,8 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
 import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
+// Libs
+import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
 
 function ForgetPasswordPage() {
   return (

@@ -1,27 +1,25 @@
-// React
-import * as React from 'react';
+import { OTPInput } from './OTPInput';
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Internal
-import { OTPInput } from './OTPInput';
-
 const meta: Meta<typeof OTPInput> = {
+  title: 'Global/Input/OTP',
   component: OTPInput,
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    onChange: (res: string) => console.log(res),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'white', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-export const Default: Story = {
-  name: 'OTP Input',
-  args: {
-    onchange: (res: string) => console.log(res),
-  },
-  render: (args: any) => <OTPInput {...args} />,
+export const Default: StoryObj = {
+  name: 'OTP',
 };

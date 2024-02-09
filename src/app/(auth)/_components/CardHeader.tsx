@@ -1,10 +1,10 @@
 'use client';
 
 // Material UI Components
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
 import { TypographyProps } from '@mui/material/';
+import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 interface CardHeaderProps {
   children?: React.ReactNode;

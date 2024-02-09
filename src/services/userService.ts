@@ -1,7 +1,7 @@
-import UserRepository from '@repositories/userRepository';
+import { User } from '@/interfaces/user';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import { User } from '@/interfaces/user';
+import UserRepository from '@repositories/userRepository';
 
 enum RoleID {
   ADMIN = 1,

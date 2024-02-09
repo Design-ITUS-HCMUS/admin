@@ -1,34 +1,32 @@
-// React
-import * as React from 'react';
+import { PasswordFieldWithLabel } from './PasswordFieldWithLabel';
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Internal
-import { PasswordFieldWithLabel } from './PasswordFieldWithLabel';
-
 const meta: Meta<typeof PasswordFieldWithLabel> = {
+  title: 'Global/Input/Password',
   component: PasswordFieldWithLabel,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-export const Default: Story = {
-  name: 'Password Field With Label',
+  parameters: {
+    layout: 'centered',
+  },
   args: {
     label: 'Password',
     containerStyle: {
       width: '400px',
     },
-    textFieldProps: {
+    inputProps: {
       size: 'medium',
       placeholder: 'Nhập mật khẩu',
     },
   },
-  render: (args: any) => <PasswordFieldWithLabel {...args} />,
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'white', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+export const Default: StoryObj = {
+  name: 'Password',
 };

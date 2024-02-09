@@ -1,23 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
 import { Uploader } from './Uploader';
 
+import type { Meta, StoryObj } from '@storybook/react';
+
 const meta: Meta<typeof Uploader> = {
+  title: 'Global/Input/Uploader',
   component: Uploader,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-export const Default: Story = {
-  name: 'Uploader',
+  parameters: {
+    layout: 'centered',
+  },
   args: {
     placeholder: 'SVG, PNG, JPG or GIF (1400x700px)',
     buttonProps: {
@@ -47,5 +39,16 @@ export const Default: Story = {
         </div>`,
     },
   },
-  render: (args: any) => <Uploader {...args} />,
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'white', padding: '2rem', width: "500px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+export const Default: StoryObj = {
+  name: 'Uploader',
 };

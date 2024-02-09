@@ -8,36 +8,36 @@ import { usePathname } from 'next/navigation';
 // Material UI Components
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+import { ButtonProps } from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { styled, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ButtonProps } from '@mui/material/Button';
 
+import AttachMoneyIcon from '@mui/icons-material/AttachMoneyRounded';
+import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import MenuIcon from '@mui/icons-material/MenuRounded';
 // Material UI Icons
 import PersonIcon from '@mui/icons-material/PersonRounded';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoneyRounded';
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import MenuIcon from '@mui/icons-material/MenuRounded';
-import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
 
+import { colors } from '../';
 // Local Imports
 import { Logo } from './Logo';
-import { colors } from '../';
 
 interface INavbarPill {
   name: string;

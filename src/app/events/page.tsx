@@ -1,18 +1,19 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useMemo,useState } from 'react';
 import Link from 'next/link';
 
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui';
-import { Order, stableSort, getComparator } from '@/utils';
 import data from './events.json';
+
+import { EnhancedTable, IHeadCell, ProgressTag,Search } from '@/libs/ui';
+import { getComparator,Order, stableSort } from '@/utils';
 
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),

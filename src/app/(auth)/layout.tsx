@@ -1,10 +1,9 @@
 'use client';
 
 // Libs
-import { FullscreenImage as Background, Logo } from '@/libs/ui/components';
-
 // Internal
 import { StyledPaper } from '@/app/(auth)/_components';
+import { FullscreenImage as Background, Logo } from '@/libs/ui/components';
 
 export default function AuthenLayout({ children }: { children: React.ReactNode }) {
   return (

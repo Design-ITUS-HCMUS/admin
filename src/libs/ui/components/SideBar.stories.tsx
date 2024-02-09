@@ -1,11 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
 import Typography from '@mui/material/Typography';
+
 import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
 import SettingsRounded from '@mui/icons-material/SettingsRounded';
+
 import { SideBar } from './SideBar';
 import { ISideBarItem } from './SideBarItem';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SideBar> = {
   component: SideBar,

@@ -1,9 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
 import { Typography } from '@mui/material';
+
 import { EnhancedTable, IHeadCell } from './EnhancedTable';
+
 import { colors } from '@/libs/ui';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof EnhancedTable> = {
   component: EnhancedTable,

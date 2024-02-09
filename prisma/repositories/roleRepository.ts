@@ -1,5 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { prisma } from '../client';
+
+import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export default class RoleRepository {

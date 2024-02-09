@@ -3,14 +3,13 @@
 // React
 import Link from 'next/link';
 
-// Libs
-import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
-
 // Material UI Components
 import Button from '@mui/material/Button';
 
 // Internal
 import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
+// Libs
+import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
 
 function ChangePasswordPage() {
   return (

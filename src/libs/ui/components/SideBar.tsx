@@ -1,7 +1,8 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 
 import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+
 import { ISideBarItem, SideBarItem } from './SideBarItem';
 
 const StyledHeader = styled('div')(({ theme }) => ({

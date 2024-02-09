@@ -1,7 +1,7 @@
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import { ProgressIcon, colors } from '@/libs/ui';
+import { colors,ProgressIcon } from '@/libs/ui';
 
 const ProgressItem = styled('div')({
   display: 'inline-flex',
