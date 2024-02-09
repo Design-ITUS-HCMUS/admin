@@ -17,11 +17,19 @@ const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
 }));
 
 interface InputLayoutProps extends StackProps {
+  /** The HTML attribute <code>name</code> applied to the input. The <code>id</code> and <code>htmlFor</code> of the InputLabel are inherited from this too.*/
   name?: string;
+  /** The label of the input.  */
   label?: string;
+  /** The ratio of label width to field width. Only available when direction is <code>row</code>. */
   ratio?: number;
+  /** As default, the Input Layout use OutlinedInput, when children is passed, that input will be removed, you can use a custom input. */
   children?: React.ReactNode;
+  /** The helper text will show when <code>inputprops.error=true</code> */
   helperText?: string;
+  /** The props of the default input component. 
+   * If you want to use a custom input component, you can pass it as a child of <code>InputLayout</code>.
+   * These props will be ignored. */
   inputprops?: InputBaseComponentProps;
 }
 
@@ -40,16 +48,16 @@ export function InputLayout(props: InputLayoutProps) {
 
   return (
     <Stack spacing={1} alignItems='baseline' sx={{ width: '100%' }} {...props}>
-      {label && (
+      {Boolean(label) ? (
         <StyledInputLabel id={`${name}-label`} htmlFor={name} {...labelProps} sx={{ width: labelWidth }}>
           <Typography variant='subtitle2' component='span'>
             {label}
           </Typography>
         </StyledInputLabel>
-      )}
+      ) : null}
       <Stack sx={{ width: fieldsetWidth }}>
         {children ? children : <OutlinedInput inputProps={{ name: name, ...inputprops }} {...outlinedInputProps} />}
-        {helperText && <FormHelperText error={inputprops?.error}>{helperText}</FormHelperText>}
+        {Boolean(helperText) ? <FormHelperText error={inputprops?.error}>{helperText}</FormHelperText> : null}
       </Stack>
     </Stack>
   );

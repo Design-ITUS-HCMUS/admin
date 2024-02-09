@@ -4,7 +4,7 @@ import { SignJWT } from 'jose';
 
 import { AccountInformation, SendOTP, User } from '@/interfaces/user';
 import CommonService from '@/services/commonService';
-import { STATUS_CODE, templateRegister, templateResetPassword,TYPE_OTP } from '@/utils';
+import { STATUS_CODE, templateRegister, templateResetPassword, TYPE_OTP } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
 
 class AuthService {

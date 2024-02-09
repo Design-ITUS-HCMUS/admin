@@ -1,5 +1,5 @@
 'use client';
-import { MouseEvent,useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { visuallyHidden } from '@mui/utils';
 
 import { Theme, useMediaQuery } from '@mui/material';
@@ -91,7 +91,7 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        {!disableAction && <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
+        {disableAction ? null : <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
       </TableRow>
     </TableHead>
   );
@@ -131,15 +131,35 @@ function TableMenu({
 }
 
 interface EnhancedTableProps {
+  /** The head cells of the table, each cell must have a unique <code>id</code> to handle sorting. <br/>
+   * <code>interface IHeadCell {
+   *   disablePadding?: boolean;<br/>
+   *   id: string;<br/>
+   *   label: string;<br/>
+   *   numeric?: boolean;<br/>
+   * }</code>
+  */
   headCells: readonly IHeadCell[];
+  /** The data of the table, each row must have a unique <code>id</code> to handle action. 
+   * Moreover, other keys must match the <code>id</code> of the head cell. Otherwise, the data will not be rendered.
+  */
   rows: IRowCell[];
+  /** The total rows of the table support counting the total pages of table's pagination and show the total summary on the left side of table footer.*/
   totalRows: number;
+  /** The number of rows per page support counting the total pages of table's pagination. */
   rowsPerPage?: number;
+  /** Specify the current page of the table for the table pagination to highlight. */
   currentPage?: number;
+  /** The callback function when the page is changed by the table pagination. The <code>page</code> will be passed by. */
   onChangePage: (event: unknown, page: number) => void;
   onSort: (event: unknown, order: Order, orderBy: number | null) => void;
+  /** Disable the more action column. */
   disableAction?: boolean;
+  /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
+   * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
+  */
   onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  /** The children of the table menu. */
   children?: React.ReactNode;
 }
 
@@ -185,7 +205,7 @@ export function EnhancedTable({
 
   const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
     setAnchorEl(event.currentTarget);
-    onAct(event, _id);
+    if (_id) onAct(event, _id);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -210,7 +230,7 @@ export function EnhancedTable({
           />
         )}
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} />
+          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} disableAction={disableAction}/>
           <TableBody>
             {rows.map((row, index) => {
               return (
@@ -233,7 +253,7 @@ export function EnhancedTable({
                       </TableCell>
                     );
                   })}
-                  {!disableAction && (
+                  {disableAction ? null : (
                     <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
                       <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
                         <MoreIcon />

@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { colors,ProgressIcon } from '@/libs/ui';
+import { colors, ProgressIcon } from '@/libs/ui';
 
 const ProgressItem = styled('div')({
   display: 'inline-flex',
@@ -13,8 +13,11 @@ const ProgressItem = styled('div')({
 type Progress = 'done' | 'inprogress' | 'todo';
 
 interface ProgressProps {
+  /** The variant of the progress tag, controls the related color. */
   variant?: Progress;
+  /** The label of the progress tag. */
   label: string;
+  /** The collapsed state of the progress tag. */
   collapsed?: boolean;
 }
 

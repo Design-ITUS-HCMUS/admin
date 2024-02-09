@@ -11,27 +11,32 @@ const BGImage = styled(Image)({
   height: '100vh',
 });
 
-const BlackLayer = styled('div')({
-  position: 'absolute',
-  width: '100vw',
-  height: '100vh',
-});
+const BlackLayer = styled('div', { shouldForwardProp: (prop) => prop !== 'opacity' })<{ opacity: number }>(
+  ({ opacity }) => ({
+    position: 'absolute',
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: `rgba(0,0,0,${opacity})`,
+  })
+);
 
 interface FullscreenImageProps {
-  opacity?: number | 0.5;
-  src: string | '/thumbnail.jpg';
+  /**How transparent the black layer should be. A number between 0 and 1.*/
+  opacity?: number;
+  /**The source of the image.*/
+  src: string;
+  /**The alt text of the image.*/
   alt: string;
+  /**Props for the Image Component from next.*/
   imageProps?: ImageProps;
-  blackLayerStyle?: React.CSSProperties;
 }
 
-export function FullscreenImage({ opacity = 0.5, src, alt, imageProps, blackLayerStyle }: FullscreenImageProps) {
-  if (opacity > 1) opacity = 1;
-  if (opacity < 0) opacity = 0;
+export function FullscreenImage({ opacity = 0.5, src, alt, imageProps }: FullscreenImageProps) {
+  opacity = Math.max(0, Math.min(1, opacity));
   return (
     <>
       <BGImage src={src} loading='lazy' width='0' height='0' sizes='100vw' alt={alt} {...imageProps} />
-      <BlackLayer style={{ backgroundColor: `rgba(0,0,0,${opacity})`, ...blackLayerStyle }} />
+      <BlackLayer opacity={opacity} />
     </>
   );
 }

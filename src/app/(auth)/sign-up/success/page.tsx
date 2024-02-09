@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // Internal
-import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
+import { CardLayout, Countdown, Row } from '@/app/(auth)/_components';
 
 const SIGN_IN_PAGE = '/sign-in';
 
@@ -20,19 +20,15 @@ function SuccessPage() {
   };
 
   return (
-    <CardPage header='Đăng ký thành công'>
+    <CardLayout header='Đăng ký thành công'>
       <Typography variant='body1'>
         Bạn đã đăng ký tài khoản thành công, vui lòng đăng nhập với tài khoản mới. Trở về trang đăng nhập sau{' '}
-        <CountDown initialSeconds={5} onComplete={backSignInPage} /> giây.
+        <Countdown initialSeconds={5} onComplete={backSignInPage} /> giây.
       </Typography>
-      <Row>
-        <Link href='/sign-in'>
-          <Button variant='contained' size='large' sx={{ width: '100%' }}>
-            Đăng nhập
-          </Button>
-        </Link>
-      </Row>
-    </CardPage>
+      <Button size='large' component={Link} href='/sign-in'>
+        Đăng nhập
+      </Button>
+    </CardLayout>
   );
 }
 

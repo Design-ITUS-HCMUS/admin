@@ -10,6 +10,7 @@ const meta: Meta<typeof Uploader> = {
   parameters: {
     layout: 'centered',
   },
+  tags: [ 'autodocs' ],
   args: {
     placeholder: 'SVG, PNG, JPG or GIF (1400x700px)',
     buttonProps: {
@@ -20,29 +21,9 @@ const meta: Meta<typeof Uploader> = {
       },
     },
   },
-  argTypes: {
-    buttonProps: {
-      description: `<div>
-          Extends from <code>ButtonProps</code> of MUI with additional props:
-          <li>
-            <code>state</code>: Custom state of uploader <code>resing | error</code>
-          </li>
-          <li>
-            <code>onUpload</code>: Custom event handler, executed when a file is uploaded
-          </li>
-        </div>`,
-    },
-    inputProps: {
-      description: `<div>
-          Uploader has a hidden input element to handle file upload. This prop \
-          controls that input, you can custom the input element's performance, such as \
-          <code>multiple</code>, <code>required</code>, etc.
-        </div>`,
-    },
-  },
   decorators: [
     (Story) => (
-      <div style={{ backgroundColor: 'white', padding: '2rem', width: "500px" }}>
+      <div style={{ backgroundColor: 'white', padding: '2rem', width: '500px' }}>
         <Story />
       </div>
     ),
@@ -50,6 +31,35 @@ const meta: Meta<typeof Uploader> = {
 };
 
 export default meta;
-export const Default: StoryObj = {
-  name: 'Uploader',
+
+export const Resting: StoryObj = {
+  name: 'Uploader Resting',
+  args: {
+    buttonProps: {
+      state: 'resting',
+    },
+  },
 };
+
+export const Error: StoryObj = {
+  name: 'Uploader Error',
+  args: {
+    buttonProps: {
+      state: 'error',
+    },
+    helperText: 'Invalid files!',
+  },
+};
+
+export const WithInputProps: StoryObj = {
+  name: 'Uploader with inputProps',
+  args: {
+    inputProps: {
+      multiple: true,
+      required: true,
+    },
+    placeholder: 'Accept multiple files', 
+  },
+};
+
+

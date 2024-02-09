@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useParams,usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -10,7 +10,7 @@ import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
 import SettingsRounded from '@mui/icons-material/SettingsRounded';
 import SubmissionsRounded from '@mui/icons-material/WysiwygRounded';
 
-import { ISideBarItem,SideBar } from '@/libs/ui';
+import { ISideBarItem, SideBar } from '@/libs/ui';
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
   minHeight: 'calc(100vh - 64px - 48px)',
@@ -58,7 +58,7 @@ export default function EventDetailsTemplate({ children }: { children: React.Rea
   React.useEffect(() => {
     const pathSegments = pathname.split('/');
     const baseSegments = baseSegment.split('/');
-    if (baseSegment.split('/').length !== pathSegments.length) setActive(pathSegments[baseSegments.length]);
+    if (baseSegments.length !== pathSegments.length) setActive(pathSegments[baseSegments.length]);
   }, [pathname, baseSegment]);
 
   const handleClick = (key: string) => {

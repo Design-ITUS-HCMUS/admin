@@ -12,9 +12,9 @@ import Typography from '@mui/material/Typography';
 
 import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
+import members from '@/libs/mock/members.json';
 import { InputLayout } from '@/libs/ui';
 import { SelectDepartment, SelectPosition, SelectRole } from '../_components';
-import members from '../members.json';
 
 export default function MemberDetailsPage({ params }: { params: { id: string } }) {
   const [readOnly, setReadOnly] = useState(true);
@@ -33,7 +33,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           <MoreIcon />
         </IconButton>
       </Stack>
-      <Stack id='edit-info-member-frm' component='form' spacing={2} onSubmit={handleSubmit}>
+      <Stack id='edit-info-member-form' component='form' spacing={2} onSubmit={handleSubmit}>
         <InputLayout
           label='Username'
           direction='row'
@@ -117,7 +117,7 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
             readOnly: readOnly,
           }}
         />
-        {!readOnly && (
+        {!!readOnly && (
           <Button disabled={readOnly} sx={{ width: 'fit-content' }} type='submit'>
             Lưu
           </Button>

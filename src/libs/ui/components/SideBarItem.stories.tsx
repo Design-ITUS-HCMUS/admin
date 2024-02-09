@@ -34,7 +34,7 @@ const meta: Meta<typeof SideBarItem> = {
   },
   decorators: [
     (Story) => (
-      <Paper sx={{ p: 2, width: "240px" }} variant='section'>
+      <Paper sx={{ p: 2, width: '240px' }} variant='section'>
         <Story />
       </Paper>
     ),

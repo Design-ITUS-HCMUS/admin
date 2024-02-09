@@ -18,10 +18,10 @@ const meta: Meta<typeof FullscreenImage> = {
         step: 0.1,
       },
     },
-  }
+  },
 };
 
 export default meta;
 export const Default: StoryObj = {
   name: 'Fullscreen Image',
-}
+};

@@ -7,35 +7,25 @@ import Link from 'next/link';
 import Button from '@mui/material/Button';
 
 // Internal
-import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
+import { CardLayout, StyledForm } from '@/app/(auth)/_components';
 // Libs
-import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
+import { InputLayout, PasswordInput } from '@/libs/ui';
 
 function ChangePasswordPage() {
   return (
-    <CardPage header='Thay đổi mật khẩu'>
+    <CardLayout header='Thay đổi mật khẩu'>
       <StyledForm>
-        <PassField
-          label='Mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập mật khẩu mới',
-          }}
-        />
-        <PassField
-          label='Nhập lại mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập lại mật khẩu mới',
-          }}
-        />
+        <InputLayout label='Mật khẩu mới'>
+          <PasswordInput placeholder='Nhập mật khẩu mới'/>
+        </InputLayout>
+        <InputLayout label='Nhập lại mật khẩu mới'>
+          <PasswordInput placeholder='Nhập lại mật khẩu mới'/>
+        </InputLayout>
       </StyledForm>
-      <Row>
-        <Link href='/sign-in/change-password/success'>
-          <Button variant='contained' size='large' sx={{ width: '100%' }}>
-            Thay đổi
-          </Button>
-        </Link>
-      </Row>
-    </CardPage>
+      <Button size='large' component={Link} href='/sign-in/change-password/success'>
+        Thay đổi
+      </Button>
+    </CardLayout>
   );
 }
 

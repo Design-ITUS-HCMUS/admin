@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
-
+import SelectInput from '@mui/material/Select';
 import { InputLayout } from './InputLayout';
 
 const meta: Meta<typeof InputLayout> = {
   title: 'Global/Input/Layout',
   component: InputLayout,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div style={{ backgroundColor: 'white', padding: '2rem' }}>
@@ -25,6 +26,7 @@ const meta: Meta<typeof InputLayout> = {
       required: true,
     },
     direction: 'column',
+    sx: { width: '300px' },
   },
   argTypes: {
     ratio: {
@@ -34,12 +36,6 @@ const meta: Meta<typeof InputLayout> = {
         max: 1,
         step: 0.1,
       },
-      description: 'The ratio of label width to field width. Only available when direction is <code>row</code>.',
-    },
-    inputprops: {
-      description: `The props of the default input component. \
-        If you want to use a custom input component, you can pass it as a child of <code>InputLayout</code>.\
-        These props will be ignored.`,
     },
     direction: {
       description:
@@ -49,6 +45,50 @@ const meta: Meta<typeof InputLayout> = {
 };
 
 export default meta;
-export const Default: StoryObj = {
-  name: 'Layout',
+export const Column: StoryObj = {
+  name: 'Layout Column',
+  args: {
+    direction: 'column',
+  },
+};
+export const Row: StoryObj = {
+  name: 'Layout Row',
+  args: {
+    direction: 'row',
+    sx: { width: '500px' },
+    inputprops: {
+      placeholder: 'Default with 50% label and 50% input field',
+    },
+  },
+};
+export const CustomRatio: StoryObj = {
+  name: 'Custom Ratio',
+  args: {
+    ratio: 0.25,
+    direction: 'row',
+    sx: { width: '500px' },
+    inputprops: {
+      placeholder: '25% label and 75% input field',
+    },
+  },
+};
+export const ErrorState: StoryObj = {
+  name: 'Error State',
+  args: {
+    ratio: 0.25,
+    direction: 'row',
+    sx: { width: '500px' },
+    inputprops: {
+      placeholder: '25% label and 75% input field',
+      error: true,
+    },
+    helperText: 'This is an error message',
+  },
+};
+export const CustomInput: StoryObj = {
+  name: 'Custom Input',
+  args: {
+    direction: 'column',
+    children: <SelectInput><option>Option 1</option></SelectInput>,
+  },
 };

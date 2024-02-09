@@ -7,8 +7,7 @@ import Typography from '@mui/material/Typography';
 import { colors } from '@/libs/ui';
 
 export const MUIPaper = ({ ...rest }: PaperProps) => (
-  <Paper
-    {...rest}>
+  <Paper {...rest}>
     <Typography>MUI Paper</Typography>
   </Paper>
 );
@@ -16,6 +15,10 @@ export const MUIPaper = ({ ...rest }: PaperProps) => (
 const meta: Meta = {
   title: 'Custom MUI/Paper',
   component: MUIPaper,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
   decorators: [
     (Story) => (
       <div style={{ padding: '24px', background: colors.neutral[50] }}>
@@ -24,7 +27,6 @@ const meta: Meta = {
     ),
   ],
   args: {
-    elevation: 4,
     sx: {
       width: '300px',
       height: '200px',
@@ -38,6 +40,6 @@ type Story = StoryObj;
 export const Section: Story = {
   args: {
     variant: 'section',
-    children: <Typography>Section Paper</Typography>
+    children: <Typography>Section Paper</Typography>,
   },
 };

@@ -7,17 +7,22 @@ enum LogoSize {
 }
 
 interface LogoProps {
+  /**
+   * Size of the logo corresponding to the size of the logo in the design system:
+   *    <li><code>small</code>: 32px</li>
+   *    <li><code>medium</code>: 44px</li>
+   *    <li><code>large</code>: 60px</li>
+   */
   size: keyof typeof LogoSize;
-  imgStyle?: React.CSSProperties;
 }
 
-export function Logo({ size = 'medium', imgStyle }: LogoProps) {
+export function Logo({ size = 'medium' }: LogoProps) {
   return (
     <Image
       src='/designituslogo.svg'
       width='0'
       height={LogoSize[size]}
-      style={{ width: 'auto', ...imgStyle }}
+      style={{ width: 'auto' }}
       alt='Design ITUS Logo'
     />
   );

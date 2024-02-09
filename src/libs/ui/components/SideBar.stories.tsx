@@ -25,9 +25,6 @@ const SideBarItems: ISideBarItem[] = [
 const meta: Meta<typeof SideBar> = {
   title: 'Global/Side Bar',
   component: SideBar,
-  parameters: {
-    layout: 'centered',
-  },
   argTypes: {
     header: {
       description: 'The header of the side bar.',

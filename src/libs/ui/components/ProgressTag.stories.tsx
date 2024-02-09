@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import { ProgressTag } from './ProgressTag';
 
 const meta: Meta<typeof ProgressTag> = {
-  title: 'Global/ProgressTag',
+  title: 'Global/Progress Tag',
   component: ProgressTag,
   parameters: {
     layout: 'centered',
@@ -26,5 +26,5 @@ const meta: Meta<typeof ProgressTag> = {
 
 export default meta;
 export const Default: StoryObj = {
-  name: 'ProgressTag',
+  name: 'Progress Tag',
 };

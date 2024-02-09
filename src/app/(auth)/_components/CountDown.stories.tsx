@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { CountDown } from './CountDown';
+import { Countdown } from './Countdown';
 
-const meta: Meta<typeof CountDown> = {
-  title: 'Pages/Auth/CountDown',
-  component: CountDown,
+const meta: Meta<typeof Countdown> = {
+  title: 'Pages/Auth/Countdown',
+  component: Countdown,
   parameters: {
     layout: 'centered',
   },

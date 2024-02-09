@@ -6,12 +6,15 @@ import MenuItem from '@mui/material/MenuItem';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
-import { colors,DropdownText, InputLayout } from '@/libs/ui';
+import { colors, DropdownText, InputLayout } from '@/libs/ui';
 import { ROLE } from '@/utils';
 
-interface CustomSelectProps {
+export interface CustomSelectProps {
+  /** The ratio of the input to the label. Each of the component use InputLayout as the root component, this prop will be passed directly to InputLayout */
   ratio?: number;
+  /** Default value of the input, depend on which component you use, the type can be different.*/
   defaultValue?: number | string | string[];
+  /** Determine the select can be modified or not. */
   readOnly?: boolean;
 }
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import Select, { SelectProps } from '@mui/material/Select';
-import { SvgIconProps } from '@mui/material/SvgIcon';
 import { styled } from '@mui/material/styles';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 

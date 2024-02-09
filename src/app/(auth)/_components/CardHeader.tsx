@@ -1,32 +1,18 @@
 'use client';
 
-// Material UI Components
-import { TypographyProps } from '@mui/material/';
-import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 interface CardHeaderProps {
+  /**The content of the component.*/
   children?: React.ReactNode;
+  /**This component use Typography of MUI as the root, <code>typographyProps</code> helps pass the customization props.*/
   typographyProps?: TypographyProps;
 }
 
-const CardHeaderWrapper = styled(Typography)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '.5rem',
-});
-
-export const CardHeader = ({ children, typographyProps }: CardHeaderProps) => {
-  const theme = useTheme();
-
+export function CardHeader({ children, typographyProps }: CardHeaderProps) {
   return (
-    <CardHeaderWrapper
-      {...typographyProps}
-      variant='h5'
-      sx={{ fontWeight: '700', textAlign: 'center', color: theme.palette.primary.darker }}>
+    <Typography {...typographyProps} variant='h5' fontWeight='700' textAlign='center' sx={{ color: 'primary.darker' }}>
       {children}
-    </CardHeaderWrapper>
+    </Typography>
   );
-};
+}

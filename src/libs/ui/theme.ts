@@ -1,12 +1,13 @@
 'use client';
 import { Be_Vietnam_Pro } from 'next/font/google';
+
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 import colors from './color';
 
 const beVietnamPro = Be_Vietnam_Pro({
   display: 'swap',
-  weight: '400',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['vietnamese'],
 });
 

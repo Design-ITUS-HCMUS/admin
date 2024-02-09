@@ -238,6 +238,7 @@ const settings: INavbarPill = {
 };
 
 export interface NavbarProps {
+  /** The URL of the active page. Just use for storybook, in the usual case, the component will check pathname.*/
   activeURL?: string;
 }
 

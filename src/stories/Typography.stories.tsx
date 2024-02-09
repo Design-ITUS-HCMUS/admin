@@ -8,6 +8,7 @@ export const MUITypography = ({ ...rest }: TypographyProps) => <Typography {...r
 const meta: Meta = {
   title: 'Custom MUI/Typography',
   component: MUITypography,
+  tags: ['autodocs'],
   args: {
     children: 'Typography',
   },

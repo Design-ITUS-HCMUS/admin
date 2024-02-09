@@ -13,10 +13,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 
 import { InputLayout } from '@/libs/ui';
-import { SelectDepartment, SelectPosition,SelectRole } from './CustomSelect';
+import { SelectDepartment, SelectPosition, SelectRole } from './CustomSelect';
 
 interface CreateAccountModalProps {
+  /**Control the state <code>open</code> of the MUI Dialog root component*/
   open: boolean;
+  /**The callback function to be executed when the MUI Dialog root component is closed*/
   onClose: () => void;
 }
 

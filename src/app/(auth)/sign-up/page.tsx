@@ -1,6 +1,5 @@
 'use client';
 
-// Libs
 // Material UI Components
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,57 +9,51 @@ import MailIcon from '@mui/icons-material/EmailOutlined';
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
-import { CardPage, Row,StyledForm } from '@/app/(auth)/_components';
-import { PasswordFieldWithLabel as PassField, TextFieldWithLabel as TextField } from '@/libs/ui/components';
+import { CardLayout, StyledForm } from '@/app/(auth)/_components';
+import { PasswordInput, InputLayout } from '@/libs/ui';
 
 function SignUpPage() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    /* eslint-disable no-console */
+    console.log('Submit sign-up-form');
+  };
   return (
-    <CardPage
-      header='Đăng ký tài khoản'
-      showFooter
-      mainText='Đã có tài khoản?'
-      linkText='Đăng nhập'
-      linkHref='/sign-in'>
-      <StyledForm>
-        <TextField
-          label='Username'
-          inputProps={{
-            placeholder: 'Username',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <PersonIcon />
-              </InputAdornment>
-            ),
-          }}></TextField>
-        <TextField
-          label='Email'
-          inputProps={{
-            placeholder: 'Email',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <MailIcon />
-              </InputAdornment>
-            ),
-          }}></TextField>
-        <PassField
-          label='Mật khẩu'
-          inputProps={{
-            placeholder: 'Nhập mật khẩu',
-          }}
-        />
-        <PassField
-          label='Nhập lại mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập lại mật khẩu mới',
-          }}
-        />
+    <CardLayout header='Đăng ký tài khoản' showFooter page='signup'>
+      <StyledForm id='sign-up-form' onSubmit={handleSubmit}>
+        <InputLayout label='Username' name='username' inputprops={{
+          placeholder: 'Username',
+          endAdornment: (
+            <InputAdornment position='end'>
+              <PersonIcon />
+            </InputAdornment>
+          ),
+        }}/>
+        <InputLayout label='Email' name='email' inputprops={{
+          placeholder: 'Email',
+          endAdornment: (
+            <InputAdornment position='end'>
+              <MailIcon />
+            </InputAdornment>
+          ),
+        }}/>
+        <InputLayout label='Mật khẩu' name='password'>
+          <PasswordInput
+            inputProps={{
+              placeholder: 'Nhập mật khẩu',
+            }}
+          />
+        </InputLayout>
+        <InputLayout label='Nhập lại mật khẩu' name='password'>
+          <PasswordInput
+            inputProps={{
+              placeholder: 'Nhập lại mật khẩu',
+            }}
+          />
+        </InputLayout>
       </StyledForm>
-      <Row>
-        <Button variant='contained' size='large'>
-          Đăng ký
-        </Button>
-      </Row>
-    </CardPage>
+      <Button size='large' form='sign-up-form'>Đăng ký</Button>
+    </CardLayout>
   );
 }
 

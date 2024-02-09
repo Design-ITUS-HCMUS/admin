@@ -9,6 +9,7 @@ const meta: Meta<NavbarProps> = {
   parameters: {
     layout: 'centered',
   },
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -16,3 +17,10 @@ type Story = StoryObj;
 export const Default: Story = {
   name: 'Nav Bar',
 };
+export const Active: Story = {
+  name: 'Nav Bar with active nav pill',
+  args: {
+    activeURL: '/events',
+  },
+};
+

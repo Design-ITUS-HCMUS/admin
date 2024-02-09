@@ -1,5 +1,5 @@
 'use client';
-import { MouseEvent,useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import Link from 'next/link';
 
 import Button from '@mui/material/Button';
@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
+import data from '@/libs/mock/members.json';
 import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
 import { CreateAccountModal } from './_components';
-import data from './members.json';
 
 const ToolBar = styled('div')({
   display: 'flex',
@@ -84,10 +84,10 @@ export default function AccountsPage() {
       <ToolBar>
         <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
         <Stack direction='row' spacing={2}>
-          <Button variant='contained' color='info' onClick={() => setOpen(true)}>
+          <Button color='info' onClick={() => setOpen(true)}>
             Tạo tài khoản
           </Button>
-          <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
+          <Button color='info' startIcon={<IosShareRounded />}>
             Xuất file
           </Button>
         </Stack>

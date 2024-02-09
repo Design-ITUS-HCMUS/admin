@@ -6,14 +6,14 @@ import Link from 'next/link';
 
 // Material UI Components
 import Button from '@mui/material/Button';
-import { styled,useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 // Internal
-import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
+import { CardLayout, Countdown, Row } from '@/app/(auth)/_components';
 // Libs
-import { colors } from '@/libs/ui';
-import { OTPInput } from '@/libs/ui/components';
+import { OTPInput } from '@/libs/ui';
+import { hiddenEmail } from '@/utils';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -28,7 +28,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 function OTPPage() {
-  const theme = useTheme();
   const [otp, setOtp] = useState('');
   const [ableResend, setAbleResend] = useState(false);
   const onChange = (value: string) => setOtp(value);
@@ -37,27 +36,22 @@ function OTPPage() {
   };
 
   return (
-    <CardPage header='Xác thực mã OTP' showFooter mainText='Chưa có tài khoản?' linkText='Đăng ký' linkHref='/sign-up'>
+    <CardLayout header='Xác thực mã OTP' showFooter page='signin'>
       <Typography variant='body1'>
-        Một mã OTP đã được gửi đến de******ub@gmail.com. Vui lòng không chia sẻ với bất kỳ ai. Nếu không nhận được
-        email, bạn có thể gửi lại sau <CountDown initialSeconds={60} onComplete={enableResend} /> giây.
+        Một mã OTP đã được gửi đến {hiddenEmail('ngantruc2003@gmail.com')}. Vui lòng không chia sẻ với bất kỳ ai. Nếu
+        không nhận được email, bạn có thể gửi lại sau <Countdown initialSeconds={60} onComplete={enableResend} /> giây.
       </Typography>
       <OTPInput onChange={onChange} />
       <VisuallyHiddenInput type='number' readOnly value={otp} />
       <Row>
-        <Button
-          disabled={!ableResend}
-          variant={ableResend ? 'text' : undefined}
-          sx={{ color: ableResend ? theme.palette.primary.main : colors.neutral[300] }}>
+        <Button disabled={!ableResend} variant='text'>
           Gửi lại mã
         </Button>
-        <Link href='/sign-in/change-password'>
-          <Button variant='contained' size='large' sx={{ width: '100%' }}>
-            Xác nhận
-          </Button>
-        </Link>
+        <Button size='large' component={Link} href='/sign-in/change-password'>
+          Xác nhận
+        </Button>
       </Row>
-    </CardPage>
+    </CardLayout>
   );
 }
 

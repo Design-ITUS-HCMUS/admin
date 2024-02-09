@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { colors,DropdownText, InputLayout, Uploader } from '@/libs/ui';
+import { colors, DropdownText, InputLayout, Uploader } from '@/libs/ui';
 
 const StyledInputHeader = styled(Input)({
   fontSize: '34px',
@@ -28,6 +28,7 @@ const StyledInputHeader = styled(Input)({
 });
 
 interface CreateEventFormProps {
+  /**The callback function to be executed when the form is submitted.*/
   onSubmit: (formData: FormData) => void;
 }
 
@@ -65,7 +66,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
     );
   };
   return (
-    <form onSubmit={handleSubmit} method='post' id='create-event-form'>
+    <form onSubmit={handleSubmit} id='create-event-form'>
       <Stack spacing={2} direction='row'>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <StyledInputHeader id='name' placeholder='Outr Space' required />
@@ -74,13 +75,6 @@ export function CreateEventForm(props: CreateEventFormProps) {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker defaultValue={dayjs(new Date())} format='DD/MM/YYYY hh:mm A' />
             </LocalizationProvider>
-          </InputLayout>
-          <InputLayout name='leader' label='Trưởng BTC' direction='row' ratio={0.5} inputprops={{ required: true }}>
-            <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderLeaderValue} required>
-              <MenuItem value='Võ Minh Anh Thư'>Võ Minh Anh Thư</MenuItem>
-              <MenuItem value='Triệu Nhật Minh'>Triệu Nhật Minh</MenuItem>
-              <MenuItem value='Võ Tuấn Tài'>Võ Tuấn Tài</MenuItem>
-            </DropdownText>
           </InputLayout>
           <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputprops={{ required: true }}>
             <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderTypeValue} required>

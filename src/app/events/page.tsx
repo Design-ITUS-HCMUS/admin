@@ -1,5 +1,5 @@
 'use client';
-import { useMemo,useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import Button from '@mui/material/Button';
@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import { EnhancedTable, IHeadCell, ProgressTag,Search } from '@/libs/ui';
-import { getComparator,Order, stableSort } from '@/utils';
-import data from './events.json';
+import data from '@/libs/mock/events.json';
+import { EnhancedTable, IHeadCell, ProgressTag, Search } from '@/libs/ui';
+import { getComparator, Order, stableSort } from '@/utils';
 
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
@@ -123,11 +123,9 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
           <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
           <Stack direction='row' spacing={2}>
             <Link href='/events/create'>
-              <Button variant='contained' color='info'>
-                Tạo sự kiện
-              </Button>
+              <Button color='info'>Tạo sự kiện</Button>
             </Link>
-            <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
+            <Button color='info' startIcon={<IosShareRounded />}>
               Xuất file
             </Button>
           </Stack>
