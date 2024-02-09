@@ -1,24 +1,11 @@
 import * as React from 'react';
 
-import { Typography } from '@mui/material';
-
-import { EnhancedTable, IHeadCell } from './EnhancedTable';
+import type { Meta, StoryObj } from '@storybook/react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 import { colors } from '@/libs/ui';
-import type { Meta, StoryObj } from '@storybook/react';
-
-const meta: Meta<typeof EnhancedTable> = {
-  component: EnhancedTable,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
+import { EnhancedTable, IHeadCell } from './EnhancedTable';
 
 const headCells: readonly IHeadCell[] = [
   {
@@ -146,13 +133,29 @@ const refactorData = (data: any): ITableCell[] => {
   }) as ITableCell[];
 };
 
-export const Default: Story = {
-  name: 'EnhancedTable',
+const meta: Meta<typeof EnhancedTable> = {
+  title: 'Global/Enhanced Table',
+  component: EnhancedTable,
   args: {
     headCells: headCells,
     totalRows: data.length,
     rowsPerPage: 5,
     rows: refactorData(data).slice(0, 5),
   },
-  render: (args: any) => <EnhancedTable {...args} />,
+  parameters: {
+    layout: 'centered',
+  },
+  decorators: [
+    (Story) => (
+      <Paper sx={{ p: 2 }} variant='section'>
+        <Story />
+      </Paper>
+    ),
+  ],
+};
+
+export default meta;
+type Story = StoryObj;
+export const Default: Story = {
+  name: 'Enhanced Table',
 };

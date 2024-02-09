@@ -1,9 +1,9 @@
 import * as React from 'react';
 
+import type { Meta, StoryObj } from '@storybook/react';
 import { SvgIconProps } from '@mui/material';
 
 import { ProgressIcon } from '@/libs/ui';
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta = {
   title: 'Custom MUI/Custom Icons',

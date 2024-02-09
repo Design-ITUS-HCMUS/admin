@@ -1,19 +1,29 @@
 'use client';
-
 // React
 import { useState } from 'react';
 import Link from 'next/link';
 
 // Material UI Components
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
+import { styled,useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 // Internal
 import { CardPage, CountDown, Row } from '@/app/(auth)/_components';
 // Libs
-import { colors } from '@/libs/ui';
-import { OTPInput } from '@/libs/ui/components';
+import { colors, OTPInput } from '@/libs/ui';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 function OTPPage() {
   const theme = useTheme();
@@ -31,6 +41,7 @@ function OTPPage() {
         email, bạn có thể gửi lại sau <CountDown initialSeconds={60} onComplete={enableResend} /> giây.
       </Typography>
       <OTPInput onChange={onChange} />
+      <VisuallyHiddenInput type='number' readOnly value={otp}/>
       <Row>
         <Button
           disabled={!ableResend}

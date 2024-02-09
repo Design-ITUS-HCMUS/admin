@@ -1,7 +1,7 @@
-import { prisma } from '../client';
-
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+
+import { prisma } from '../client';
 
 export default class RoleActivityRepository {
   private model: Prisma.RoleActivityDelegate<DefaultArgs>;
@@ -16,7 +16,7 @@ export default class RoleActivityRepository {
       });
       return newRoleActivity;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -26,7 +26,7 @@ export default class RoleActivityRepository {
       const allRoleActivities = await this.model.findMany();
       return allRoleActivities;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -38,7 +38,7 @@ export default class RoleActivityRepository {
       });
       return roleActivity;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

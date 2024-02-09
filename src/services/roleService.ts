@@ -1,7 +1,8 @@
+import RoleRepository from '@repositories/roleRepository';
+
 import { Role } from '@/interfaces/role';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import RoleRepository from '@repositories/roleRepository';
 
 class RoleService {
   private repository: RoleRepository;
@@ -70,7 +71,7 @@ class RoleService {
       }
       const users = role.users.map((user) => ({ id: user.id }));
       const deletedRole = await this.repository.delete(id, users);
-      return new BaseResponse(STATUS_CODE.OK, true, 'Role deleted successfully', role);
+      return new BaseResponse(STATUS_CODE.OK, true, 'Role deleted successfully', deletedRole);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }

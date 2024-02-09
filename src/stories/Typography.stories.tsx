@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { Typography, TypographyProps } from '@mui/material';
-
 import type { Meta, StoryObj } from '@storybook/react';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 
 export const MUITypography = ({ ...rest }: TypographyProps) => <Typography {...rest}>MUI Typography</Typography>;
 

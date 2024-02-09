@@ -5,8 +5,11 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "prettier/prettier",
-    "prettier"
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
@@ -18,9 +21,12 @@
       {
         "patterns": ["@mui/*/*/*"]
       }
-    ]
+    ],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-explicit-any": "off"
   },
-  "plugins": ["simple-import-sort"],
   "overrides": [
     {
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
@@ -30,16 +36,16 @@
           {
             "groups": [
               // Packages `react` related packages come first.
-              ["^react.*", "^next.*"],
+              ["^react.*", "^next.*", "^@?\\w"],
               // @mui/material/* imports
-              ["^@mui/material.*"],
+              ["^@storybook.*", "^@mui/material.*"],
               // @mui/icons-material/* imports
               ["^@mui/icons-material.*"],
               // Side effect imports.
               ["^\\u0000"],
               // Parent imports. Put `..` second.
               // Other relative imports. Put same-folder imports and `.` last.
-              ["^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              ["^(src|@)(/.*|$)", "^\\.\\.(?!/?$)", "^\\.\\./?$", "^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
               // Style imports.
               ["^.+\\.?(css)$"]
             ]

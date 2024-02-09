@@ -1,6 +1,6 @@
-import { CardHeader } from './CardHeader';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CardHeader } from './CardHeader';
 
 const meta: Meta<typeof CardHeader> = {
   title: 'Pages/Auth/CardHeader',

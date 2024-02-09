@@ -1,7 +1,7 @@
 // React
-import { CardFooter } from './CardFooter';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CardFooter } from './CardFooter';
 
 const meta: Meta<typeof CardFooter> = {
   title: 'Pages/Auth/Card Footer',

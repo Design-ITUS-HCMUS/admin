@@ -1,6 +1,7 @@
-import { InputAdornment,OutlinedInput, OutlinedInputProps } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
 
-import { SearchOutlined } from '@mui/icons-material';
+import SearchOutlined from '@mui/icons-material/SearchOutlined';
 
 interface SearchProps {
   onSearch: (_value: string) => void;

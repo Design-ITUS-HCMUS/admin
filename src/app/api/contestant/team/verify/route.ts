@@ -4,7 +4,7 @@ import paymentService from '@/services/paymentService';
 
 /**
  * @swagger
- * /api/payment/verify:
+ * /api/contestant/team/verify:
  *   patch:
  *     tags:
  *       - Payment

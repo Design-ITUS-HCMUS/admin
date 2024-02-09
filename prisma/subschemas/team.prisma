@@ -3,9 +3,10 @@ model Team {
   name          String         @unique
   status        Boolean        @default(true)
   category      String?
-  paymentStatus Int            @default(0) // 0 = Unpaid, 1 = Paid, waiting for confirmation, 2 = Confirm
+  paymentStatus Boolean        @default(false) // false = Unverified, true = Verified
   paymentProof  Int?
   submission    Int[]
-  paymentID     Payment?
+  paymentID     Int?           @unique
+  payment       Payment?       @relation(fields: [paymentID], references: [id])
   accountEvents AccountEvent[]
 }

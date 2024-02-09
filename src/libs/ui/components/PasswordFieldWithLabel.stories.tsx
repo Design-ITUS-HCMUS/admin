@@ -1,5 +1,6 @@
-import { PasswordFieldWithLabel } from './PasswordFieldWithLabel';
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { PasswordFieldWithLabel } from './PasswordFieldWithLabel';
 
 const meta: Meta<typeof PasswordFieldWithLabel> = {
   title: 'Global/Input/Password',

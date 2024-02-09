@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import UserService from '@/services/userService';
+import AuthService from '@/services/authService';
 
 /**
  * @swagger
- * /api/user/registration:
+ * /api/auth/registration:
  *   post:
  *     tags:
- *       - User
- *     description: Create account for user
+ *       - Authentication
+ *     description: Create account for user.
  *     requestBody:
  *       required: true
  *       content:
@@ -25,17 +25,24 @@ import UserService from '@/services/userService';
  *               password:
  *                  type: string
  *                  example: 12345678
+ *               OTP:
+ *                  type: string
+ *                  example: 123456
  *     responses:
  *       200:
  *         description: Creating account successfully.
- *       409:
- *         description: Existed username or email.
+ *       403:
+ *         description: Invalid OTP.
  *       500:
  *         description: Error message.
  */
-
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const res = await UserService.createUser(data);
-  return NextResponse.json(res.responseBody(), { status: res.status });
+  const OTP = decodeURIComponent(req.cookies.get('OTP')?.value || '');
+  const res = await AuthService.register(data, OTP);
+  const response = NextResponse.json(res.responseBody(), { status: res.status });
+  if (res.status === 200) {
+    response.cookies.delete('OTP');
+  }
+  return response;
 }

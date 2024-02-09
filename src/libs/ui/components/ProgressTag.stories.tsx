@@ -1,8 +1,9 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import { ProgressTag } from './ProgressTag';
 
 import type { Meta, StoryObj } from '@storybook/react';
+import Paper from '@mui/material/Paper';
+
+import { ProgressTag } from './ProgressTag';
 
 const meta: Meta<typeof ProgressTag> = {
   title: 'Global/ProgressTag',

@@ -16,6 +16,11 @@ export const getApiDocs = async () => {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
+          Cookie: {
+            type: 'apiKey',
+            in: 'cookie',
+            name: 'OTP',
+          },
         },
       },
       security: [],

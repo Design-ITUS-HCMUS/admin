@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { MenuItem } from '@mui/material';
+import type { Meta, StoryObj } from '@storybook/react';
+import MenuItem from '@mui/material/MenuItem';
+
 import ExpandMore from '@mui/icons-material/ExpandMoreRounded';
 
 import { DropdownText } from './DropdownText';
-
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof DropdownText> = {
   title: 'Global/DropDown/Text',

@@ -1,11 +1,13 @@
 // React
 import * as React from 'react';
 
+import type { Meta, StoryObj } from '@storybook/react';
 import InputAdornment from '@mui/material/InputAdornment';
+
 import PersonIcon from '@mui/icons-material/PersonRounded';
+
 import { CardPage } from '@/app/(auth)/_components';
 import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CardPage> = {
   title: 'Pages/Auth/CardPage',

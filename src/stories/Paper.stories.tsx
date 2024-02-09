@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { Paper, PaperProps, Typography } from '@mui/material';
+import type { Meta, StoryObj } from '@storybook/react';
+import Paper, { PaperProps } from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 import { colors } from '@/libs/ui';
-import type { Meta, StoryObj } from '@storybook/react';
 
 export const MUIPaper = ({ ...rest }: PaperProps) => (
   <Paper

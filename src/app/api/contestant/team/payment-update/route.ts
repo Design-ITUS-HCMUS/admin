@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import paymentService from '@/services/paymentService';
-import payOSPaymentService from '@/services/payOSPaymentService';
 
 /**
  * @swagger
- * /api/payment/status-update:
+ * /api/contestant/team/payment-update:
  *   post:
  *     tags:
  *       - Payment

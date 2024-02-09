@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { Select, SelectProps, SvgIconProps } from '@mui/material';
+import Select, { SelectProps } from '@mui/material/Select';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 import { styled } from '@mui/material/styles';
 
-import { ExpandMoreRounded } from '@mui/icons-material';
+import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 
 const StyledSelect = styled(Select)({
   '& .MuiSelect-standard': {

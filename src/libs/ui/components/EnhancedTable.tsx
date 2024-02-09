@@ -1,5 +1,6 @@
 'use client';
 import { MouseEvent,useState } from 'react';
+import { visuallyHidden } from '@mui/utils';
 
 import { Theme, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -21,7 +22,6 @@ import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
 import { colors } from '@/libs/ui';
 import { Order } from '@/utils';
-import { visuallyHidden } from '@mui/utils';
 
 const StyledTableFooter = styled('div')({
   display: 'flex',
@@ -152,7 +152,7 @@ export function EnhancedTable({
   onChangePage,
   onSort,
   disableAction = false,
-  onAct = (e) => {},
+  onAct = (_e, _id) => {},
   children,
 }: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
@@ -235,7 +235,7 @@ export function EnhancedTable({
                   })}
                   {!disableAction && (
                     <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
-                      <IconButton onClick={(e) => handleClick(e, row._id)} sx={{ margin: 0 }}>
+                      <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
                         <MoreIcon />
                       </IconButton>
                     </TableCell>

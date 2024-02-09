@@ -1,5 +1,6 @@
-import { OTPInput } from './OTPInput';
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { OTPInput } from './OTPInput';
 
 const meta: Meta<typeof OTPInput> = {
   title: 'Global/Input/OTP',
@@ -8,7 +9,10 @@ const meta: Meta<typeof OTPInput> = {
     layout: 'centered',
   },
   args: {
-    onChange: (res: string) => console.log(res),
+    onChange: (res: string) => {
+      /* eslint-disable */
+      console.log(res)
+    },
   },
   decorators: [
     (Story) => (

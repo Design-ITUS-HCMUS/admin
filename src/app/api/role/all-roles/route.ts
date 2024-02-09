@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 import RoleService from '@/services/roleService';
 
@@ -16,7 +16,7 @@ import RoleService from '@/services/roleService';
  *        description: Error message.
  */
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const res = await RoleService.getAllRoles();
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

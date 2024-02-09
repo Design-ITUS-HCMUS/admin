@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { UploadFile } from '@mui/icons-material';
+import UploadFile from '@mui/icons-material/UploadFile';
 
 import { colors } from '@/libs/ui';
 

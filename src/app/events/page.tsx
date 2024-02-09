@@ -10,10 +10,9 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import data from './events.json';
-
 import { EnhancedTable, IHeadCell, ProgressTag,Search } from '@/libs/ui';
 import { getComparator,Order, stableSort } from '@/utils';
+import data from './events.json';
 
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),

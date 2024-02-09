@@ -7,9 +7,12 @@ export const STATUS_CODE: any = {
   CONFLICT: 409,
   INTERNAL_SERVER_ERROR: 500,
 };
-
 export const ROLE: any = {
   ADMIN: 1,
   MEMBER: 2,
   CONTESTANT: 3,
+};
+export const TYPE_OTP: any = {
+  REGISTER: 1,
+  RESET_PASSWORD: 2,
 };

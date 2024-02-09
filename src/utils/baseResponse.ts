@@ -1,10 +1,4 @@
 import { STATUS_CODE } from '@/utils/enum';
-interface IBaseResponse {
-  status: keyof typeof STATUS_CODE;
-  success: boolean;
-  message: string;
-  data: any;
-}
 
 export default class BaseResponse {
   status: number;

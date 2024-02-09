@@ -10,10 +10,9 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
+import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
 import { CreateAccountModal } from './_components';
 import data from './members.json';
-
-import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
 
 const ToolBar = styled('div')({
   display: 'flex',

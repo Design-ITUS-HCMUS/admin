@@ -1,6 +1,6 @@
-import { Logo } from './Logo';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { Meta } from '@storybook/react';
+import { Logo } from './Logo';
 
 const meta: Meta<typeof Logo> = {
   title: 'Global/Logo',
@@ -19,3 +19,6 @@ const meta: Meta<typeof Logo> = {
 };
 
 export default meta;
+export const Default: StoryObj = {
+  name: 'Logo',
+};

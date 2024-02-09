@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { DropdownWithLabel as DropDown } from './DropDown';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { DropdownWithLabel as DropDown } from './DropDown';
 
 const meta: Meta<typeof DropDown> = {
   title: 'Global/DropDown',

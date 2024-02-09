@@ -1,6 +1,6 @@
-import { CreateEventForm } from './CreateEventForm';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CreateEventForm } from './CreateEventForm';
 
 const meta: Meta<typeof CreateEventForm> = {
   title: 'Pages/Events/Create Event Form',

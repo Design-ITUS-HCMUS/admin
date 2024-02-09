@@ -35,7 +35,7 @@ import MenuIcon from '@mui/icons-material/MenuRounded';
 // Material UI Icons
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
-import { colors } from '../';
+import { colors } from '..';
 // Local Imports
 import { Logo } from './Logo';
 
@@ -88,7 +88,6 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     event.currentTarget.focus();
-    console.log('focused');
   };
 
   const handleClose = () => {

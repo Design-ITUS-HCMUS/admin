@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
-import { Select, SelectProps,Typography } from '@mui/material';
+import Select, { SelectProps } from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 
 const style: React.CSSProperties = {
   display: 'flex',

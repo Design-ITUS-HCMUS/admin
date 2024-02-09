@@ -5386,6 +5386,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bcryptjs@npm:^2":
+  version: 2.4.6
+  resolution: "@types/bcryptjs@npm:2.4.6"
+  checksum: 1182663f0c081c5c58760019459cd309335e9b5fc6552780b0fd21b6c5f25661a844709e46218796f4bdbebe6736e11cfc5af0729bc2cdb0160943650aceb3da
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
@@ -5673,10 +5680,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6":
+  version: 6.4.14
+  resolution: "@types/nodemailer@npm:6.4.14"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: b5958843576cde76dc532aa7b726182fef8b466fa9fcaf1aa03f89f02e896bec4e28b593ffa1a289a46bd0b7fdf34da0640ab7ef8f0811948016f58f77e16307
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.4
   resolution: "@types/normalize-package-data@npm:2.4.4"
   checksum: aef7bb9b015883d6f4119c423dd28c4bdc17b0e8a0ccf112c78b4fe0e91fbc4af7c6204b04bba0e199a57d2f3fbbd5b4a14bf8739bf9d2a39b2a0aad545e0f86
+  languageName: node
+  linkType: hard
+
+"@types/otp-generator@npm:^4":
+  version: 4.0.2
+  resolution: "@types/otp-generator@npm:4.0.2"
+  checksum: e5e24ba52a2fdbf196f134622e4d8188d1ce7beca6602000855bc99138cb432d080a5bbd54f223ba5066459b1621bb052ac15f4f3c28c67859c7de4ddf6e62e3
   languageName: node
   linkType: hard
 
@@ -7181,6 +7204,13 @@ __metadata:
   dependencies:
     tweetnacl: "npm:^0.14.3"
   checksum: ddfe85230b32df25aeebfdccfbc61d3bc493ace49c884c9c68575de1f5dcf733a5d7de9def3b0f318b786616b8d85bad50a28b1da1750c43e0012c93badcc148
+  languageName: node
+  linkType: hard
+
+"bcryptjs@npm:^2.4.3":
+  version: 2.4.3
+  resolution: "bcryptjs@npm:2.4.3"
+  checksum: b969467087ed7a01ff905a1c6a0c45014ec586248a448ea08370c8ed8bb314bda16a870ca23e0961d7d23bdce1a04c76fa70a9d680be814fa9ac7d8fc61870a3
   languageName: node
   linkType: hard
 
@@ -8761,14 +8791,18 @@ __metadata:
     "@storybook/test": "npm:^7.6.10"
     "@testing-library/jest-dom": "npm:^6.3.0"
     "@testing-library/react": "npm:^14.1.2"
+    "@types/bcryptjs": "npm:^2"
     "@types/node": "npm:^20"
+    "@types/nodemailer": "npm:^6"
+    "@types/otp-generator": "npm:^4"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/swagger-ui-react": "npm:^4.18.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
     "@typescript-eslint/parser": "npm:^6.21.0"
+    bcryptjs: "npm:^2.4.3"
     cypress: "npm:^13.6.3"
-    eslint: "npm:^8"
+    eslint: "npm:^8.56.0"
     eslint-config-next: "npm:14.1.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-simple-import-sort: "npm:^10.0.0"
@@ -8776,10 +8810,13 @@ __metadata:
     husky: "npm:^8.0.0"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
+    jose: "npm:^5.2.0"
     js-sha256: "npm:^0.10.1"
     lint-staged: "npm:^15.2.0"
     next: "npm:14.1.0"
     next-swagger-doc: "npm:^0.4.0"
+    nodemailer: "npm:^6.9.9"
+    otp-generator: "npm:^4.0.1"
     prettier: "npm:3.2.4"
     prisma: "npm:^5.8.1"
     prisma-multischema: "npm:^1.1.4"
@@ -8790,7 +8827,7 @@ __metadata:
     storybook: "npm:^7.6.10"
     swagger-ui-react: "npm:^5.11.2"
     tsconfig-paths-webpack-plugin: "npm:^4.1.0"
-    typescript: "npm:^5"
+    typescript: "npm:^5.3.3"
   languageName: unknown
   linkType: soft
 
@@ -9721,7 +9758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8":
+"eslint@npm:^8.56.0":
   version: 8.56.0
   resolution: "eslint@npm:8.56.0"
   dependencies:
@@ -12508,6 +12545,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "jose@npm:5.2.0"
+  checksum: a5631e9a7148fb56c8feca8e00d1f03de6fa6e18e494fe62428b53bed525a9dba554ff3e860bdfc4aee60574194691015ba991557874ae826509c4c19dba4fea
+  languageName: node
+  linkType: hard
+
 "js-file-download@npm:^0.4.12":
   version: 0.4.12
   resolution: "js-file-download@npm:0.4.12"
@@ -13865,6 +13909,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.9.9":
+  version: 6.9.9
+  resolution: "nodemailer@npm:6.9.9"
+  checksum: ba72da4ca8a003921c86f3d132d64d9bb86c1a3d79d248664b3de28f6a7a621f0476273ad7cf3ecc48d3b78a66ae4ec62b7c4c8ab6f07d9ca26d4bad4d08802e
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^7.0.0":
   version: 7.2.0
   resolution: "nopt@npm:7.2.0"
@@ -14168,6 +14219,13 @@ __metadata:
   version: 1.2.2
   resolution: "ospath@npm:1.2.2"
   checksum: e485a6ca91964f786163408b093860bf26a9d9704d83ec39ccf463b9f11ea712b780b23b73d1f64536de62c5f66244dd94ed83fc9ffe3c1564dd1eed5cdae923
+  languageName: node
+  linkType: hard
+
+"otp-generator@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "otp-generator@npm:4.0.1"
+  checksum: 22822bfa0f914bca9dbbf309acffcfdcf4f4ed6f800e6b3d08d6b442355bb6da15b5d1b3417530cd9db8fed64810ba63923964567d53b03ba6cccde51edc2546
   languageName: node
   linkType: hard
 
@@ -17656,7 +17714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5":
+"typescript@npm:^5.3.3":
   version: 5.3.3
   resolution: "typescript@npm:5.3.3"
   bin:
@@ -17666,7 +17724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
   bin:

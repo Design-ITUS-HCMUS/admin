@@ -1,6 +1,6 @@
-import { CountDown } from './CountDown';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { CountDown } from './CountDown';
 
 const meta: Meta<typeof CountDown> = {
   title: 'Pages/Auth/CountDown',
@@ -11,6 +11,7 @@ const meta: Meta<typeof CountDown> = {
   args: {
     initialSeconds: 60,
     onComplete: () => {
+      /* eslint-disable */
       console.log('Count down completed');
     },
   },

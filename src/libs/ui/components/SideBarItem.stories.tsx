@@ -1,25 +1,15 @@
 import * as React from 'react';
 
+import type { Meta, StoryObj } from '@storybook/react';
+import Paper from '@mui/material/Paper';
+
 import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
 
 import { SideBarItem } from './SideBarItem';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
 const meta: Meta<typeof SideBarItem> = {
+  title: 'Global/Side Bar Item',
   component: SideBarItem,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-export const Default: Story = {
-  name: 'SideBarItem',
   args: {
     label: 'Dashboard',
     icon: <PeopleAltRounded />,
@@ -39,5 +29,20 @@ export const Default: Story = {
       description: 'The callback function to be called when the item is clicked.',
     },
   },
-  render: (args: any) => <SideBarItem {...args} />,
+  parameters: {
+    layout: 'centered',
+  },
+  decorators: [
+    (Story) => (
+      <Paper sx={{ p: 2, width: "240px" }} variant='section'>
+        <Story />
+      </Paper>
+    ),
+  ],
+};
+
+export default meta;
+type Story = StoryObj;
+export const Default: Story = {
+  name: 'Side Bar Item',
 };

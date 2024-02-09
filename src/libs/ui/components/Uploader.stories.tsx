@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Uploader } from './Uploader';
-
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Uploader } from './Uploader';
 
 const meta: Meta<typeof Uploader> = {
   title: 'Global/Input/Uploader',
@@ -15,6 +15,7 @@ const meta: Meta<typeof Uploader> = {
     buttonProps: {
       state: 'resting',
       onUpload: (event: React.ChangeEvent<HTMLInputElement>) => {
+        /* eslint-disable */
         console.log('onUpload', event.target.files);
       },
     },
