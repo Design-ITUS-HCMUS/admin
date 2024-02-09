@@ -1,0 +1,12 @@
+model Team {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique
+  status        Boolean        @default(true)
+  category      String?
+  paymentStatus Boolean        @default(false) // false = Unverified, true = Verified
+  paymentProof  Int?
+  submission    Int[]
+  paymentID     Int?           @unique
+  payment       Payment?       @relation(fields: [paymentID], references: [id])
+  accountEvents AccountEvent[]
+}

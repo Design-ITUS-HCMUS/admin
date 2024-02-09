@@ -70,7 +70,7 @@ class RoleService {
       }
       const users = role.users.map((user) => ({ id: user.id }));
       const deletedRole = await this.repository.delete(id, users);
-      return new BaseResponse(STATUS_CODE.OK, true, 'Role deleted successfully', role);
+      return new BaseResponse(STATUS_CODE.OK, true, 'Role deleted successfully', deletedRole);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }

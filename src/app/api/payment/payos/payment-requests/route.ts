@@ -16,10 +16,29 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *             type: object
  *             required:
  *               - buyerID
+ *               - description
+ *               - items
  *             properties:
  *               buyerID:
  *                 type: integer
  *                 default: 1
+ *               description:
+ *                 type: string
+ *                 default: 'OUTRSPACE8'
+ *               items:
+ *                 type: array
+ *                 items:
+ *                    type: object
+ *                    properties:
+ *                      name:
+ *                        type: string
+ *                        default: 'Phí tham gia Outrspace'
+ *                      quantity:
+ *                        type: integer
+ *                        default: 1
+ *                      price:
+ *                        type: integer
+ *                        default: 10000
  *     responses:
  *       200:
  *         description: Payment request object

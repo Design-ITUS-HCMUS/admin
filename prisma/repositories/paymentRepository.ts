@@ -15,7 +15,7 @@ export default class PaymentRepository {
       });
       return newPayment;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -27,7 +27,7 @@ export default class PaymentRepository {
       });
       return deletedPayment;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -38,8 +38,9 @@ export default class PaymentRepository {
         where: { id: entity.id },
         data: entity,
       });
+      return patchedPayment;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -49,7 +50,7 @@ export default class PaymentRepository {
       const allPayments = await this.model.findMany();
       return allPayments;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -61,7 +62,21 @@ export default class PaymentRepository {
       });
       return payment;
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return null;
+    }
+  }
+
+  async getByBuyerID(buyerID: number) {
+    try {
+      const payment = await this.model.findMany({
+        where: {
+          buyerID,
+        },
+      });
+      return payment;
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }
@@ -79,7 +94,7 @@ export default class PaymentRepository {
 
       return object ? object.id : 0;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
