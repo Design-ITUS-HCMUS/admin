@@ -31,12 +31,7 @@ function ExpandMoreIcon(props: SvgIconProps) {
 }
 ExpandMoreIcon.muiName = 'SvgIcon';
 
-export interface DropdownTextProps extends SelectProps {
-  variant?: 'standard';
-  displayEmpty?: true;
-}
-
-export function DropdownText(props: DropdownTextProps) {
+export function DropdownText(props: SelectProps) {
   return (
     <StyledSelect IconComponent={ExpandMoreIcon} variant='standard' displayEmpty {...props}>
       {props.children}

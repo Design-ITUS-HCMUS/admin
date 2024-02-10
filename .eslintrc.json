@@ -37,7 +37,7 @@
             "groups": [
               // Packages `react` related packages come first.
               ["^react.*", "^next.*", "^@?\\w"],
-              // @mui/material/* imports
+              // @storybook/* and @mui/material/* imports
               ["^@storybook.*", "^@mui/material.*"],
               // @mui/icons-material/* imports
               ["^@mui/icons-material.*"],

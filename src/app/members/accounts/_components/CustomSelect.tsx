@@ -41,12 +41,13 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
       const value = departments
         .filter((_item, id) => id < 2)
         .map((department) => <Chip key={department} label={<Typography>{department}</Typography>} size='small' />);
-      value.length < departments.length &&
+      if (value.length < departments.length) {
         value.push(
           <Typography component='span' key='plus'>
             +{departments.length - value.length}
           </Typography>
         );
+      }
       return value;
     }
     return (

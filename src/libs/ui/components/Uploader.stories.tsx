@@ -10,7 +10,7 @@ const meta: Meta<typeof Uploader> = {
   parameters: {
     layout: 'centered',
   },
-  tags: [ 'autodocs' ],
+  tags: ['autodocs'],
   args: {
     placeholder: 'SVG, PNG, JPG or GIF (1400x700px)',
     buttonProps: {
@@ -58,8 +58,6 @@ export const WithInputProps: StoryObj = {
       multiple: true,
       required: true,
     },
-    placeholder: 'Accept multiple files', 
+    placeholder: 'Accept multiple files',
   },
 };
-
-

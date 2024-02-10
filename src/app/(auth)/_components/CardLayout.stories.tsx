@@ -26,17 +26,17 @@ const meta: Meta<typeof CardLayout> = {
     ),
     children: (
       <InputLayout
-          label='Nhập username hoặc email'
-          name='username'
-          inputprops={{
-            placeholder: 'Username hoặc email',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <PersonIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+        label='Nhập username hoặc email'
+        name='username'
+        inputprops={{
+          placeholder: 'Username hoặc email',
+          endAdornment: (
+            <InputAdornment position='end'>
+              <PersonIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
     ),
     showFooter: true,
   },

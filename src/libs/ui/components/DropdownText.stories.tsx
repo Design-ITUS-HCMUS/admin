@@ -2,19 +2,17 @@ import * as React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import MenuItem from '@mui/material/MenuItem';
-
-import ExpandMore from '@mui/icons-material/ExpandMoreRounded';
+import { SelectProps } from '@mui/material/Select';
 
 import { DropdownText } from './DropdownText';
 
-const meta: Meta<typeof DropdownText> = {
-  title: 'Global/DropDown/Text',
+const meta: Meta<SelectProps> = {
+  title: 'Global/Input/Dropdown',
   component: DropdownText,
   parameters: {
     layout: 'centered',
   },
   args: {
-    IconComponent: ExpandMore,
     children: [
       <MenuItem value={1} key={1}>
         One
@@ -37,6 +35,6 @@ const meta: Meta<typeof DropdownText> = {
 };
 
 export default meta;
-export const Default: StoryObj = {
+export const DefaultText: StoryObj = {
   name: 'Text',
 };

@@ -1,26 +1,13 @@
-import { ReactNode } from 'react';
-
 import Select, { SelectProps } from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '3px',
-};
+import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 
-type Props = {
-  label: string;
-  children?: ReactNode;
-  containerStyle?: React.CSSProperties;
-  selectProps?: SelectProps;
-};
+function ExpandMoreIcon(props: SvgIconProps) {
+  return <ExpandMoreRounded fontSize='small' {...props} />;
+}
+ExpandMoreIcon.muiName = 'SvgIcon';
 
-export const DropdownWithLabel: React.FC<Props> = ({ label, children, containerStyle, selectProps }: Props) => {
-  return (
-    <div style={{ ...style, ...containerStyle }}>
-      <Typography variant='caption'>{label}</Typography>
-      <Select {...selectProps}>{children}</Select>
-    </div>
-  );
+export const Dropdown = (props: SelectProps) => {
+  return <Select IconComponent={ExpandMoreIcon} {...props} />;
 };

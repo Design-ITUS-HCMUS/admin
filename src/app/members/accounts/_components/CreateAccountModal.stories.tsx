@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
 
-import Button from '@mui/material/Button';
 import { CreateAccountModal } from './CreateAccountModal';
 
 const meta: Meta<typeof CreateAccountModal> = {
@@ -13,16 +11,6 @@ const meta: Meta<typeof CreateAccountModal> = {
   args: {
     open: true,
   },
-  decorators: [
-    (Story) => (
-      <div>
-        <Button id="open-btn">
-          Open Modal
-        </Button>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;

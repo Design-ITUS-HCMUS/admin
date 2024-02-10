@@ -36,7 +36,8 @@ export function Search(props: SearchProps) {
             <SearchOutlined></SearchOutlined>
           </InputAdornment>
         }
-        onBlur={handleBlur}/>
+        onBlur={handleBlur}
+      />
     </form>
   );
 }

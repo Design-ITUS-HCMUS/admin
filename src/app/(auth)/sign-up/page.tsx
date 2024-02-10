@@ -10,7 +10,7 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
 import { CardLayout, StyledForm } from '@/app/(auth)/_components';
-import { PasswordInput, InputLayout } from '@/libs/ui';
+import { InputLayout, PasswordInput } from '@/libs/ui';
 
 function SignUpPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,22 +21,30 @@ function SignUpPage() {
   return (
     <CardLayout header='Đăng ký tài khoản' showFooter page='signup'>
       <StyledForm id='sign-up-form' onSubmit={handleSubmit}>
-        <InputLayout label='Username' name='username' inputprops={{
-          placeholder: 'Username',
-          endAdornment: (
-            <InputAdornment position='end'>
-              <PersonIcon />
-            </InputAdornment>
-          ),
-        }}/>
-        <InputLayout label='Email' name='email' inputprops={{
-          placeholder: 'Email',
-          endAdornment: (
-            <InputAdornment position='end'>
-              <MailIcon />
-            </InputAdornment>
-          ),
-        }}/>
+        <InputLayout
+          label='Username'
+          name='username'
+          inputprops={{
+            placeholder: 'Username',
+            endAdornment: (
+              <InputAdornment position='end'>
+                <PersonIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <InputLayout
+          label='Email'
+          name='email'
+          inputprops={{
+            placeholder: 'Email',
+            endAdornment: (
+              <InputAdornment position='end'>
+                <MailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
         <InputLayout label='Mật khẩu' name='password'>
           <PasswordInput
             inputProps={{
@@ -52,7 +60,9 @@ function SignUpPage() {
           />
         </InputLayout>
       </StyledForm>
-      <Button size='large' form='sign-up-form'>Đăng ký</Button>
+      <Button size='large' form='sign-up-form'>
+        Đăng ký
+      </Button>
     </CardLayout>
   );
 }

@@ -27,7 +27,7 @@ function ForgetPasswordPage() {
   return (
     <CardLayout header='Quên mật khẩu' showFooter page='signin'>
       <StyledForm id='forget-password-form' onSubmit={handleSubmit}>
-          <InputLayout
+        <InputLayout
           label='Username'
           name='username'
           inputprops={{

@@ -51,8 +51,8 @@ interface UploaderProps {
    *  </div> */
   buttonProps?: UploadButtonProps;
   /** <div>
-   * Uploader has a hidden input element to handle file upload. This prop 
-   * controls that input, you can custom the input element's performance, such as 
+   * Uploader has a hidden input element to handle file upload. This prop
+   * controls that input, you can custom the input element's performance, such as
    * <code>multiple</code>, <code>required</code>, etc.
    * </div> */
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
@@ -70,26 +70,26 @@ const CenterStack = styled(Stack)({
 export function Uploader({ buttonProps, inputProps, placeholder, helperText }: UploaderProps) {
   return (
     <Stack spacing={1}>
-    <UploadButton
-      component='label'
-      fullWidth
-      color={buttonProps?.state == 'error' ? 'error' : buttonProps?.color}
-      variant='text'
-      {...buttonProps}>
-      <CenterStack spacing={1}>
-        <UploadFile />
-        <Typography color={buttonProps?.state == 'error' ? 'error' : 'primary'}>Click to upload</Typography>
-        <VisuallyHiddenInput type='file' {...inputProps} />
-        {!!placeholder && (
-          <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
-            {placeholder}
-          </Typography>
-        )}
-      </CenterStack>
-    </UploadButton>
-    {buttonProps?.state == 'error' && helperText !== null ? (
-      <FormHelperText error>{helperText}</FormHelperText>
-    ): null}
-  </Stack>
+      <UploadButton
+        component='label'
+        fullWidth
+        color={buttonProps?.state == 'error' ? 'error' : buttonProps?.color}
+        variant='text'
+        {...buttonProps}>
+        <CenterStack spacing={1}>
+          <UploadFile />
+          <Typography color={buttonProps?.state == 'error' ? 'error' : 'primary'}>Click to upload</Typography>
+          <VisuallyHiddenInput type='file' {...inputProps} />
+          {!!placeholder && (
+            <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
+              {placeholder}
+            </Typography>
+          )}
+        </CenterStack>
+      </UploadButton>
+      {buttonProps?.state == 'error' && helperText !== null ? (
+        <FormHelperText error>{helperText}</FormHelperText>
+      ) : null}
+    </Stack>
   );
 }

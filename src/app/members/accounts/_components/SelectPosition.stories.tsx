@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import Paper from '@mui/material/Paper';
+
 import { CustomSelectProps, SelectPosition } from './CustomSelect';
 
 const meta: Meta<CustomSelectProps> = {
@@ -11,7 +11,7 @@ const meta: Meta<CustomSelectProps> = {
   },
   decorators: [
     (Story) => (
-      <Paper sx={{width: "500px"}} variant="section">
+      <Paper sx={{ width: '500px' }} variant='section'>
         <Story />
       </Paper>
     ),
@@ -20,6 +20,6 @@ const meta: Meta<CustomSelectProps> = {
 
 export default meta;
 type Story = StoryObj;
-export const Position: Story = {
+export const Default: Story = {
   name: 'Position',
 };

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import SelectInput from '@mui/material/Select';
+
 import { InputLayout } from './InputLayout';
 
 const meta: Meta<typeof InputLayout> = {
@@ -61,7 +62,7 @@ export const Row: StoryObj = {
     },
   },
 };
-export const CustomRatio: StoryObj = {
+export const Ratio: StoryObj = {
   name: 'Custom Ratio',
   args: {
     ratio: 0.25,
@@ -72,7 +73,7 @@ export const CustomRatio: StoryObj = {
     },
   },
 };
-export const ErrorState: StoryObj = {
+export const Error: StoryObj = {
   name: 'Error State',
   args: {
     ratio: 0.25,
@@ -85,10 +86,14 @@ export const ErrorState: StoryObj = {
     helperText: 'This is an error message',
   },
 };
-export const CustomInput: StoryObj = {
+export const Input: StoryObj = {
   name: 'Custom Input',
   args: {
     direction: 'column',
-    children: <SelectInput><option>Option 1</option></SelectInput>,
+    children: (
+      <SelectInput>
+        <option>Option 1</option>
+      </SelectInput>
+    ),
   },
 };

@@ -12,7 +12,7 @@ import HideIcon from '@mui/icons-material/VisibilityOffRounded';
 // Internal
 import color from '@/libs/ui/color';
 
-export function PasswordInput(props: OutlinedInputProps){
+export function PasswordInput(props: OutlinedInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -34,4 +34,4 @@ export function PasswordInput(props: OutlinedInputProps){
       }
     />
   );
-};
+}

@@ -23,4 +23,3 @@ export const Active: Story = {
     activeURL: '/events',
   },
 };
-

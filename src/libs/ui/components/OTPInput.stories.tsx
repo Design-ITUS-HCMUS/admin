@@ -28,7 +28,7 @@ export default meta;
 export const Default: StoryObj = {
   name: 'OTP',
   play: async () => {
-    await userEvent.keyboard('123456', {delay: 1000})
+    await userEvent.keyboard('123456', { delay: 1000 });
     await userEvent.keyboard('{backspace}{backspace}789', { delay: 1000 });
   },
 };

@@ -16,10 +16,10 @@ function ChangePasswordPage() {
     <CardLayout header='Thay đổi mật khẩu'>
       <StyledForm>
         <InputLayout label='Mật khẩu mới'>
-          <PasswordInput placeholder='Nhập mật khẩu mới'/>
+          <PasswordInput placeholder='Nhập mật khẩu mới' />
         </InputLayout>
         <InputLayout label='Nhập lại mật khẩu mới'>
-          <PasswordInput placeholder='Nhập lại mật khẩu mới'/>
+          <PasswordInput placeholder='Nhập lại mật khẩu mới' />
         </InputLayout>
       </StyledForm>
       <Button size='large' component={Link} href='/sign-in/change-password/success'>

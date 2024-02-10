@@ -19,10 +19,7 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 // Internal
 import { CardLayout, Row, StyledForm, SupportTextStyle } from '@/app/(auth)/_components';
 // Libs
-import {
-  PasswordInput,
-  InputLayout,
-} from '@/libs/ui';
+import { InputLayout, PasswordInput } from '@/libs/ui';
 
 function SignInPage() {
   const theme = useTheme();

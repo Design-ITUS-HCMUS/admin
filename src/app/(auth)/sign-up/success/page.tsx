@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // Internal
-import { CardLayout, Countdown, Row } from '@/app/(auth)/_components';
+import { CardLayout, Countdown } from '@/app/(auth)/_components';
 
 const SIGN_IN_PAGE = '/sign-in';
 

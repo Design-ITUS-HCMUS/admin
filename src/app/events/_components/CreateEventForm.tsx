@@ -48,15 +48,6 @@ export function CreateEventForm(props: CreateEventFormProps) {
     onSubmit(new FormData(event.currentTarget));
   }
 
-  const renderLeaderValue = (value: any) => {
-    if (value) return <Typography>{value}</Typography>;
-    return (
-      <Typography color={colors.neutral[200]} fontWeight='regular'>
-        Chọn thành viên
-      </Typography>
-    );
-  };
-
   const renderTypeValue = (value: any) => {
     if (value) return <Chip label={<Typography>{value}</Typography>} size='small' />;
     return (
@@ -65,6 +56,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
       </Typography>
     );
   };
+
   return (
     <form onSubmit={handleSubmit} id='create-event-form'>
       <Stack spacing={2} direction='row'>
@@ -77,9 +69,13 @@ export function CreateEventForm(props: CreateEventFormProps) {
             </LocalizationProvider>
           </InputLayout>
           <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputprops={{ required: true }}>
-            <DropdownText labelId='leader-select-label' id='leader-select' renderValue={renderTypeValue} required>
-              <MenuItem value='Cuộc thi'>Cuộc thi</MenuItem>
-              <MenuItem value='Workshop'>Workshop</MenuItem>
+            <DropdownText name='type' id='type-select' renderValue={renderTypeValue} required>
+              <MenuItem key='contest' value='Cuộc thi'>
+                Cuộc thi
+              </MenuItem>
+              <MenuItem key='workshop' value='Workshop'>
+                Workshop
+              </MenuItem>
             </DropdownText>
           </InputLayout>
           <InputLayout
@@ -94,7 +90,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
             placeholder='SVG, PNG, JPG or GIF (1400x700px)'
           />
           <Box position='relative' sx={{ width: '100%', aspectRatio: 2 }}>
-            {preview && (
+            {!!preview && (
               <Image
                 src={URL.createObjectURL(preview)}
                 fill

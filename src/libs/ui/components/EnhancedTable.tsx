@@ -138,11 +138,11 @@ interface EnhancedTableProps {
    *   label: string;<br/>
    *   numeric?: boolean;<br/>
    * }</code>
-  */
+   */
   headCells: readonly IHeadCell[];
-  /** The data of the table, each row must have a unique <code>id</code> to handle action. 
+  /** The data of the table, each row must have a unique <code>id</code> to handle action.
    * Moreover, other keys must match the <code>id</code> of the head cell. Otherwise, the data will not be rendered.
-  */
+   */
   rows: IRowCell[];
   /** The total rows of the table support counting the total pages of table's pagination and show the total summary on the left side of table footer.*/
   totalRows: number;
@@ -157,7 +157,7 @@ interface EnhancedTableProps {
   disableAction?: boolean;
   /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
    * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
-  */
+   */
   onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
   /** The children of the table menu. */
   children?: React.ReactNode;
@@ -214,7 +214,7 @@ export function EnhancedTable({
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        {orderBy !== null && (
+        {orderBy !== null ? (
           <Chip
             label={
               <Typography>
@@ -228,9 +228,15 @@ export function EnhancedTable({
             color='primary'
             variant='outlined'
           />
-        )}
+        ) : null}
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} disableAction={disableAction}/>
+          <EnhancedTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            headCells={headCells}
+            disableAction={disableAction}
+          />
           <TableBody>
             {rows.map((row, index) => {
               return (
@@ -263,14 +269,14 @@ export function EnhancedTable({
                 </StyledTableRow>
               );
             })}
-            {emptyRows > 0 && (
+            {emptyRows > 0 ? (
               <StyledTableRow
                 style={{
                   height: (dense ? 33 : 53) * emptyRows,
                 }}>
                 <TableCell colSpan={6} />
               </StyledTableRow>
-            )}
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>
@@ -286,13 +292,13 @@ export function EnhancedTable({
           showLastButton
           boundaryCount={0}
         />
-        {totalRows && <Typography>Tổng: {totalRows}</Typography>}
+        {Boolean(totalRows) ? <Typography>Tổng: {totalRows}</Typography> : null}
       </StyledTableFooter>
-      {!disableAction && children && (
+      {!disableAction && children ? (
         <TableMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
           {children}
         </TableMenu>
-      )}
+      ) : null}
     </Box>
   );
 }

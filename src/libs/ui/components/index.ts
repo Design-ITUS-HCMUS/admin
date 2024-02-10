@@ -1,4 +1,5 @@
-export * from './DropDown';
+export * from './Avatar';
+export * from './Dropdown';
 export * from './DropdownText';
 export * from './EnhancedTable';
 export * from './InputLayout';

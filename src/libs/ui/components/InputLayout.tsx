@@ -27,7 +27,7 @@ interface InputLayoutProps extends StackProps {
   children?: React.ReactNode;
   /** The helper text will show when <code>inputprops.error=true</code> */
   helperText?: string;
-  /** The props of the default input component. 
+  /** The props of the default input component.
    * If you want to use a custom input component, you can pass it as a child of <code>InputLayout</code>.
    * These props will be ignored. */
   inputprops?: InputBaseComponentProps;
