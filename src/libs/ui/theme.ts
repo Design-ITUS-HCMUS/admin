@@ -1,7 +1,15 @@
 'use client';
-import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { Be_Vietnam_Pro } from 'next/font/google';
+
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+
 import colors from './color';
-import { ThemeOptions } from '@mui/material/styles';
+
+const beVietnamPro = Be_Vietnam_Pro({
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['vietnamese'],
+});
 
 let theme = createTheme({
   palette: {
@@ -37,7 +45,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Be Vietnam Pro, sans-serif',
+    fontFamily: beVietnamPro.style.fontFamily + ',Be Vietnam Pro, sans-serif',
     linkPrimary: {
       color: colors.blue[500],
       textDecoration: 'underline',
@@ -69,11 +77,6 @@ let theme = createTheme({
     MuiTypography: {
       defaultProps: {
         variant: 'body2',
-      },
-      styleOverrides: {
-        root: {
-          fontFamily: '"Be Vietnam Pro", san-serif',
-        },
       },
     },
     MuiButton: {

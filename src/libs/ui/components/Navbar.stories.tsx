@@ -4,19 +4,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Navbar, { NavbarProps } from './Navbar';
 
 const meta: Meta<NavbarProps> = {
+  title: 'Global/Nav Bar',
   component: Navbar,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
 };
 
 export default meta;
 type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
 export const Default: Story = {
-  name: 'Navbar',
-  render: (args: NavbarProps) => <Navbar {...args} />,
+  name: 'Nav Bar',
+};
+export const Active: Story = {
+  name: 'Nav Bar with active nav pill',
+  args: {
+    activeURL: '/events',
+  },
 };

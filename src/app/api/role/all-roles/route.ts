@@ -1,5 +1,6 @@
-import RoleService from '@/services/roleService';
 import { NextResponse } from 'next/server';
+
+import RoleService from '@/services/roleService';
 
 /**
  * @swagger

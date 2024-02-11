@@ -1,5 +1,5 @@
-import { prisma } from '../client';
 import { IPayment } from '@/interfaces/payment';
+import { prisma } from '../client';
 
 export default class PaymentRepository {
   private model: any;

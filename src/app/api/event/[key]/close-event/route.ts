@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import EventService from '@/services/eventService';
 import getParams from '@/utils/getParams';
 

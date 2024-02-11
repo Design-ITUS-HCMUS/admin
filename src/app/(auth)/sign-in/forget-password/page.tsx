@@ -1,10 +1,9 @@
 'use client';
 
 // React
-import Link from 'next/link';
-
-// Libs
-import { TextFieldWithLabel as TextField } from '@/libs/ui/components';
+import { useRouter } from 'next/navigation';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 // Material UI Components
 import Button from '@mui/material/Button';
@@ -14,31 +13,52 @@ import InputAdornment from '@mui/material/InputAdornment';
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
-import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
+import { CardLayout, StyledForm } from '@/app/(auth)/_components';
+// Libs
+import { InputLayout } from '@/libs/ui/components';
 
 function ForgetPasswordPage() {
+  const router = useRouter();
+  function handleSubmit(values: { username: string }) {
+    /* eslint-disable no-console */
+    console.log('Submit forget-password-form', values);
+    router.push('/sign-in/forget-password/otp');
+  }
+
   return (
-    <CardPage header='Quên mật khẩu' showFooter mainText='Chưa có tài khoản?' linkText='Đăng ký' linkHref='/sign-up'>
-      <StyledForm>
-        <TextField
-          label='Username'
-          inputProps={{
-            placeholder: 'Username hoặc email đã đăng ký',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <PersonIcon />
-              </InputAdornment>
-            ),
-          }}></TextField>
-      </StyledForm>
-      <Row>
-        <Link href='/sign-in/forget-password/otp'>
-          <Button variant='contained' size='large' sx={{ width: '100%' }}>
-            Gửi mã
-          </Button>
-        </Link>
-      </Row>
-    </CardPage>
+    <CardLayout header='Quên mật khẩu' showFooter page='signin'>
+      <Formik
+        initialValues={{
+          username: '',
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={yup.object().shape({
+          username: yup.string().required('Vui lòng nhập username hoặc email'),
+        })}>
+        {({ touched, errors }) => (
+          <StyledForm id='forget-password-form'>
+            <InputLayout
+              label='Username'
+              inputProps={{
+                name: 'username',
+                placeholder: 'Username hoặc email đã đăng ký',
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <PersonIcon />
+                  </InputAdornment>
+                ),
+                error: Boolean(touched.username && errors.username),
+              }}
+              formik
+              helperText={touched.username ? errors.username : ''}
+            />
+          </StyledForm>
+        )}
+      </Formik>
+      <Button size='large' type='submit' form='forget-password-form'>
+        Gửi mã
+      </Button>
+    </CardLayout>
   );
 }
 

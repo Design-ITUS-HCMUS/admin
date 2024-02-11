@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+
 import AuthService from '@/services/authService';
 
 /**

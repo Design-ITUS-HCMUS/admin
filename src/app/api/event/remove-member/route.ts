@@ -1,5 +1,6 @@
-import AccountEventService from '@/services/accountEventService';
 import { NextRequest, NextResponse } from 'next/server';
+
+import AccountEventService from '@/services/accountEventService';
 
 /**
  * @swagger

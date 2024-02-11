@@ -1,7 +1,8 @@
+import AccountEventRepository from '@repositories/accountEventRepository';
+
 import { AccountEventID } from '@/interfaces/accountEvent';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import AccountEventRepository from '@repositories/accountEventRepository';
 
 class ContestantService {
   private accountEventRepository: AccountEventRepository;

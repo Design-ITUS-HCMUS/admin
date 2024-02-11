@@ -1,6 +1,7 @@
+import AccountEventRepository from '@repositories/accountEventRepository';
+
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import AccountEventRepository from '@repositories/accountEventRepository';
 
 class MemberService {
   private accountEventRepository: AccountEventRepository;

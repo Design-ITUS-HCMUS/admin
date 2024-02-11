@@ -1,10 +1,11 @@
-import { SignJWT } from 'jose';
-import bcrypt from 'bcryptjs';
-import CommonService from '@/services/commonService';
 import UserRepository from '@repositories/userRepository';
-import { AccountInformation, User, SendOTP, ResetPassword } from '@/interfaces/user';
+import bcrypt from 'bcryptjs';
+import { SignJWT } from 'jose';
+
+import { AccountInformation, SendOTP, User } from '@/interfaces/user';
+import CommonService from '@/services/commonService';
+import { STATUS_CODE, templateRegister, templateResetPassword, TYPE_OTP } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import { STATUS_CODE, TYPE_OTP, templateRegister, templateResetPassword } from '@/utils';
 
 class AuthService {
   private repository: UserRepository;
@@ -112,7 +113,7 @@ class AuthService {
       return null;
     }
   }
-  async createUser(username: string, email: string, password: string, profile?: Object) {
+  async createUser(username: string, email: string, password: string, profile?: object) {
     try {
       password = await bcrypt.hash(password, this.saltRounds);
       return await this.repository.add({ username, email, password, profile });

@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import { TimerRenderer, useTimer } from 'react-use-precision-timer';
 
-interface CountDownProps {
+import Typography, { TypographyProps } from '@mui/material/Typography';
+
+interface CountdownProps {
+  /**The seconds you want to countdown.*/
   initialSeconds: number;
+  /**The callback function to be executed when the countdown is completed.*/
   onComplete: () => void;
+  /**This component use Typography of MUI as the root, <code>typographyProps</code> helps pass the customization props.*/
+  typographyProps?: TypographyProps;
 }
 
 export const milisecondsToMMss = (millis: number): { min: number; sec: number } => {
@@ -23,8 +29,8 @@ function formatSeconds(seconds: number): string {
   return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-export const CountDown = ({ initialSeconds, onComplete }: CountDownProps) => {
-  const completeCountDown = React.useCallback(() => {
+export const Countdown = ({ initialSeconds, onComplete, typographyProps }: CountdownProps) => {
+  const completeCountdown = React.useCallback(() => {
     onComplete();
   }, []);
 
@@ -33,7 +39,7 @@ export const CountDown = ({ initialSeconds, onComplete }: CountDownProps) => {
       delay: 1000 * initialSeconds,
       runOnce: true,
     },
-    completeCountDown
+    completeCountdown
   );
 
   useEffect(() => {
@@ -46,7 +52,11 @@ export const CountDown = ({ initialSeconds, onComplete }: CountDownProps) => {
       renderRate={500}
       render={(timer) => {
         const displayTime = Math.floor(timer.getRemainingTime() / 1000);
-        return <span style={{ fontWeight: '800' }}>{formatSeconds(displayTime)}</span>;
+        return (
+          <Typography component={'span'} fontWeight={800} {...typographyProps}>
+            {formatSeconds(displayTime)}
+          </Typography>
+        );
       }}
     />
   );

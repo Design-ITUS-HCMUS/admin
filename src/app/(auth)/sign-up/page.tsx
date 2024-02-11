@@ -1,7 +1,5 @@
 'use client';
-
-// Libs
-import { PasswordFieldWithLabel as PassField, TextFieldWithLabel as TextField } from '@/libs/ui/components';
+import { Field, Formik } from 'formik';
 
 // Material UI Components
 import Button from '@mui/material/Button';
@@ -12,56 +10,94 @@ import MailIcon from '@mui/icons-material/EmailOutlined';
 import PersonIcon from '@mui/icons-material/PersonRounded';
 
 // Internal
-import { CardPage, StyledForm, Row } from '@/app/(auth)/_components';
+import { CardLayout, StyledForm } from '@/app/(auth)/_components';
+import { InputLayout, PasswordInput } from '@/libs/ui';
+import { SignupSchema } from '@/libs/validations';
+
+interface IFormData {
+  username: string;
+  email: string;
+  password: string;
+  repassword: string;
+}
 
 function SignUpPage() {
+  function handleSubmit(values: IFormData) {
+    /* eslint-disable no-console */
+    console.log('Submit sign-up-form', values);
+  }
   return (
-    <CardPage
-      header='Đăng ký tài khoản'
-      showFooter
-      mainText='Đã có tài khoản?'
-      linkText='Đăng nhập'
-      linkHref='/sign-in'>
-      <StyledForm>
-        <TextField
-          label='Username'
-          inputProps={{
-            placeholder: 'Username',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <PersonIcon />
-              </InputAdornment>
-            ),
-          }}></TextField>
-        <TextField
-          label='Email'
-          inputProps={{
-            placeholder: 'Email',
-            endAdornment: (
-              <InputAdornment position='end'>
-                <MailIcon />
-              </InputAdornment>
-            ),
-          }}></TextField>
-        <PassField
-          label='Mật khẩu'
-          inputProps={{
-            placeholder: 'Nhập mật khẩu',
-          }}
-        />
-        <PassField
-          label='Nhập lại mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập lại mật khẩu mới',
-          }}
-        />
-      </StyledForm>
-      <Row>
-        <Button variant='contained' size='large'>
-          Đăng ký
-        </Button>
-      </Row>
-    </CardPage>
+    <CardLayout header='Đăng ký tài khoản' showFooter page='signup'>
+      <Formik
+        initialValues={
+          {
+            username: '',
+            email: '',
+            password: '',
+            repassword: '',
+          } as IFormData
+        }
+        onSubmit={handleSubmit}
+        validationSchema={SignupSchema}>
+        {({ touched, errors }) => (
+          <StyledForm id='sign-up-form'>
+            <InputLayout
+              label='Username'
+              inputProps={{
+                name: 'username',
+                placeholder: 'Username',
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <PersonIcon />
+                  </InputAdornment>
+                ),
+                error: Boolean(touched.username && errors.username),
+              }}
+              formik
+              helperText={touched.username ? errors.username : undefined}
+            />
+            <InputLayout
+              label='Email'
+              inputProps={{
+                name: 'email',
+                placeholder: 'Email',
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <MailIcon />
+                  </InputAdornment>
+                ),
+                error: Boolean(touched.email && errors.email),
+              }}
+              formik
+              helperText={touched.email ? errors.email : undefined}
+            />
+            <InputLayout label='Mật khẩu' helperText={touched.password ? errors.password : undefined}>
+              <Field
+                as={PasswordInput}
+                name='password'
+                inputProps={{
+                  placeholder: 'Nhập mật khẩu',
+                }}
+                error={Boolean(touched.password && errors.password)}
+              />
+            </InputLayout>
+            <InputLayout label='Nhập lại mật khẩu' helperText={touched.repassword ? errors.repassword : undefined}>
+              <Field
+                as={PasswordInput}
+                name='repassword'
+                inputProps={{
+                  placeholder: 'Nhập lại mật khẩu',
+                }}
+                error={Boolean(touched.repassword && errors.repassword)}
+              />
+            </InputLayout>
+          </StyledForm>
+        )}
+      </Formik>
+      <Button size='large' form='sign-up-form' type='submit'>
+        Đăng ký
+      </Button>
+    </CardLayout>
   );
 }
 

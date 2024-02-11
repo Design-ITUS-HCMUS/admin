@@ -8,49 +8,50 @@ import { usePathname } from 'next/navigation';
 // Material UI Components
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+import { ButtonProps } from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { styled, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ButtonProps } from '@mui/material/Button';
 
+import AttachMoneyIcon from '@mui/icons-material/AttachMoneyRounded';
+import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import MenuIcon from '@mui/icons-material/MenuRounded';
 // Material UI Icons
 import PersonIcon from '@mui/icons-material/PersonRounded';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoneyRounded';
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import MenuIcon from '@mui/icons-material/MenuRounded';
-import ChevronRightIcon from '@mui/icons-material/ChevronRightRounded';
 
+import { colors } from '..';
+import { Avatar } from './Avatar';
 // Local Imports
 import { Logo } from './Logo';
-import { colors } from '../';
 
+interface IMenuItem {
+  icon?: React.ReactNode;
+  name: string;
+  link: string;
+  disabled?: boolean;
+}
 interface INavbarPill {
   name: string;
   link?: string;
   disabled?: boolean;
-  menuItems?: {
-    icon?: React.ReactNode;
-    name: string;
-    link: string;
-    disabled?: boolean;
-  }[];
+  menuItems?: IMenuItem[];
 }
-
 interface NavbarPillProps extends INavbarPill {
   active?: boolean;
 }
@@ -59,15 +60,15 @@ interface StyledNavbarPillProps extends ButtonProps {
 }
 
 const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 'active' })<StyledNavbarPillProps>(
-  ({ active }) => ({
-    color: active ? colors.blue[500] : colors.neutral[400],
+  ({ active, theme }) => ({
+    color: active ? theme.palette.primary.main : colors.neutral[400],
     backgroundColor: 'transparent',
     padding: '4px 6px',
     '&.Mui-disabled': {
       backgroundColor: 'transparent',
     },
     '&:hover': {
-      color: active ? colors.blue[500] : colors.blue[900],
+      color: active ? theme.palette.primary.main : colors.blue[900],
       backgroundColor: active ? colors.blue[50] : colors.neutral[50],
     },
     '& .MuiButton-endIcon': {
@@ -77,7 +78,7 @@ const StyledNavbarPill = styled(Button, { shouldForwardProp: (prop) => prop !== 
 );
 
 const FocusedNavbarPillStyle = {
-  color: colors.blue[500],
+  color: 'primary.main',
   backgroundColor: colors.blue[50],
 };
 
@@ -88,7 +89,6 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     event.currentTarget.focus();
-    console.log('focused');
   };
 
   const handleClose = () => {
@@ -108,9 +108,9 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
     <Box sx={BoxStyle}>
       <StyledNavbarPill
         LinkComponent={Link}
-        href={!menuItems ? link : undefined}
-        onClick={menuItems && handleOpen}
-        endIcon={menuItems && <ExpandMoreIcon />}
+        href={!Boolean(menuItems) ? link : undefined}
+        onClick={Boolean(menuItems) ? handleOpen : () => {}}
+        endIcon={Boolean(menuItems) && <ExpandMoreIcon />}
         sx={open ? FocusedNavbarPillStyle : undefined}
         active={active}
         disabled={disabled}>
@@ -118,16 +118,16 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
           {name}
         </Typography>
       </StyledNavbarPill>
-      {menuItems && (
+      {Boolean(menuItems) && menuItems !== undefined ? (
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose} disableScrollLock>
-          {menuItems.map(
-            (menuItem, i, arr) =>
-              i < arr.length - 1 && (
+          {menuItems.map((menuItem, i, arr) => {
+            if (i < arr.length - 1)
+              return (
                 <MenuItem key={menuItem.name} component={Link} href={menuItem.link}>
                   {menuItem.name}
                 </MenuItem>
-              )
-          )}
+              );
+          })}
           <Divider />
           <MenuItem
             key={menuItems[menuItems.length - 1].name}
@@ -136,7 +136,7 @@ function NavbarPill({ name, link, menuItems, active, disabled }: NavbarPillProps
             {menuItems[menuItems.length - 1].name}
           </MenuItem>
         </Menu>
-      )}
+      ) : null}
     </Box>
   );
 }
@@ -145,12 +145,10 @@ const StyledDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   columnGap: theme.spacing(2),
-  padding: theme.spacing(0, 3, 0),
-  marginRight: theme.spacing(4),
+  marginRight: theme.spacing(7),
   [theme.breakpoints.down('md')]: {
     columnGap: theme.spacing(1),
     flexGrow: 1,
-    padding: theme.spacing(0, 2, 0),
     marginRight: 0,
   },
 }));
@@ -166,8 +164,10 @@ function Title(): React.JSX.Element {
   );
 }
 
-function UserSettings(settings: INavbarPill): React.JSX.Element {
+function UserSettings(): React.JSX.Element {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  // later, this will be replaced by the user's name get by redux here
+  const username = 'Ngân Trúc';
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -179,35 +179,36 @@ function UserSettings(settings: INavbarPill): React.JSX.Element {
     setAnchorElUser(null);
   };
 
+  // The menu items never change through time, so we can use the same array for the whole component
+  // and avoid the ? operation
+  const settingItems = [
+    { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
+    { name: 'Lịch sử thanh toán', link: '/history', icon: <AttachMoneyIcon /> },
+  ];
+
   return (
     <div>
       <ListItemButton
         onClick={handleOpenUserMenu}
         component={isMobile ? Link : Button}
+        sx={{ background: 'none !important', padding: 0, height: 'fit-content' }}
         href={isMobile ? '/profile' : undefined}>
-        <ListItemText primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 700 }} primary={settings.name} />
+        <Avatar key='avatar' name={username} />
         <ListItemIcon sx={{ minWidth: 0 }}>{isMobile ? <ChevronRightIcon /> : <ExpandMoreIcon />}</ListItemIcon>
       </ListItemButton>
-      {!isMobile && (
+      {!Boolean(isMobile) && (
         <Menu anchorEl={anchorElUser} open={Boolean(anchorElUser)} disableScrollLock onClose={handleCloseUserMenu}>
-          {settings.menuItems?.map(
-            (item, i, arr) =>
-              i < arr.length - 1 && (
-                <MenuItem key={item.name} onClick={handleCloseUserMenu}>
-                  {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-                  <ListItemText>
-                    <Link href={item.link}>{item.name}</Link>
-                  </ListItemText>
-                </MenuItem>
-              )
-          )}
+          {settingItems.map((item, index) => (
+            <MenuItem component={Link} href={item.link} key={index} onClick={handleCloseUserMenu}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText>{item.name}</ListItemText>
+            </MenuItem>
+          ))}
           <Divider />
-          <MenuItem key={settings.menuItems?.[settings.menuItems?.length - 1].link}>
-            <ListItemText sx={{ color: colors.notification['error'] }}>
-              <Link href={settings.menuItems?.[settings.menuItems?.length - 1].link || '#'}>
-                {settings.menuItems?.[settings.menuItems?.length - 1].name}
-              </Link>
-            </ListItemText>
+          {/* In the future, when BE provides API to logout, we may change from Link to axios utils 
+                instead of direct user to another frontend route */}
+          <MenuItem component={Link} href='/logout' key='logout'>
+            <ListItemText sx={{ color: 'error.main' }}>Đăng xuất</ListItemText>
           </MenuItem>
         </Menu>
       )}
@@ -229,25 +230,19 @@ const pages: INavbarPill[] = [
   { name: 'Bài đăng', link: '/posts', disabled: true },
 ];
 
-const settings: INavbarPill = {
-  name: 'Xin chào, Ngân Trúc',
-  menuItems: [
-    { name: 'Thông tin', link: '/profile', icon: <PersonIcon /> },
-    { name: 'Lịch sử thanh toán', link: '/history', icon: <AttachMoneyIcon /> },
-    { name: 'Đăng xuất', link: '/logout' },
-  ],
-};
-
 export interface NavbarProps {
+  /** The URL of the active page. Just use for storybook, in the usual case, the component will check pathname.*/
   activeURL?: string;
 }
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `2px solid ${theme.palette.divider}`,
-  padding: 0,
-  borderRadius: 0,
+  padding: theme.spacing(0, 3, 0),
   color: colors.blue[900],
   backgroundColor: theme.palette.background.paper,
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(0, 2, 0),
+  },
 }));
 
 function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
@@ -289,7 +284,7 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                   Tạo sự kiện
                 </Button>
               </Box>
-              <UserSettings {...settings} />
+              <UserSettings />
             </>
           ) : (
             /* Responsive -> Visible only on XS and SM */
@@ -305,7 +300,7 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                     <IconButton onClick={toggleDrawer}>
                       <CloseIcon />
                     </IconButton>
-                    <UserSettings {...settings} />
+                    <UserSettings />
                   </Box>
                   <Divider />
                   <List>
@@ -333,9 +328,9 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                           </ListItemButton>
                           <Collapse in={openCollapse} timeout='auto' unmountOnExit>
                             <List component='div'>
-                              {page.menuItems?.map(
-                                (menuItem, index, arr) =>
-                                  index < arr.length - 1 && (
+                              {page.menuItems?.map((menuItem, index, arr) => {
+                                if (index < arr.length - 1)
+                                  return (
                                     <ListItemButton
                                       key={index}
                                       component={Link}
@@ -345,10 +340,10 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                                       disabled={menuItem.disabled}>
                                       <ListItemText>{menuItem.name}</ListItemText>
                                     </ListItemButton>
-                                  )
-                              )}
-                              <Divider component='li' variant='middle' />
-                              {page.menuItems && (
+                                  );
+                              })}
+                              <Divider variant='middle' />
+                              {Boolean(page.menuItems) && (
                                 <ListItemButton
                                   key={page.menuItems[page.menuItems.length - 1].name}
                                   component={Link}
@@ -364,9 +359,9 @@ function Navbar({ activeURL = '' }: NavbarProps): React.JSX.Element {
                         </React.Fragment>
                       )
                     )}
-                    <ListItemButton component={Link} href='/events/create'>
+                    <Button component={Link} href='/events/create' sx={{ margin: 2 }}>
                       Tạo sự kiện
-                    </ListItemButton>
+                    </Button>
                   </List>
                 </Box>
               </Drawer>

@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import otpGenerator from 'otp-generator';
+
 import { IBaseResponseBody } from '@/interfaces/baseResponse';
 import { sendEmail } from '@/interfaces/common';
 class CommonService {

@@ -1,16 +1,15 @@
 'use client';
 
-// React
-import { CSSProperties } from 'react';
+import { Form } from 'formik';
 
 // Material UI Components
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 
 // Libs
 import color from '@/libs/ui/color';
 
-export const SupportTextStyle: CSSProperties = {
+export const SupportTextStyle: SxProps = {
   color: color.neutral[200],
 };
 
@@ -50,7 +49,7 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export const StyledForm = styled('div')({
+export const StyledForm = styled(Form)({
   display: 'flex',
   flexDirection: 'column',
   gap: '.5rem',
