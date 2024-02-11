@@ -5,37 +5,34 @@ import React from 'react';
 import Link from 'next/link';
 
 // Material UI Components
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 // Internal
-import { Row, SupportTextStyle } from '.';
+import { SupportTextStyle } from '.';
 
 interface CardFooterProps {
+  /**The main text of the footer.*/
   mainText?: string;
+  /**The text of the hyperlink.*/
   linkText?: string;
+  /**The href of the hyperlink.*/
   linkHref?: string;
 }
 
-export const CardFooter = ({ mainText, linkText, linkHref }: CardFooterProps) => {
+export const CardFooter = ({ mainText, linkText, linkHref = '' }: CardFooterProps) => {
   return (
-    <Row style={{ alignItems: 'baseline', gap: 8 }}>
+    <Stack alignItems='baseline' direction='row' justifyContent='center' spacing={1}>
       <Typography
         sx={{
           ...SupportTextStyle,
-          textAlign: 'right',
-          display: 'inline-block',
-          width: 'fit-content',
           fontWeight: '600',
         }}>
         {mainText}
       </Typography>
-      <Typography
-        component={Link}
-        href={linkHref || ''}
-        variant='linkPrimary'
-        sx={{ display: 'inline-block', width: 'fit-content' }}>
+      <Typography component={Link} href={linkHref} variant='linkPrimary'>
         {linkText}
       </Typography>
-    </Row>
+    </Stack>
   );
 };

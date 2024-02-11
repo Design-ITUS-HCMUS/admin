@@ -1,6 +1,7 @@
-import { DefaultArgs } from '@prisma/client/runtime/library';
-import { prisma } from '../client';
 import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
+
+import { prisma } from '../client';
 
 export default class UserRepository {
   private model: Prisma.UserDelegate<DefaultArgs>;
@@ -23,7 +24,7 @@ export default class UserRepository {
       });
       return newUser;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -36,15 +37,16 @@ export default class UserRepository {
             id: 'asc',
           },
         ],
-        include: {
-          accountEvents: true,
-          role: true,
+        select: {
+          id: true,
+          username: true,
+          email: true,
           profile: true,
         },
       });
       return allUsers;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -61,7 +63,7 @@ export default class UserRepository {
       });
       return user;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -87,7 +89,7 @@ export default class UserRepository {
       });
       return user;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -103,7 +105,7 @@ export default class UserRepository {
       });
       return deletedUser;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

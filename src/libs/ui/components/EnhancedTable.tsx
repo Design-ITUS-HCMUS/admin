@@ -1,11 +1,14 @@
 'use client';
-import { useState, MouseEvent } from 'react';
-import { styled } from '@mui/material/styles';
+import { MouseEvent, useState } from 'react';
+import { visuallyHidden } from '@mui/utils';
+
 import { Theme, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
+import Pagination from '@mui/material/Pagination';
+import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,13 +17,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
-import { visuallyHidden } from '@mui/utils';
 
 import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
-import { Order } from '@/utils';
 import { colors } from '@/libs/ui';
+import { Order } from '@/utils';
 
 const StyledTableFooter = styled('div')({
   display: 'flex',
@@ -51,13 +52,13 @@ export interface IRowCell {
 interface EnhancedTableHeadProps {
   onRequestSort: (event: MouseEvent<unknown>, property: number) => void;
   order: Order;
-  orderBy: null | number;
+  orderByID: null | number;
   headCells: readonly IHeadCell[];
   disableAction?: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableHeadProps) {
-  const { order, orderBy, onRequestSort, headCells, disableAction } = props;
+  const { order, orderByID, onRequestSort, headCells, disableAction } = props;
   const createSortHandler = (property: number) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
@@ -75,14 +76,14 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy !== null ? (orderBy === index ? order : false) : false}
+            sortDirection={orderByID !== null ? (orderByID === index ? order : false) : false}
             sx={{ fontWeight: 'bold' }}>
             <TableSortLabel
-              active={orderBy === index}
-              direction={orderBy === index ? order : 'asc'}
+              active={orderByID === index}
+              direction={orderByID === index ? order : 'asc'}
               onClick={createSortHandler(index)}>
               {headCell.label}
-              {orderBy === index ? (
+              {orderByID === index ? (
                 <Box component='span' sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
@@ -90,7 +91,7 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        {!disableAction && <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
+        {disableAction ? null : <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
       </TableRow>
     </TableHead>
   );
@@ -130,15 +131,35 @@ function TableMenu({
 }
 
 interface EnhancedTableProps {
+  /** The head cells of the table, each cell must have a unique <code>id</code> to handle sorting. <br/>
+   * <code>interface IHeadCell {
+   *   disablePadding?: boolean;<br/>
+   *   id: string;<br/>
+   *   label: string;<br/>
+   *   numeric?: boolean;<br/>
+   * }</code>
+   */
   headCells: readonly IHeadCell[];
+  /** The data of the table, each row must have a unique <code>id</code> to handle action.
+   * Moreover, other keys must match the <code>id</code> of the head cell. Otherwise, the data will not be rendered.
+   */
   rows: IRowCell[];
+  /** The total rows of the table support counting the total pages of table's pagination and show the total summary on the left side of table footer.*/
   totalRows: number;
+  /** The number of rows per page support counting the total pages of table's pagination. */
   rowsPerPage?: number;
+  /** Specify the current page of the table for the table pagination to highlight. */
   currentPage?: number;
+  /** The callback function when the page is changed by the table pagination. The <code>page</code> will be passed by. */
   onChangePage: (event: unknown, page: number) => void;
-  onSort: (event: unknown, order: Order, orderBy: number | null) => void;
+  onSort: (event: unknown, order: Order, orderByID: number | null) => void;
+  /** Disable the more action column. */
   disableAction?: boolean;
+  /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
+   * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
+   */
   onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  /** The children of the table menu. */
   children?: React.ReactNode;
 }
 
@@ -151,11 +172,11 @@ export function EnhancedTable({
   onChangePage,
   onSort,
   disableAction = false,
-  onAct = (e) => {},
+  onAct = (_e, _id) => {},
   children,
 }: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<null | number>(null);
+  const [orderByID, setOrderByID] = useState<null | number>(null);
   const [page, setPage] = useState(currentPage);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -170,21 +191,21 @@ export function EnhancedTable({
   };
 
   const handleRequestSort = (event: MouseEvent<unknown>, property: number) => {
-    const isAsc = orderBy === property && order === 'asc';
+    const isAsc = orderByID === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    setOrderByID(property);
     onSort(event, isAsc ? 'desc' : 'asc', property);
   };
 
   const clearSort = (event: MouseEvent<unknown>) => {
     setOrder('asc');
-    setOrderBy(null);
+    setOrderByID(null);
     onSort(event, 'asc', null);
   };
 
   const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
     setAnchorEl(event.currentTarget);
-    onAct(event, _id);
+    if (_id) onAct(event, _id);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -193,13 +214,13 @@ export function EnhancedTable({
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        {orderBy !== null && (
+        {orderByID !== null ? (
           <Chip
             label={
               <Typography>
                 {'Sắp xếp theo '}
                 <Typography component='span' fontWeight='bold'>
-                  {headCells[orderBy].label}
+                  {headCells[orderByID].label}
                 </Typography>
               </Typography>
             }
@@ -207,9 +228,15 @@ export function EnhancedTable({
             color='primary'
             variant='outlined'
           />
-        )}
+        ) : null}
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} />
+          <EnhancedTableHead
+            order={order}
+            orderByID={orderByID}
+            onRequestSort={handleRequestSort}
+            headCells={headCells}
+            disableAction={disableAction}
+          />
           <TableBody>
             {rows.map((row, index) => {
               return (
@@ -232,9 +259,9 @@ export function EnhancedTable({
                       </TableCell>
                     );
                   })}
-                  {!disableAction && (
+                  {disableAction ? null : (
                     <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
-                      <IconButton onClick={(e) => handleClick(e, row._id)} sx={{ margin: 0 }}>
+                      <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
                         <MoreIcon />
                       </IconButton>
                     </TableCell>
@@ -242,14 +269,14 @@ export function EnhancedTable({
                 </StyledTableRow>
               );
             })}
-            {emptyRows > 0 && (
+            {emptyRows > 0 ? (
               <StyledTableRow
                 style={{
                   height: (dense ? 33 : 53) * emptyRows,
                 }}>
                 <TableCell colSpan={6} />
               </StyledTableRow>
-            )}
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>
@@ -265,13 +292,13 @@ export function EnhancedTable({
           showLastButton
           boundaryCount={0}
         />
-        {totalRows && <Typography>Tổng: {totalRows}</Typography>}
+        {Boolean(totalRows) ? <Typography>Tổng: {totalRows}</Typography> : null}
       </StyledTableFooter>
-      {!disableAction && children && (
+      {!disableAction && children ? (
         <TableMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
           {children}
         </TableMenu>
-      )}
+      ) : null}
     </Box>
   );
 }

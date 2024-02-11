@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import AuthService from '@/services/authService';
 
 /**
@@ -37,7 +38,7 @@ import AuthService from '@/services/authService';
  */
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const OTP = decodeURIComponent( req.cookies.get('OTP')?.value || '');
+  const OTP = decodeURIComponent(req.cookies.get('OTP')?.value || '');
   const res = await AuthService.register(data, OTP);
   const response = NextResponse.json(res.responseBody(), { status: res.status });
   if (res.status === 200) {

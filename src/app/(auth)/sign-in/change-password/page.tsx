@@ -1,42 +1,61 @@
 'use client';
 
 // React
-import Link from 'next/link';
-
-// Libs
-import { PasswordFieldWithLabel as PassField } from '@/libs/ui/components';
+import { useRouter } from 'next/navigation';
+import { Field, Formik } from 'formik';
 
 // Material UI Components
 import Button from '@mui/material/Button';
 
 // Internal
-import { CardPage, Row, StyledForm } from '@/app/(auth)/_components';
+import { CardLayout, StyledForm } from '@/app/(auth)/_components';
+// Libs
+import { InputLayout, PasswordInput } from '@/libs/ui';
+import { ForgetPasswordSchema } from '@/libs/validations';
 
 function ChangePasswordPage() {
+  const router = useRouter();
+  function handleSubmit(values: { password: string; repassword: string }) {
+    /* eslint-disable no-console */
+    console.log('Submit change-pass-form', values);
+    router.push('/sign-in/change-password/success');
+  }
   return (
-    <CardPage header='Thay đổi mật khẩu'>
-      <StyledForm>
-        <PassField
-          label='Mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập mật khẩu mới',
-          }}
-        />
-        <PassField
-          label='Nhập lại mật khẩu mới'
-          inputProps={{
-            placeholder: 'Nhập lại mật khẩu mới',
-          }}
-        />
-      </StyledForm>
-      <Row>
-        <Link href='/sign-in/change-password/success'>
-          <Button variant='contained' size='large' sx={{ width: '100%' }}>
-            Thay đổi
-          </Button>
-        </Link>
-      </Row>
-    </CardPage>
+    <CardLayout header='Thay đổi mật khẩu'>
+      <Formik
+        initialValues={{
+          password: '',
+          repassword: '',
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={ForgetPasswordSchema}>
+        {({ touched, errors }) => {
+          return (
+            <StyledForm id='change-pass-form'>
+              <InputLayout label='Mật khẩu mới' helperText={touched.password ? errors.password : ''}>
+                <Field
+                  as={PasswordInput}
+                  name='password'
+                  placeholder='Nhập mật khẩu mới'
+                  error={Boolean(touched.password && errors.password)}
+                />
+              </InputLayout>
+              <InputLayout label='Nhập lại mật khẩu mới' helperText={touched.repassword ? errors.repassword : ''}>
+                <Field
+                  as={PasswordInput}
+                  name='repassword'
+                  placeholder='Nhập lại mật khẩu mới'
+                  error={Boolean(touched.repassword && errors.repassword)}
+                />
+              </InputLayout>
+            </StyledForm>
+          );
+        }}
+      </Formik>
+      <Button size='large' type='submit' form='change-pass-form'>
+        Thay đổi
+      </Button>
+    </CardLayout>
   );
 }
 

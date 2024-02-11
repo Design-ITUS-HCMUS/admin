@@ -1,21 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
-import { ProgressIcon } from '@/libs/ui';
+
+import type { Meta, StoryObj } from '@storybook/react';
 import { SvgIconProps } from '@mui/material';
 
+import { ProgressIcon } from '@/libs/ui';
+
 const meta: Meta = {
+  title: 'Custom MUI/Custom Icons',
   component: ProgressIcon,
 };
 
 export default meta;
 type Story = StoryObj;
-
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/api/csf
- * to learn how to use render functions.
- */
 
 export const All: Story = {
   render: (args: SvgIconProps) => (

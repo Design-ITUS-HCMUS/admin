@@ -1,9 +1,10 @@
+import { payOS } from '@payOS';
 import PaymentRepository from '@repositories/paymentRepository';
+
+import { CheckoutRequestType, WebhookType } from '@/interfaces/payOS';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import { CheckoutRequestType, WebhookType } from '@/interfaces/payOS';
-import { getUnixTimeStamp, calcTotalPrice } from '@/utils/payOSUtils';
-import { payOS } from '@payOS';
+import { calcTotalPrice, getUnixTimeStamp } from '@/utils/payOSUtils';
 
 class PayOSPaymentService {
   private repository: PaymentRepository;
@@ -30,7 +31,7 @@ class PayOSPaymentService {
       let orderCode = (await this.repository.getCurrentID()) + 1;
 
       // Start timer
-      const startTime = Date.now();
+      // const startTime = Date.now();
 
       while (true) {
         // If time out (1 min) -> Return error

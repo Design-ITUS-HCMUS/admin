@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 const NUMBER_OF_INPUTS = 6;
 
 interface OTPInputProps {
+  /** The callback function that is triggered when the input value changes. */
   onChange: (res: string) => void;
 }
 

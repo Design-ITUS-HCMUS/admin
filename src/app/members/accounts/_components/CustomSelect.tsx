@@ -1,16 +1,20 @@
 'use client';
 import * as React from 'react';
+
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
 import { SelectChangeEvent } from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 
-import { DropdownText, InputLayout, colors } from '@/libs/ui';
+import { colors, DropdownText, InputLayout } from '@/libs/ui';
 import { ROLE } from '@/utils';
 
-interface CustomSelectProps {
+export interface CustomSelectProps {
+  /** The ratio of the input to the label. Each of the component use InputLayout as the root component, this prop will be passed directly to InputLayout */
   ratio?: number;
+  /** Default value of the input, depend on which component you use, the type can be different.*/
   defaultValue?: number | string | string[];
+  /** Determine the select can be modified or not. */
   readOnly?: boolean;
 }
 
@@ -37,12 +41,13 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
       const value = departments
         .filter((_item, id) => id < 2)
         .map((department) => <Chip key={department} label={<Typography>{department}</Typography>} size='small' />);
-      value.length < departments.length &&
+      if (value.length < departments.length) {
         value.push(
           <Typography component='span' key='plus'>
             +{departments.length - value.length}
           </Typography>
         );
+      }
       return value;
     }
     return (
@@ -53,7 +58,7 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
   };
 
   return (
-    <InputLayout name='departments' label='Ban hoạt động' direction='row' ratio={ratio} inputprops={{ required: true }}>
+    <InputLayout label='Ban hoạt động' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         name='departments'
         multiple
@@ -87,7 +92,7 @@ export function SelectRole({ ratio = 0.5, defaultValue = ROLE.MEMBER, readOnly }
   };
 
   return (
-    <InputLayout name='role' label='Vai trò' direction='row' ratio={ratio} inputprops={{ required: true }}>
+    <InputLayout label='Vai trò' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         name='role'
         renderValue={renderValue}
@@ -116,7 +121,7 @@ export function SelectPosition({ ratio = 0.5, defaultValue = 'Thành viên', rea
   };
 
   return (
-    <InputLayout name='position' label='Vị trí' direction='row' ratio={ratio} inputprops={{ required: true }}>
+    <InputLayout label='Vị trí' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         renderValue={renderValue}
         name='position'

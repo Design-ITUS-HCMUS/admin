@@ -1,10 +1,14 @@
+import * as React from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
-import * as React from 'react';
+import { Dropdown } from './Dropdown';
 import { InputLayout } from './InputLayout';
 
 const meta: Meta<typeof InputLayout> = {
+  title: 'Global/Input/Layout',
   component: InputLayout,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div style={{ backgroundColor: 'white', padding: '2rem' }}>
@@ -12,21 +16,17 @@ const meta: Meta<typeof InputLayout> = {
       </div>
     ),
   ],
-};
-
-export default meta;
-type Story = StoryObj;
-
-export const Default: Story = {
-  name: 'InputLayout',
+  parameters: {
+    layout: 'centered',
+  },
   args: {
-    name: 'username',
     label: 'Username',
     inputProps: {
       placeholder: '<Gen><Họ và tên viết tắt> VD: 11lvntruc',
       required: true,
     },
     direction: 'column',
+    containerProps: { sx: { width: '300px' } },
   },
   argTypes: {
     ratio: {
@@ -36,17 +36,59 @@ export const Default: Story = {
         max: 1,
         step: 0.1,
       },
-      description: 'The ratio of label width to field width. Only available when direction is <code>row</code>.',
-    },
-    inputProps: {
-      description: `The props of the default input component. \
-        If you want to use a custom input component, you can pass it as a child of <code>InputLayout</code>.\
-        These props will be ignored.`,
-    },
-    direction: {
-      description:
-        'The direction of the layout. If <code>row</code>, the label will be placed on the left of the field.',
     },
   },
-  render: (args: any) => <InputLayout {...args} />,
+};
+
+export default meta;
+export const Column: StoryObj = {
+  name: 'Layout Column',
+  args: {
+    direction: 'column',
+  },
+};
+export const Row: StoryObj = {
+  name: 'Layout Row',
+  args: {
+    direction: 'row',
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
+      placeholder: 'Default with 50% label and 50% input field',
+    },
+  },
+};
+export const Ratio: StoryObj = {
+  name: 'Custom Ratio',
+  args: {
+    ratio: 0.25,
+    direction: 'row',
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
+      placeholder: '25% label and 75% input field',
+    },
+  },
+};
+export const Error: StoryObj = {
+  name: 'Error State',
+  args: {
+    ratio: 0.25,
+    direction: 'row',
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
+      placeholder: '25% label and 75% input field',
+      error: true,
+    },
+    helperText: 'This is an error message',
+  },
+};
+export const Input: StoryObj = {
+  name: 'Custom Input',
+  args: {
+    direction: 'column',
+    children: (
+      <Dropdown>
+        <option value={1}>Option 1</option>
+      </Dropdown>
+    ),
+  },
 };

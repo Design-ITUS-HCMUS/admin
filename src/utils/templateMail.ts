@@ -1,6 +1,7 @@
 export const templateRegister = {
   subject: '[DESIGN ITUS] - XÁC THỰC TÀI KHOẢN',
-  text: 'Thân chào bạn {username},\n' +
+  text:
+    'Thân chào bạn {username},\n' +
     'Bạn hoặc một ai đó vừa gửi yêu cầu tạo tài khoản từ hệ thống website của Câu lạc bộ Design ITUS, Trường ĐH KHTN TP.HCM.\n' +
     'Mã OTP của bạn là:\n' +
     '{OTP}\n' +
@@ -10,7 +11,8 @@ export const templateRegister = {
     '\n' +
     'Câu lạc bộ học thuật thiết kế Design ITUS\n' +
     'Khoa Công nghệ Thông tin Trường Đại học Khoa học tự nhiên, Đại học Quốc gia TPHCM',
-  html: '<!doctype html>\n' +
+  html:
+    '<!doctype html>\n' +
     '<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">\n' +
     '<head>\n' +
     '<title></title>\n' +
@@ -125,12 +127,13 @@ export const templateRegister = {
     '</td></tr></table>\n' +
     '<![endif]--></div></div>\n' +
     '</body>\n' +
-    '</html>'
-}
+    '</html>',
+};
 
 export const templateResetPassword = {
   subject: '[DESIGN ITUS] - THAY ĐỔI MẬT KHẨU',
-  text: 'Thân chào bạn {username},\n' +
+  text:
+    'Thân chào bạn {username},\n' +
     'Bạn hoặc một ai đó vừa gửi yêu cầu thay đổi mật khẩu từ hệ thống website của Câu lạc bộ Design ITUS, Trường ĐH KHTN TP.HCM.\n' +
     'Mã OTP của bạn là:\n' +
     '{OTP}\n' +
@@ -140,7 +143,8 @@ export const templateResetPassword = {
     '\n' +
     'Câu lạc bộ học thuật thiết kế Design ITUS\n' +
     'Khoa Công nghệ Thông tin Trường Đại học Khoa học tự nhiên, Đại học Quốc gia TPHCM',
-  html: '<!doctype html>\n' +
+  html:
+    '<!doctype html>\n' +
     '<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">\n' +
     '<head>\n' +
     '<title></title>\n' +
@@ -255,5 +259,5 @@ export const templateResetPassword = {
     '</td></tr></table>\n' +
     '<![endif]--></div></div>\n' +
     '</body>\n' +
-    '</html></p>'
-}
+    '</html></p>',
+};

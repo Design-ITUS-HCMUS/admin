@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import AuthService from '@/services/authService';
 
 /**
@@ -26,8 +27,8 @@ import AuthService from '@/services/authService';
  *       500:
  *         description: Error message.
  */
-export async function POST(req:NextRequest) {
-  const sentOTP = decodeURIComponent( req.cookies.get('OTP')?.value || '');
+export async function POST(req: NextRequest) {
+  const sentOTP = decodeURIComponent(req.cookies.get('OTP')?.value || '');
   const { OTP } = await req.json();
   const res = await AuthService.verifyOTP(OTP, sentOTP);
   const response = NextResponse.json(res.responseBody(), { status: res.status });

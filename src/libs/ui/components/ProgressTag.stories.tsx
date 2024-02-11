@@ -1,24 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
+
+import type { Meta, StoryObj } from '@storybook/react';
+import Paper from '@mui/material/Paper';
+
 import { ProgressTag } from './ProgressTag';
 
 const meta: Meta<typeof ProgressTag> = {
+  title: 'Global/Progress Tag',
   component: ProgressTag,
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    label: 'Đang diễn ra',
+    variant: 'done',
+  },
+  decorators: [
+    (Story) => (
+      <Paper variant='section'>
+        <Story />
+      </Paper>
+    ),
+  ],
 };
 
 export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-export const Default: Story = {
-  name: 'ProgressTag',
-  args: {
-    label: 'Đang diễn ra',
-  },
-  render: (args: any) => <ProgressTag {...args} />,
+export const Default: StoryObj = {
+  name: 'Progress Tag',
 };

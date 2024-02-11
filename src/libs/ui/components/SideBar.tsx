@@ -1,7 +1,8 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 
 import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+
 import { ISideBarItem, SideBarItem } from './SideBarItem';
 
 const StyledHeader = styled('div')(({ theme }) => ({
@@ -27,7 +28,7 @@ interface SideBarProps {
 export function SideBar({ header, active, SideBarItems, onClickMenuItem }: SideBarProps) {
   return (
     <StyledSideBar>
-      {header && <StyledHeader>{header}</StyledHeader>}
+      {Boolean(header) && <StyledHeader>{header}</StyledHeader>}
       <Stack sx={{ padding: '1.5rem 0' }} gap='0.75rem'>
         {SideBarItems.map((item) => (
           <SideBarItem

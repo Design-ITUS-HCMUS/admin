@@ -3,9 +3,9 @@ import { useRouter } from 'next/navigation';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import { CreateEventForm } from '../../_components';
 
@@ -16,7 +16,7 @@ export default function EventCreateModal() {
     router.back();
   }
 
-  function handleSubmit(formData: FormData) {}
+  function handleSubmit(_formData: FormData) {}
 
   return (
     <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth PaperProps={{ variant: 'section' }}>

@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+
 import Button, { ButtonProps } from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
 import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { UploadFile } from '@mui/icons-material';
+
+import UploadFile from '@mui/icons-material/UploadFile';
+
 import { colors } from '@/libs/ui';
 
 const VisuallyHiddenInput = styled('input')({
@@ -36,9 +40,26 @@ const UploadButton = styled(Button, {
 }));
 
 interface UploaderProps {
+  /** <div>
+   *    Extends from <code>ButtonProps</code> of MUI with additional props:
+   *  <li>
+   *    <code>state</code>: Custom state of uploader <code>resing | error</code>
+   *  </li>
+   *  <li>
+   *    <code>onUpload</code>: Custom event handler, executed when a file is uploaded
+   *  </li>
+   *  </div> */
   buttonProps?: UploadButtonProps;
+  /** <div>
+   * Uploader has a hidden input element to handle file upload. This prop
+   * controls that input, you can custom the input element's performance, such as
+   * <code>multiple</code>, <code>required</code>, etc.
+   * </div> */
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  /** Control the placeholder text. */
   placeholder?: string;
+  /** Helper text when the input is invalid, and in error state. */
+  helperText?: string;
 }
 
 const CenterStack = styled(Stack)({
@@ -46,24 +67,29 @@ const CenterStack = styled(Stack)({
   justifyContent: 'center',
 });
 
-export function Uploader({ buttonProps, inputProps, placeholder }: UploaderProps) {
+export function Uploader({ buttonProps, inputProps, placeholder, helperText }: UploaderProps) {
   return (
-    <UploadButton
-      component='label'
-      fullWidth
-      color={buttonProps?.state == 'error' ? 'error' : buttonProps?.color}
-      variant='text'
-      {...buttonProps}>
-      <CenterStack spacing={1}>
-        <UploadFile />
-        <Typography color='er'>Click to upload</Typography>
-        <VisuallyHiddenInput type='file' {...inputProps} />
-        {placeholder && (
-          <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
-            {placeholder}
-          </Typography>
-        )}
-      </CenterStack>
-    </UploadButton>
+    <Stack spacing={1}>
+      <UploadButton
+        component='label'
+        fullWidth
+        color={buttonProps?.state == 'error' ? 'error' : buttonProps?.color}
+        variant='text'
+        {...buttonProps}>
+        <CenterStack spacing={1}>
+          <UploadFile />
+          <Typography color={buttonProps?.state == 'error' ? 'error' : 'primary'}>Click to upload</Typography>
+          <VisuallyHiddenInput type='file' {...inputProps} />
+          {!!placeholder && (
+            <Typography variant='caption' color={buttonProps?.state == 'error' ? 'error.main' : colors.neutral[300]}>
+              {placeholder}
+            </Typography>
+          )}
+        </CenterStack>
+      </UploadButton>
+      {buttonProps?.state == 'error' && helperText !== null ? (
+        <FormHelperText error>{helperText}</FormHelperText>
+      ) : null}
+    </Stack>
   );
 }
