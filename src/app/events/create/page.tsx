@@ -1,12 +1,14 @@
 'use client';
 import * as React from 'react';
 import Link from 'next/link';
+
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 import { CreateEventForm } from '../_components';
 
 const Section = styled('section')(({ theme }) => ({

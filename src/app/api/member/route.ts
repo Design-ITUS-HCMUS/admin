@@ -1,5 +1,6 @@
-import MemberService from '@/services/memberService';
 import { NextRequest, NextResponse } from 'next/server';
+
+import MemberService from '@/services/memberService';
 
 /**
  * @swagger

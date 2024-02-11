@@ -1,21 +1,31 @@
+import * as React from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
-import * as React from 'react';
 import { Search } from './Search';
 
 const meta: Meta<typeof Search> = {
+  title: 'Global/Input/Search',
   component: Search,
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    inputProps: {
+      placeholder: 'Tìm kiếm',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'white', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
 export const Default: Story = {
   name: 'Search',
-  render: (args: any) => <Search {...args} onSearch={(_value) => {}} onBlur={(_value) => {}} />,
 };

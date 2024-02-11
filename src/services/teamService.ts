@@ -1,8 +1,9 @@
-import TeamRepository from '@repositories/teamRepository';
-import BaseResponse from '@/utils/baseResponse';
-import { STATUS_CODE } from '@/utils';
-import { Team } from '@/interfaces/team';
 import EventRepository from '@repositories/eventRepository';
+import TeamRepository from '@repositories/teamRepository';
+
+import { Team } from '@/interfaces/team';
+import { STATUS_CODE } from '@/utils';
+import BaseResponse from '@/utils/baseResponse';
 
 class TeamService {
   private repository: TeamRepository;

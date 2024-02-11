@@ -1,18 +1,20 @@
 'use client';
 import { useState } from 'react';
-import dayjs from 'dayjs';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
 import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
-import members from '../members.json';
-import { SelectDepartment, SelectPosition, SelectRole } from '../_components';
-import IconButton from '@mui/material/IconButton';
+import members from '@/libs/mock/members.json';
 import { InputLayout } from '@/libs/ui';
+import { SelectDepartment, SelectPosition, SelectRole } from '../_components';
 
 export default function MemberDetailsPage({ params }: { params: { id: string } }) {
   const [readOnly, setReadOnly] = useState(true);
@@ -31,12 +33,14 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           <MoreIcon />
         </IconButton>
       </Stack>
-      <Stack id='edit-info-member-frm' component='form' spacing={2} onSubmit={handleSubmit}>
+      <Stack id='edit-info-member-form' component='form' spacing={2} onSubmit={handleSubmit}>
         <InputLayout
           label='Username'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          required={!readOnly}
+          inputProps={{
+            name: 'username',
             defaultValue: members[id].username,
             readOnly: readOnly,
             disabled: true,
@@ -46,18 +50,20 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Họ và tên'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          required={!readOnly}
+          inputProps={{
+            name: 'fullName',
             defaultValue: members[id].name,
             readOnly: readOnly,
             disabled: true,
           }}
         />
         <InputLayout
-          name='phone'
           label='Số điện thoại'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          inputProps={{
+            name: 'phone',
             defaultValue: members[id].profile?.phone,
             readOnly: readOnly,
           }}
@@ -66,35 +72,39 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
           label='Email'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          required={!readOnly}
+          inputProps={{
+            name: 'Email',
             defaultValue: members[id].email,
             readOnly: readOnly,
             disabled: true,
           }}
         />
         <InputLayout
-          name='studentId'
           label='MSSV'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          inputProps={{
+            name: 'studentID',
             defaultValue: members[id].profile?.studentId,
             readOnly: readOnly,
           }}
         />
         <InputLayout
-          name='gen'
           label='Gen'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          required={!readOnly}
+          inputProps={{
+            name: 'gen',
             defaultValue: members[id].profile?.gen,
             readOnly: readOnly,
           }}
         />
-        <InputLayout name='dob' label='Ngày sinh' direction='row' ratio={0.25}>
+        <InputLayout label='Ngày sinh' direction='row' ratio={0.25}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              name='dob'
               defaultValue={dayjs(new Date(members[id].profile?.dob as string))}
               readOnly={readOnly}
               views={['year', 'month', 'day']}
@@ -106,16 +116,16 @@ export default function MemberDetailsPage({ params }: { params: { id: string } }
         <SelectPosition ratio={0.25} defaultValue={members[id].profile?.position} readOnly={readOnly} />
         <SelectRole ratio={0.25} defaultValue={members[id].role} readOnly={readOnly} />
         <InputLayout
-          name='facebook'
           label='Facebook'
           direction='row'
           ratio={0.25}
-          inputprops={{
+          inputProps={{
+            name: 'facebook',
             defaultValue: members[id].profile?.facebook,
             readOnly: readOnly,
           }}
         />
-        {!readOnly && (
+        {!Boolean(readOnly) && (
           <Button disabled={readOnly} sx={{ width: 'fit-content' }} type='submit'>
             Lưu
           </Button>

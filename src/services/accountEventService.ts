@@ -1,8 +1,9 @@
 import AccountEventRepository from '@repositories/accountEventRepository';
-import { AccountEvent } from '@/interfaces/accountEvent';
-import BaseResponse from '@/utils/baseResponse';
-import { STATUS_CODE } from '@/utils';
 import EventRepository from '@repositories/eventRepository';
+
+import { AccountEvent } from '@/interfaces/accountEvent';
+import { STATUS_CODE } from '@/utils';
+import BaseResponse from '@/utils/baseResponse';
 
 class AccountEventService {
   private repository: AccountEventRepository;

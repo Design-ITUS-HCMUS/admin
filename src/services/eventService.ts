@@ -1,7 +1,8 @@
+import EventRepository from '@repositories/eventRepository';
+
+import { Event } from '@/interfaces/event';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import EventRepository from '@repositories/eventRepository';
-import { Event } from '@/interfaces/event';
 
 class EventService {
   private repository: EventRepository;

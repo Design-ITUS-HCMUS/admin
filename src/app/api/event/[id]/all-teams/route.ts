@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getParams from '@/utils/getParams';
+
 import TeamService from '@/services/teamService';
+import getParams from '@/utils/getParams';
 
 /**
  * @swagger

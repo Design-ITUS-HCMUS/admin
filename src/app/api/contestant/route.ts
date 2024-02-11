@@ -1,5 +1,6 @@
-import ContestantService from '@/services/contestantService';
 import { NextRequest, NextResponse } from 'next/server';
+
+import ContestantService from '@/services/contestantService';
 
 /**
  * @swagger

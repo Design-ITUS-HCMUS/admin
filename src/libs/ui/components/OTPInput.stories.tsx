@@ -1,27 +1,34 @@
-// React
-import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { userEvent } from '@storybook/testing-library';
 
-// Internal
 import { OTPInput } from './OTPInput';
 
 const meta: Meta<typeof OTPInput> = {
+  title: 'Global/Input/OTP',
   component: OTPInput,
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    onChange: (res: string) => {
+      /* eslint-disable */
+      console.log(res);
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ backgroundColor: 'white', padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-export const Default: Story = {
-  name: 'OTP Input',
-  args: {
-    onchange: (res: string) => console.log(res),
+export const Default: StoryObj = {
+  name: 'OTP',
+  play: async () => {
+    await userEvent.keyboard('123456', { delay: 1000 });
+    await userEvent.keyboard('{backspace}{backspace}789', { delay: 1000 });
   },
-  render: (args: any) => <OTPInput {...args} />,
 };

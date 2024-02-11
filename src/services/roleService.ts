@@ -1,7 +1,8 @@
-import { STATUS_CODE } from '@/utils/enum';
-import BaseResponse from '@/utils/baseResponse';
 import RoleRepository from '@repositories/roleRepository';
+
 import { Role } from '@/interfaces/role';
+import BaseResponse from '@/utils/baseResponse';
+import { STATUS_CODE } from '@/utils/enum';
 
 class RoleService {
   private repository: RoleRepository;
