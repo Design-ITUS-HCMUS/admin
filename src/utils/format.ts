@@ -12,3 +12,7 @@ export function hiddenEmail(email: string) {
   }
   return `${hiddenUsername}@${domain}`;
 }
+
+export function eventKey(str: string) {
+  return str.replace(/\s+/g, '').toUpperCase();
+}

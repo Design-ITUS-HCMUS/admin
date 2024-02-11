@@ -52,13 +52,13 @@ export interface IRowCell {
 interface EnhancedTableHeadProps {
   onRequestSort: (event: MouseEvent<unknown>, property: number) => void;
   order: Order;
-  orderBy: null | number;
+  orderByID: null | number;
   headCells: readonly IHeadCell[];
   disableAction?: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableHeadProps) {
-  const { order, orderBy, onRequestSort, headCells, disableAction } = props;
+  const { order, orderByID, onRequestSort, headCells, disableAction } = props;
   const createSortHandler = (property: number) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
@@ -76,14 +76,14 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy !== null ? (orderBy === index ? order : false) : false}
+            sortDirection={orderByID !== null ? (orderByID === index ? order : false) : false}
             sx={{ fontWeight: 'bold' }}>
             <TableSortLabel
-              active={orderBy === index}
-              direction={orderBy === index ? order : 'asc'}
+              active={orderByID === index}
+              direction={orderByID === index ? order : 'asc'}
               onClick={createSortHandler(index)}>
               {headCell.label}
-              {orderBy === index ? (
+              {orderByID === index ? (
                 <Box component='span' sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
@@ -152,7 +152,7 @@ interface EnhancedTableProps {
   currentPage?: number;
   /** The callback function when the page is changed by the table pagination. The <code>page</code> will be passed by. */
   onChangePage: (event: unknown, page: number) => void;
-  onSort: (event: unknown, order: Order, orderBy: number | null) => void;
+  onSort: (event: unknown, order: Order, orderByID: number | null) => void;
   /** Disable the more action column. */
   disableAction?: boolean;
   /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
@@ -176,7 +176,7 @@ export function EnhancedTable({
   children,
 }: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<null | number>(null);
+  const [orderByID, setOrderByID] = useState<null | number>(null);
   const [page, setPage] = useState(currentPage);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -191,15 +191,15 @@ export function EnhancedTable({
   };
 
   const handleRequestSort = (event: MouseEvent<unknown>, property: number) => {
-    const isAsc = orderBy === property && order === 'asc';
+    const isAsc = orderByID === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    setOrderByID(property);
     onSort(event, isAsc ? 'desc' : 'asc', property);
   };
 
   const clearSort = (event: MouseEvent<unknown>) => {
     setOrder('asc');
-    setOrderBy(null);
+    setOrderByID(null);
     onSort(event, 'asc', null);
   };
 
@@ -214,13 +214,13 @@ export function EnhancedTable({
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        {orderBy !== null ? (
+        {orderByID !== null ? (
           <Chip
             label={
               <Typography>
                 {'Sắp xếp theo '}
                 <Typography component='span' fontWeight='bold'>
-                  {headCells[orderBy].label}
+                  {headCells[orderByID].label}
                 </Typography>
               </Typography>
             }
@@ -232,7 +232,7 @@ export function EnhancedTable({
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
           <EnhancedTableHead
             order={order}
-            orderBy={orderBy}
+            orderByID={orderByID}
             onRequestSort={handleRequestSort}
             headCells={headCells}
             disableAction={disableAction}

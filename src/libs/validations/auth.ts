@@ -1,7 +1,8 @@
 import * as yup from 'yup';
+
 import { Schema } from './schema';
 
-export const signupSchema = yup.object().shape({
+export const SignupSchema = yup.object().shape({
   username: yup
     .string()
     .required('Vui lòng nhập username')
@@ -9,24 +10,28 @@ export const signupSchema = yup.object().shape({
     .matches(/^\S*$/, 'Tên người dùng không thể chứa khoảng trắng'),
   email: Schema.email,
   password: Schema.password,
-  rePassword: yup
+  repassword: yup
     .string()
     .required('Vui lòng nhập lại mật khẩu')
     .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
 });
 
-export const signinSchema = yup.object().shape({
+export const SigninSchema = yup.object().shape({
   username: yup.string().required('Vui lòng nhập username hoặc email'),
   password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
-export const otpSchema = yup.object().shape({
+export const OTPSchema = yup.object().shape({
   otp: yup
     .string()
     .required('Vui lòng nhập OTP')
     .matches(/^\d{6}$/, 'OTP không hợp lệ'),
 });
 
-export const forgotPasswordSchema = yup.object().shape({
-  email: Schema.email,
+export const ForgetPasswordSchema = yup.object().shape({
+  password: Schema.password,
+  repassword: yup
+    .string()
+    .required('Vui lòng nhập lại mật khẩu')
+    .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
 });

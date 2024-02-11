@@ -6,10 +6,7 @@ export class Schema {
   static password = yup
     .string()
     .required('Mật khẩu không được bỏ trống')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]\S{8,}$/,
-      'It nhất 8 ký tự, bao gồm cả chữ và số. Không chứa khoảng trắng.'
-    );
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)\S{8,}$/, 'Ít nhất 8 ký tự, bao gồm cả chữ và số. Không chứa khoảng trắng.');
 
   static facebook = yup
     .string()

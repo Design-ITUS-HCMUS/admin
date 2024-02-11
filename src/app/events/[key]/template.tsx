@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 
 import Paper from '@mui/material/Paper';
@@ -48,14 +48,26 @@ const SideBarItems: ISideBarItem[] = [
   },
 ];
 
+interface IEvent {
+  name: string;
+  key: string;
+  tag: string;
+  start: string;
+  status: string;
+}
+
 export default function EventDetailsTemplate({ children }: { children: React.ReactNode }) {
-  const [active, setActive] = React.useState('');
+  const [event, setEvent] = useState<IEvent>({} as IEvent);
+  const [active, setActive] = useState('');
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
   const baseSegment = `/events/${params.key}`;
 
-  React.useEffect(() => {
+  useEffect(() => {
+    fetch(`/api/event/${params.key}`)
+      .then((res) => res.json())
+      .then((res) => setEvent(res.data));
     const pathSegments = pathname.split('/');
     const baseSegments = baseSegment.split('/');
     if (baseSegments.length !== pathSegments.length) setActive(pathSegments[baseSegments.length]);
@@ -78,7 +90,7 @@ export default function EventDetailsTemplate({ children }: { children: React.Rea
             sx={{
               color: 'primary.darker',
             }}>
-            {params.key}
+            {event.name}
           </Typography>
         }
         active={active}

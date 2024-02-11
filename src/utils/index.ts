@@ -5,5 +5,5 @@ export * from './format';
 export * from './getParams';
 export * from './payOSUtils';
 export * from './route';
-export * from './sortObjects';
 export * from './templateMail';
+export * from './type';
