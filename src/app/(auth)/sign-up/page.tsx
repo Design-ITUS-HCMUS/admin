@@ -23,8 +23,8 @@ function SignUpPage() {
       <StyledForm id='sign-up-form' onSubmit={handleSubmit}>
         <InputLayout
           label='Username'
-          name='username'
-          inputprops={{
+          inputProps={{
+            name: 'username',
             placeholder: 'Username',
             endAdornment: (
               <InputAdornment position='end'>
@@ -35,8 +35,8 @@ function SignUpPage() {
         />
         <InputLayout
           label='Email'
-          name='email'
-          inputprops={{
+          inputProps={{
+            name: 'email',
             placeholder: 'Email',
             endAdornment: (
               <InputAdornment position='end'>
@@ -45,15 +45,17 @@ function SignUpPage() {
             ),
           }}
         />
-        <InputLayout label='Mật khẩu' name='password'>
+        <InputLayout label='Mật khẩu'>
           <PasswordInput
+            name='password'
             inputProps={{
               placeholder: 'Nhập mật khẩu',
             }}
           />
         </InputLayout>
-        <InputLayout label='Nhập lại mật khẩu' name='password'>
+        <InputLayout label='Nhập lại mật khẩu'>
           <PasswordInput
+            name='repassword'
             inputProps={{
               placeholder: 'Nhập lại mật khẩu',
             }}
