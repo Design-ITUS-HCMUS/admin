@@ -33,7 +33,9 @@ export function CardLayout({ header = '', children, showFooter, page = 'signin' 
     <>
       <CardHeader>{header}</CardHeader>
       {children}
-      {!!showFooter && <CardFooter mainText={MAINTEXT[page]} linkText={LINKTEXT[page]} linkHref={LINKHREF[page]} />}
+      {Boolean(showFooter) && (
+        <CardFooter mainText={MAINTEXT[page]} linkText={LINKTEXT[page]} linkHref={LINKHREF[page]} />
+      )}
     </>
   );
 }

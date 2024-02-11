@@ -58,7 +58,7 @@ export function SelectDepartment({ ratio = 0.5, defaultValue = [], readOnly }: C
   };
 
   return (
-    <InputLayout label='Ban hoạt động' direction='row' ratio={ratio} required>
+    <InputLayout label='Ban hoạt động' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         name='departments'
         multiple
@@ -92,7 +92,7 @@ export function SelectRole({ ratio = 0.5, defaultValue = ROLE.MEMBER, readOnly }
   };
 
   return (
-    <InputLayout label='Vai trò' direction='row' ratio={ratio} required>
+    <InputLayout label='Vai trò' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         name='role'
         renderValue={renderValue}
@@ -121,7 +121,7 @@ export function SelectPosition({ ratio = 0.5, defaultValue = 'Thành viên', rea
   };
 
   return (
-    <InputLayout label='Vị trí' direction='row' ratio={ratio} required>
+    <InputLayout label='Vị trí' direction='row' ratio={ratio} required={!readOnly}>
       <DropdownText
         renderValue={renderValue}
         name='position'

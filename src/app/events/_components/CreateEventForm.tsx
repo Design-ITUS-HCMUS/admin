@@ -85,7 +85,7 @@ export function CreateEventForm(props: CreateEventFormProps) {
         </Stack>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <Uploader
-            inputProps={{ onChange: handleUpload, accept: 'svg, png, jpg, jpeg, gif', name: 'thumbnail' }}
+            inputProps={{ onChange: handleUpload, accept: '.svg, .png, .jpg, .jpeg, .gif', name: 'thumbnail' }}
             placeholder='SVG, PNG, JPG or GIF (1400x700px)'
           />
           <Box position='relative' sx={{ width: '100%', aspectRatio: 2 }}>

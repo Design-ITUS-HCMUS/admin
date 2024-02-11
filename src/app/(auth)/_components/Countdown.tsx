@@ -3,7 +3,7 @@ import { TimerRenderer, useTimer } from 'react-use-precision-timer';
 
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
-interface CountDownProps {
+interface CountdownProps {
   /**The seconds you want to countdown.*/
   initialSeconds: number;
   /**The callback function to be executed when the countdown is completed.*/
@@ -29,8 +29,8 @@ function formatSeconds(seconds: number): string {
   return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-export const Countdown = ({ initialSeconds, onComplete, typographyProps }: CountDownProps) => {
-  const completeCountDown = React.useCallback(() => {
+export const Countdown = ({ initialSeconds, onComplete, typographyProps }: CountdownProps) => {
+  const completeCountdown = React.useCallback(() => {
     onComplete();
   }, []);
 
@@ -39,7 +39,7 @@ export const Countdown = ({ initialSeconds, onComplete, typographyProps }: Count
       delay: 1000 * initialSeconds,
       runOnce: true,
     },
-    completeCountDown
+    completeCountdown
   );
 
   useEffect(() => {

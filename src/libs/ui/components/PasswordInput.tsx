@@ -28,7 +28,7 @@ export function PasswordInput(props: OutlinedInputProps) {
             edge='end'
             sx={{ color: color.neutral[100], padding: '12px' }}
             disableRipple>
-            {showPassword ? <ShowIcon /> : <HideIcon />}
+            {showPassword ? <HideIcon /> : <ShowIcon />}
           </IconButton>
         </InputAdornment>
       }
