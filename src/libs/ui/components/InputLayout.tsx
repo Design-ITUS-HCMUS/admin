@@ -1,11 +1,12 @@
+import React from 'react';
+import { Field } from 'formik';
+
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel, { InputLabelProps } from '@mui/material/InputLabel';
 import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
 import Stack, { StackProps } from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-
-import React from 'react';
 
 const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -38,6 +39,8 @@ interface InputLayoutProps {
   labelProps?: InputLabelProps;
   /** Additional props of the container component. */
   containerProps?: StackProps;
+  /** If true, the children will be wrapped by <code>Field</code> component from <code>formik</code> library. */
+  formik?: boolean;
 }
 
 export function InputLayout({
@@ -50,6 +53,7 @@ export function InputLayout({
   inputProps,
   labelProps,
   containerProps,
+  formik = false,
 }: InputLayoutProps) {
   const calRatio = Math.max(0, Math.min(1, ratio));
   let labelWidth = 'inherit';
@@ -69,7 +73,13 @@ export function InputLayout({
         </StyledInputLabel>
       ) : null}
       <Stack sx={{ width: fieldsetWidth }}>
-        {children ? children : <OutlinedInput {...inputProps} />}
+        {children ? (
+          children
+        ) : formik ? (
+          <Field as={OutlinedInput} {...inputProps} />
+        ) : (
+          <OutlinedInput {...inputProps} />
+        )}
         {Boolean(helperText) ? <FormHelperText error>{helperText}</FormHelperText> : null}
       </Stack>
     </Stack>

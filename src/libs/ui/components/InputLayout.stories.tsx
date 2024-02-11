@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { InputLayout } from './InputLayout';
 import { Dropdown } from './Dropdown';
+import { InputLayout } from './InputLayout';
 
 const meta: Meta<typeof InputLayout> = {
   title: 'Global/Input/Layout',
