@@ -15,12 +15,17 @@ import { NextRequest, NextResponse } from 'next/server';
  *          schema:
  *            type: object
  *            properties:
- *              id:
+ *              eventID:
  *                type: integer
- *                example: 7
+ *                example: 2
+ *              userID:
+ *                type: integer
+ *                example: 3
  *    responses:
  *      200:
  *        description: Remove member from event successfully.
+ *      404:
+ *        description: Member not found.
  *      500:
  *        description: Error message.
  */

@@ -15,12 +15,21 @@ import TeamService from '@/services/teamService';
  *      schema:
  *       type: object
  *       properties:
- *        name:
- *         type: string
- *         example: jcxdc
- *        category:
- *         type: string
- *         example: comic
+ *        userID:
+ *         type: integer
+ *         example: 3
+ *        eventID:
+ *         type: integer
+ *         example: 2
+ *        data:
+ *         type: object
+ *         properties:
+ *          name:
+ *            type: string
+ *            example: jcxdc
+ *          category:
+ *            type: string
+ *            example: comic
  *   responses:
  *    200:
  *     description: Create team successfully.
@@ -31,7 +40,14 @@ import TeamService from '@/services/teamService';
  */
 
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const res = await TeamService.createTeam(data);
+  const { userID, data, eventID } = await req.json();
+  const team = await TeamService.createTeam(data);
+  if (!team.data) {
+    return NextResponse.json(team.responseBody(), { status: team.status });
+  }
+  const res = await TeamService.joinTeam(userID, team.data.id, eventID);
+  if (!res.data) {
+    await TeamService.deleteTeam(team.data.id);
+  }
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

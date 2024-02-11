@@ -1,3 +1,4 @@
+import { AccountEventID } from '@/interfaces/accountEvent';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
 import AccountEventRepository from '@repositories/accountEventRepository';
@@ -8,7 +9,7 @@ class ContestantService {
     this.accountEventRepository = new AccountEventRepository();
   }
 
-  async getInfoById(id: number) {
+  async getInfoById(id: AccountEventID) {
     try {
       const accountEvents = await this.accountEventRepository.getByEntity(
         { id, teamID: { not: null } },

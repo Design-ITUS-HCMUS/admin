@@ -1,33 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
-import EventService from '@/services/eventService';
-import getParams from '@/utils/getParams';
+import TeamService from '@/services/teamService';
 
 /**
  * @swagger
- * /api/event/{id}:
+ * /api/team/all-members?id={id}:
  *  get:
  *    tags:
- *      - Event
- *    description: Get event by ID.
+ *      - Team
+ *    description: Get all members by team id.
  *    parameters:
- *     - in: path
+ *     - in: query
  *       name: id
- *       description: ID of event
+ *       description: id of team
  *       required: true
  *       schema:
  *        type: integer
  *       example: 1
  *    responses:
  *      200:
- *        description: Get event successfully.
+ *        description: Get all members successfully.
  *      404:
- *        description: Event not found.
+ *        description: Team or members not found.
  *      500:
  *        description: Error message.
  */
 
 export async function GET(req: NextRequest) {
-  const id = getParams(req);
-  const res = await EventService.getEventById(Number(id));
+  const id = req.nextUrl.searchParams.get('id');
+  const res = await TeamService.getAllMembersByTeamId(Number(id));
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

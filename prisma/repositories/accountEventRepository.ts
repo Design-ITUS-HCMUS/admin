@@ -29,9 +29,9 @@ export default class AccountEventRepository {
     }
   }
 
-  async getByEntity(entity: Prisma.AccountEventWhereInput, select?: Prisma.AccountEventSelect) {
+  async getByEntity(entity: Prisma.AccountEventWhereUniqueInput, select?: Prisma.AccountEventSelect) {
     try {
-      const accountEvent = await this.model.findFirst({
+      const accountEvent = await this.model.findUnique({
         where: entity,
         select,
       });
@@ -55,7 +55,7 @@ export default class AccountEventRepository {
     }
   }
 
-  async update(id: number, entity: Prisma.AccountEventUpdateInput) {
+  async update(id: Prisma.AccountEventIdCompoundUniqueInput, entity: Prisma.AccountEventUpdateInput) {
     try {
       const updatedAccountEvent = await this.model.update({
         where: { id },
@@ -68,7 +68,7 @@ export default class AccountEventRepository {
     }
   }
 
-  async delete(id: number) {
+  async delete(id: Prisma.AccountEventIdCompoundUniqueInput) {
     try {
       const deletedAccountEvent = await this.model.delete({
         where: { id },

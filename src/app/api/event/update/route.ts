@@ -37,6 +37,6 @@ import EventService from '@/services/eventService';
 
 export async function PUT(req: NextRequest) {
   const { id, data } = await req.json();
-  const res = await EventService.updateEvent(Number(id), data);
+  const res = await EventService.updateEvent(data, Number(id));
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

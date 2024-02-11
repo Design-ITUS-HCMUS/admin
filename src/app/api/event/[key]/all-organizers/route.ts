@@ -4,15 +4,15 @@ import getParams from '@/utils/getParams';
 
 /**
  * @swagger
- * /api/event/{id}/all-organizers:
+ * /api/event/{key}/all-organizers:
  *  get:
  *    tags:
  *      - Event
- *    description: Get all organizers by event ID.
+ *    description: Get all organizers by event key.
  *    parameters:
  *     - in: path
- *       name: id
- *       description: ID of event
+ *       name: key
+ *       description: key of event
  *       required: true
  *       schema:
  *        type: integer
@@ -27,7 +27,7 @@ import getParams from '@/utils/getParams';
  */
 
 export async function GET(req: NextRequest) {
-  const id = getParams(req, -2);
-  const res = await AccountEventService.getOrganizersByEventID(Number(id));
+  const key = getParams(req, -2);
+  const res = await AccountEventService.getOrganizersByEventKey(key as string);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

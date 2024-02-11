@@ -15,7 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
  *      schema:
  *       type: object
  *       properties:
- *        userId:
+ *        userID:
  *         type: integer
  *         example: 3
  *        eventID:

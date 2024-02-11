@@ -6,7 +6,7 @@ export interface Event {
   end?: Date;
   thumbnail: number;
   description: string;
-  link?: string;
+  url?: string;
   status: boolean;
   accountEvents?: any;
 }
