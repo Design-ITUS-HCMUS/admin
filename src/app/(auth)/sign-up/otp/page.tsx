@@ -41,7 +41,7 @@ function OTPPage() {
         không nhận được email, bạn có thể gửi lại sau <Countdown initialSeconds={60} onComplete={enableResend} /> giây.
       </Typography>
       <OTPInput onChange={onChange} />
-      <VisuallyHiddenInput type='number' readOnly value={otp} />
+      <VisuallyHiddenInput type='number' readOnly value={otp} name='otp' />
       <Row>
         <Button disabled={!ableResend} variant='text'>
           Gửi lại mã

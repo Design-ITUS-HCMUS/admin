@@ -1,5 +1,6 @@
 'use client';
 
+import { Form } from 'formik';
 // Material UI Components
 import Paper from '@mui/material/Paper';
 import { styled, SxProps } from '@mui/material/styles';
@@ -47,7 +48,7 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export const StyledForm = styled('form')({
+export const StyledForm = styled(Form)({
   display: 'flex',
   flexDirection: 'column',
   gap: '.5rem',

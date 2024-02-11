@@ -12,12 +12,12 @@ const meta: Meta<typeof Countdown> = {
     initialSeconds: 60,
     onComplete: () => {
       /* eslint-disable */
-      console.log('Count down completed');
+      console.log('Countdown completed');
     },
   },
 };
 
 export default meta;
 export const Default: StoryObj = {
-  name: 'Count Down',
+  name: 'Countdown',
 };

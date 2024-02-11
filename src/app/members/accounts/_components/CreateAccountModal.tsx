@@ -38,43 +38,39 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
         <form onSubmit={handleSubmit} id='create-member-form'>
           <Stack spacing={2}>
             <InputLayout
-              name='username'
               label='Username'
-              inputprops={{
+              required
+              inputProps={{
+                name: 'username',
                 placeholder: '<Gen><Họ và tên viết tắt> VD: 11nvanh',
-                required: true,
               }}
             />
-            <InputLayout
-              name='fullName'
-              label='Họ và tên'
-              inputprops={{ placeholder: 'Nguyễn Văn Anh', required: true }}
-            />
+            <InputLayout label='Họ và tên' required inputProps={{ name: 'fullName', placeholder: 'Nguyễn Văn Anh' }} />
             <Stack spacing={2} direction='row' sx={{ width: '100%' }}>
-              <InputLayout
-                name='email'
-                label='Email'
-                inputprops={{ placeholder: 'nvananh@gmail.com', required: true }}
-              />
-              <InputLayout name='phone' label='Số điện thoại' inputprops={{ placeholder: '0909123456' }} />
+              <InputLayout label='Email' required inputProps={{ name: 'email', placeholder: 'nvananh@gmail.com' }} />
+              <InputLayout label='Số điện thoại' inputProps={{ name: 'phone', placeholder: '0909123456' }} />
             </Stack>
             <Stack spacing={2} direction='row'>
-              <InputLayout name='studentId' label='MSSV' inputprops={{ placeholder: '21120001' }} />
-              <InputLayout name='gen' label='Gen' inputprops={{ placeholder: '11' }} />
+              <InputLayout label='MSSV' inputProps={{ name: 'studentID', placeholder: '21120001' }} />
+              <InputLayout label='Gen' required inputProps={{ name: 'gen', placeholder: '11' }} />
             </Stack>
-            <InputLayout name='school' label='Trường' inputprops={{ placeholder: 'ĐH Khoa học tự nhiên' }} />
-            <InputLayout name='dob' label='Ngày sinh' direction='row' ratio={0.5}>
+            <InputLayout label='Trường' inputProps={{ name: 'school', placeholder: 'ĐH Khoa học tự nhiên' }} />
+            <InputLayout label='Ngày sinh' direction='row' ratio={0.5}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker defaultValue={dayjs(new Date())} views={['year', 'month', 'day']} format='DD/MM/YYYY' />
+                <DateTimePicker
+                  name='dob'
+                  defaultValue={dayjs(new Date())}
+                  views={['year', 'month', 'day']}
+                  format='DD/MM/YYYY'
+                />
               </LocalizationProvider>
             </InputLayout>
             <SelectDepartment />
             <SelectRole />
             <SelectPosition />
             <InputLayout
-              name='facebook'
               label='Facebook'
-              inputprops={{ type: 'url', placeholder: 'www.facebook.com/nvananh' }}
+              inputProps={{ name: 'facebook', type: 'url', placeholder: 'www.facebook.com/nvananh' }}
             />
           </Stack>
         </form>
