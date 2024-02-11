@@ -20,9 +20,6 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *               - description
  *               - items
  *             properties:
- *               buyerID:
- *                 type: integer
- *                 default: 1
  *               description:
  *                 type: string
  *                 default: 'OUTRSPACE8'
@@ -50,7 +47,8 @@ import payOSPaymentService from '@/services/payOSPaymentService';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const response = await payOSPaymentService.createPaymentLink(body);
+    const token = req.cookies.get('token');
+    const response = await payOSPaymentService.createPaymentLink(body, token);
     if (response === undefined) throw new Error('Empty response');
     return NextResponse.json(response.responseBody(), { status: response.status });
   } catch (err: any) {

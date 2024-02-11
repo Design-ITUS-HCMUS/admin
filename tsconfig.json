@@ -20,7 +20,6 @@
     "paths": {
       "@/*": ["./src/*"],
       "@repositories/*": ["./prisma/repositories/*"],
-      "@payOSClient": ["./payOS/client.ts"],
       "@prismaClient": ["./prisma/client.ts"],
     },
   },

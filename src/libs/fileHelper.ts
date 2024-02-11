@@ -15,13 +15,9 @@ export async function uploadFile(files: File[], permission: number = 0) {
   try {
     if (files.length === 0) return [];
 
-    // Change later to get real user ID
-    const ownerID = 1;
-
     for (const file of files) {
       // Get upload ID and key
       const uploadIDResponse = await axios.post('/api/file/upload/start', {
-        ownerID,
         filename: file.name,
         contentType: file.type,
         permission,
@@ -45,7 +41,12 @@ export async function uploadFile(files: File[], permission: number = 0) {
         const end = Math.min((i + 1) * partSize, file.size);
         const blob = file.slice(start, end);
 
-        const singlePart = axios.put(presignedUrls[i], blob);
+        // Do not delete header -> Facing CORS issue (Signature does not match)
+        const singlePart = axios.put(presignedUrls[i], blob, {
+          headers: {
+            'Content-Type': file.type,
+          },
+        });
 
         promises.push(singlePart);
       }

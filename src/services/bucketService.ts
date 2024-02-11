@@ -11,6 +11,9 @@ import {
   AbortMultipartUploadCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import authService from './authService';
+import { ROLE, FILE_PERMISSION } from '@/utils/enum';
 
 class BucketService {
   private repository: BucketRepository;
@@ -33,15 +36,18 @@ class BucketService {
     });
   }
 
-  async startMultipartUpload(body: any) {
+  async startMultipartUpload(body: any, token: RequestCookie | undefined) {
     try {
-      const ownerID: number = body.ownerID;
+      const payload = await authService.getDataFromToken(token);
+      if (!payload) throw new Error('Invalid token');
+
+      const ownerID: number = Number(payload.id);
       const filename: string = body.filename;
       const contentType: string = body.contentType;
       const permission: number = body.permission;
 
       if (
-        !ownerID ||
+        ownerID === null || // ownerID can be 0
         !filename ||
         !contentType ||
         permission === null // permission can be 0
@@ -177,10 +183,22 @@ class BucketService {
     }
   }
 
-  async getFile(id: number) {
+  async getFile(id: number, token: RequestCookie | undefined) {
     try {
+      const payload = await authService.getDataFromToken(token);
+      if (!payload) throw new Error('Invalid token');
+
       const data = await this.repository.getByEntity({ id });
       if (!data || !data.uploadStatus) throw new Error('File does not exist');
+
+      // Check permission if file is not owned by the user
+      if (data.ownerID !== payload.id) {
+        if (data.permission === FILE_PERMISSION.PRIVATE)
+          return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+
+        if (data.permission === FILE_PERMISSION.PROTECTED && payload.role !== ROLE.ADMIN)
+          return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+      }
 
       const url = await getSignedUrl(
         this.r2,
@@ -200,10 +218,16 @@ class BucketService {
     }
   }
 
-  async deleteFile(id: number) {
+  async deleteFile(id: number, token: RequestCookie | undefined) {
     try {
+      const payload = await authService.getDataFromToken(token);
+      if (!payload) throw new Error('Invalid token');
+
       const data = await this.repository.getByEntity({ id });
       if (!data) throw new Error('File does not exist');
+
+      // Only owner can delete file
+      if (data.ownerID !== payload.id) return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
 
       await this.r2.send(
         new DeleteObjectCommand({
