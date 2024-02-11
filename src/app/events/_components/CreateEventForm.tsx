@@ -62,13 +62,13 @@ export function CreateEventForm(props: CreateEventFormProps) {
       <Stack spacing={2} direction='row'>
         <Stack spacing={2} sx={{ width: '100%' }}>
           <StyledInputHeader id='name' placeholder='Outr Space' required />
-          <InputLayout name='key' label='Khóa' inputprops={{ placeholder: 'Khóa', required: true }} />
-          <InputLayout name='startDate' label='Ngày bắt đầu'>
+          <InputLayout label='Khóa' required inputProps={{ name: 'key', placeholder: 'Khóa', required: true }} />
+          <InputLayout label='Ngày bắt đầu'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker defaultValue={dayjs(new Date())} format='DD/MM/YYYY hh:mm A' />
+              <DateTimePicker defaultValue={dayjs(new Date())} name='startDate' format='DD/MM/YYYY hh:mm A' />
             </LocalizationProvider>
           </InputLayout>
-          <InputLayout name='type' label='Loại sự kiện' direction='row' ratio={0.5} inputprops={{ required: true }}>
+          <InputLayout label='Loại sự kiện' required direction='row' ratio={0.5}>
             <DropdownText name='type' id='type-select' renderValue={renderTypeValue} required>
               <MenuItem key='contest' value='Cuộc thi'>
                 Cuộc thi
@@ -79,9 +79,8 @@ export function CreateEventForm(props: CreateEventFormProps) {
             </DropdownText>
           </InputLayout>
           <InputLayout
-            name='facebook'
-            label='Facebook'
-            inputprops={{ type: 'url', placeholder: 'www.facebook.com/outrspace' }}
+            label='CTA link'
+            inputProps={{ name: 'link', type: 'url', placeholder: 'www.facebook.com/outrspace' }}
           />
         </Stack>
         <Stack spacing={2} sx={{ width: '100%' }}>

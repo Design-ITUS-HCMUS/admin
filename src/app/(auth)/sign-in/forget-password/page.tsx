@@ -29,8 +29,8 @@ function ForgetPasswordPage() {
       <StyledForm id='forget-password-form' onSubmit={handleSubmit}>
         <InputLayout
           label='Username'
-          name='username'
-          inputprops={{
+          inputProps={{
+            name: 'username',
             placeholder: 'Username hoặc email đã đăng ký',
             endAdornment: (
               <InputAdornment position='end'>

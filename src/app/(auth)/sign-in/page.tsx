@@ -78,8 +78,7 @@ function SignInPage() {
       <StyledForm id='sign-in-form' onSubmit={handleSubmit}>
         <InputLayout
           label='Nhập username hoặc email'
-          name='username'
-          inputprops={{
+          inputProps={{
             placeholder: 'Username hoặc email',
             endAdornment: (
               <InputAdornment position='end'>

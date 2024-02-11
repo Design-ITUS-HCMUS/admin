@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import SelectInput from '@mui/material/Select';
 
 import { InputLayout } from './InputLayout';
+import { Dropdown } from './Dropdown';
 
 const meta: Meta<typeof InputLayout> = {
   title: 'Global/Input/Layout',
@@ -20,14 +20,13 @@ const meta: Meta<typeof InputLayout> = {
     layout: 'centered',
   },
   args: {
-    name: 'username',
     label: 'Username',
-    inputprops: {
+    inputProps: {
       placeholder: '<Gen><Họ và tên viết tắt> VD: 11lvntruc',
       required: true,
     },
     direction: 'column',
-    sx: { width: '300px' },
+    containerProps: { sx: { width: '300px' } },
   },
   argTypes: {
     ratio: {
@@ -37,10 +36,6 @@ const meta: Meta<typeof InputLayout> = {
         max: 1,
         step: 0.1,
       },
-    },
-    direction: {
-      description:
-        'The direction of the layout. If <code>row</code>, the label will be placed on the left of the field.',
     },
   },
 };
@@ -56,8 +51,8 @@ export const Row: StoryObj = {
   name: 'Layout Row',
   args: {
     direction: 'row',
-    sx: { width: '500px' },
-    inputprops: {
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
       placeholder: 'Default with 50% label and 50% input field',
     },
   },
@@ -67,8 +62,8 @@ export const Ratio: StoryObj = {
   args: {
     ratio: 0.25,
     direction: 'row',
-    sx: { width: '500px' },
-    inputprops: {
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
       placeholder: '25% label and 75% input field',
     },
   },
@@ -78,8 +73,8 @@ export const Error: StoryObj = {
   args: {
     ratio: 0.25,
     direction: 'row',
-    sx: { width: '500px' },
-    inputprops: {
+    containerProps: { sx: { width: '500px' } },
+    inputProps: {
       placeholder: '25% label and 75% input field',
       error: true,
     },
@@ -91,9 +86,9 @@ export const Input: StoryObj = {
   args: {
     direction: 'column',
     children: (
-      <SelectInput>
-        <option>Option 1</option>
-      </SelectInput>
+      <Dropdown>
+        <option value={1}>Option 1</option>
+      </Dropdown>
     ),
   },
 };

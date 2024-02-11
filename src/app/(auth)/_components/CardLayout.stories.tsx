@@ -27,8 +27,8 @@ const meta: Meta<typeof CardLayout> = {
     children: (
       <InputLayout
         label='Nhập username hoặc email'
-        name='username'
-        inputprops={{
+        inputProps={{
+          name: 'username',
           placeholder: 'Username hoặc email',
           endAdornment: (
             <InputAdornment position='end'>
