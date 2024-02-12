@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { orderBy } from 'lodash';
 
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -12,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
 import data from '@/libs/mock/members.json';
-import { EnhancedTable, IHeadCell, Search } from '@/libs/ui';
+import { EnhancedTable, IHeadCell, Search, colors } from '@/libs/ui';
 import { Order } from '@/utils';
 import { CreateAccountModal } from './_components';
 
@@ -50,6 +51,7 @@ interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Elemen
 const filteredData: ITableCell[] = data.map((item: any) => ({
   _id: item.id,
   name: item.name,
+  email: item.email,
   gen: item.profile ? item.profile.gen : 'Chưa có',
   department: item.profile ? item.profile.departments.join(', ') : 'Chưa có', // join array to string
   facebook: item.profile ? item.profile.facebook : 'Chưa có',
@@ -74,10 +76,16 @@ export default function AccountsPage() {
   const refactorData = (data: ITableCell[]): ITableCell[] => {
     const newData = data.map((item: ITableCell) => ({
       ...item,
+      department: <Typography textTransform='capitalize'>{item.department}</Typography>,
       name: (
-        <Typography sx={{ color: 'primary.main' }}>
-          <Link href={`/members/accounts/${item._id}`}>{item.name}</Link>
-        </Typography>
+        <div>
+          <Typography sx={{ color: 'primary.main' }}>
+            <Link href={`/members/accounts/${item._id}`}>{item.name}</Link>
+          </Typography>
+          <Typography variant='caption' color={colors.neutral[200]}>
+            {item.email}
+          </Typography>
+        </div>
       ),
       facebook: (
         <Typography
@@ -123,6 +131,8 @@ export default function AccountsPage() {
         <Link href={`/members/accounts/${selectedRow}`}>
           <MenuItem>Xem chi tiết</MenuItem>
         </Link>
+        <Divider sx={{ my: 1 }} />
+        <MenuItem sx={{ color: 'error.main' }}>Xóa tài khoản</MenuItem>
       </EnhancedTable>
       <CreateAccountModal open={open} onClose={() => setOpen(false)} />
     </>

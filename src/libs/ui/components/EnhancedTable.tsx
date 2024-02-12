@@ -77,7 +77,7 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderByID !== null ? (orderByID === index ? order : false) : false}
-            sx={{ fontWeight: 'bold' }}>
+            sx={{ fontWeight: 'bold', minWidth: '150px', maxWidth: '200px' }}>
             <TableSortLabel
               active={orderByID === index}
               direction={orderByID === index ? order : 'asc'}
@@ -249,7 +249,7 @@ export function EnhancedTable({
                         component='th'
                         id={`row-${index}-${id}`}
                         scope='row'
-                        padding='none'
+                        sx={{ px: 0 }}
                         align={align[id]}>
                         {row[head.id]}
                       </TableCell>

@@ -66,8 +66,8 @@ interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Elemen
 }
 
 export default function EventsPage({ modal }: { modal: React.ReactNode }) {
-  let eventsData: ITableCell[] = [];
   const rowsPerPage = 10;
+  const [eventsData, setEventsData] = useState<ITableCell[]>([]);
   const [rows, setRows] = useState<ITableCell[]>(eventsData);
   const [page, setPage] = useState(0);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
@@ -77,7 +77,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
       .then((res) => res.json())
       .then((res) => res.data)
       .then((res) => {
-        eventsData = res.map((item: any) => ({
+        const loadData = res.map((item: any) => ({
           _id: item.id,
           name: item.name,
           key: item.key,
@@ -85,7 +85,8 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
           start: new Date(item.start).toLocaleDateString(),
           status: item.status,
         }));
-        setRows(eventsData);
+        setRows(loadData);
+        setEventsData(loadData);
       });
   }, []);
 
@@ -147,7 +148,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
             Xem chi tiết
           </MenuItem>
           <MenuItem>Dừng sự kiện</MenuItem>
-          <Divider />
+          <Divider sx={{ my: 1 }} />
           <MenuItem sx={{ color: 'error.main' }}>Xóa sự kiện</MenuItem>
         </EnhancedTable>
       </StyledPaper>
