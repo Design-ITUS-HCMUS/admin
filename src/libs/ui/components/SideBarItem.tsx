@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 
 import ListItemIcon from '@mui/material/ListItemIcon';

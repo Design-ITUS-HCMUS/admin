@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { orderBy } from 'lodash';
 
@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import data from '@/libs/mock/members.json';
 import { EnhancedTable, IHeadCell, Search, colors } from '@/libs/ui';
 import { Order } from '@/utils';
 import { CreateAccountModal } from './_components';
@@ -35,7 +34,7 @@ const headCells: readonly IHeadCell[] = [
     label: 'Gen',
   },
   {
-    id: 'department',
+    id: 'departments',
     label: 'Ban hoạt động',
   },
   {
@@ -48,35 +47,44 @@ interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Elemen
   _id: string;
 }
 
-const filteredData: ITableCell[] = data.map((item: any) => ({
-  _id: item.id,
-  name: item.name,
-  email: item.email,
-  gen: item.profile ? item.profile.gen : 'Chưa có',
-  department: item.profile ? item.profile.departments.join(', ') : 'Chưa có', // join array to string
-  facebook: item.profile ? item.profile.facebook : 'Chưa có',
-}));
-
 export default function AccountsPage() {
+  const [accountsData, setAccountsData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const rowsPerPage = 10;
-  const [rows, setRows] = useState<ITableCell[]>(filteredData);
+  const [rows, setRows] = useState<ITableCell[]>([]);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    fetch('/api/user/all-users')
+      .then((res) => res.json())
+      .then((res) => {
+        const loadedData = res.data.map((item: any) => ({
+          _id: item.id,
+          name: item.profile ? item.profile.fullName : '',
+          email: item.email,
+          gen: item.profile ? item.profile.gen : '',
+          departments: item.profile ? item.profile.departments.join(', ') : '', // join array to string
+          facebook: item.profile ? item.profile.facebook : '',
+        }));
+        setRows(loadedData);
+        setAccountsData(loadedData);
+      });
+  }, []);
 
   const handleSort = (_event: unknown, order: Order, orderByID: number | null) => {
     if (orderByID !== null) {
       const key = headCells[orderByID].id;
       if (!key) return;
-      const sortRows = orderBy(filteredData, key, order) as ITableCell[];
+      const sortRows = orderBy(accountsData, key, order) as ITableCell[];
       setRows(sortRows);
-    } else setRows(filteredData);
+    } else setRows(accountsData);
   };
 
   const refactorData = (data: ITableCell[]): ITableCell[] => {
     const newData = data.map((item: ITableCell) => ({
       ...item,
-      department: <Typography textTransform='capitalize'>{item.department}</Typography>,
+      departments: <Typography textTransform='capitalize'>{item.departments}</Typography>,
       name: (
         <div>
           <Typography sx={{ color: 'primary.main' }}>
@@ -124,7 +132,7 @@ export default function AccountsPage() {
       <EnhancedTable
         headCells={headCells}
         rows={visibleRows}
-        totalRows={data.length}
+        totalRows={accountsData.length}
         onChangePage={(_e, page) => setPage(page)}
         onSort={handleSort}
         onAct={(_e, id) => setSelectedRow(id)}>

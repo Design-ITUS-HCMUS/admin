@@ -76,7 +76,7 @@ export function SelectRole({ ratio = 0.5, readOnly }: CustomSelectProps) {
 
   return (
     <InputLayout label='Vai trò' direction='row' ratio={ratio} required={!readOnly}>
-      <Field as={DropdownText} name='role' renderValue={renderValue} inputProps={{ readOnly: readOnly }}>
+      <Field as={DropdownText} name='roleID' renderValue={renderValue} inputProps={{ readOnly: readOnly }}>
         {options.map((option) => (
           <MenuItem key={option} value={option}>
             <Typography textTransform='capitalize'>{ROLE_NAME[option]}</Typography>

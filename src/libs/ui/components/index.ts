@@ -3,6 +3,7 @@ export * from './Dropdown';
 export * from './DropdownText';
 export * from './EnhancedTable';
 export * from './InputLayout';
+export * from './Loading';
 export * from './Logo';
 export * from './Navbar';
 export * from './OTPInput';

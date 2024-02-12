@@ -1,3 +1,4 @@
+'use client';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput, { OutlinedInputProps } from '@mui/material/OutlinedInput';
 

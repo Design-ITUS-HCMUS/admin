@@ -45,3 +45,9 @@ export enum POSITION {
   TB = 'Trưởng ban',
   TV = 'Thành viên',
 }
+
+export enum LOADING_STATUS {
+  LOADING = 0,
+  SUCCESS = 1,
+  ERROR = 2,
+}

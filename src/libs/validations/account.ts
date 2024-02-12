@@ -6,7 +6,7 @@ import { Schema } from './schema';
 export interface MemberInfoValues {
   username: string;
   email: string;
-  role: number;
+  roleID: number;
   profile: {
     fullName?: string;
     phone?: string;
@@ -27,7 +27,7 @@ export const MemberInfoSchema = yup.object().shape({
     .min(4, 'Tên người dùng phải có ít nhất 4 ký tự')
     .matches(/^\S*$/, 'Tên người dùng không thể chứa khoảng trắng'),
   email: Schema.email,
-  role: yup.number().required('Vai trò không được để trống').oneOf([ROLE.ADMIN, ROLE.MEMBER], 'Vai trò không hợp lệ'),
+  roleID: yup.number().required('Vai trò không được để trống').oneOf([ROLE.ADMIN, ROLE.MEMBER], 'Vai trò không hợp lệ'),
   profile: yup.object().shape({
     fullName: yup.string().required('Họ tên không được để trống'),
     phone: Schema.phone,

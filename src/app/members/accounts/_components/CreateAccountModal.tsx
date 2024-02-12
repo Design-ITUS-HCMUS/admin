@@ -32,7 +32,7 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
   const initialValues: MemberInfoValues = {
     username: '',
     email: '',
-    role: ROLE.MEMBER,
+    roleID: ROLE.MEMBER,
     profile: {
       fullName: '',
       gen: gen.getFullYear() - 2010,
