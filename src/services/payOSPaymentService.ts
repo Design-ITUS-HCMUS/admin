@@ -25,14 +25,16 @@ class PayOSPaymentService {
 
   constructor() {
     this.repository = new PaymentRepository();
-    PayOSPaymentService.payOS.confirmWebhook(PayOSPaymentService.PAYOS_WEBHOOK_URL).catch((err: any) => {});
+    PayOSPaymentService.payOS.confirmWebhook(PayOSPaymentService.PAYOS_WEBHOOK_URL).catch((err: any) => {
+      console.error(err);
+    });
   }
 
   async createPaymentLink(body: any, token: RequestCookie | undefined) {
     try {
       // Get data from cookie
       const payload = await authService.getDataFromToken(token);
-      if (!payload) throw new Error('Invalid token');
+      if (!payload) return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
 
       // Get data from payload
       const buyerID = Number(payload.id);
@@ -55,7 +57,7 @@ class PayOSPaymentService {
       const amount = calcTotalPrice(items);
 
       // Get first available orderCode
-      let currentID = await this.repository.getCurrentID();
+      const currentID = await this.repository.getCurrentID();
       if (currentID === null) throw new Error('Get currentID failed'); // currentID can be 0
       let orderCode = currentID + 1;
 
@@ -112,7 +114,6 @@ class PayOSPaymentService {
 
   async handleWebhookEvent(body: any) {
     try {
-      console.log('Webhook event received');
       // If default webhook -> Pass it
       if (body.signature === '2ddc42638e5efe5dc562c49d538598227c75db17deaa618b1a8d408517c881fd')
         return new BaseResponse(STATUS_CODE.OK, true, 'Default webhook data by PayOS');

@@ -185,19 +185,22 @@ class BucketService {
 
   async getFile(id: number, token: RequestCookie | undefined) {
     try {
-      const payload = await authService.getDataFromToken(token);
-      if (!payload) throw new Error('Invalid token');
-
       const data = await this.repository.getByEntity({ id });
       if (!data || !data.uploadStatus) throw new Error('File does not exist');
 
-      // Check permission if file is not owned by the user
-      if (data.ownerID !== payload.id) {
-        if (data.permission === FILE_PERMISSION.PRIVATE)
-          return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+      // If file is Public -> Do not need to check Payload
+      if (data.permission !== FILE_PERMISSION.PUBLIC) {
+        const payload = await authService.getDataFromToken(token);
+        if (!payload) throw new Error('Invalid token');
 
-        if (data.permission === FILE_PERMISSION.PROTECTED && payload.role !== ROLE.ADMIN)
-          return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+        // Check permission if file is not owned by the user
+        if (data.ownerID !== payload.id) {
+          if (data.permission === FILE_PERMISSION.PRIVATE)
+            return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+
+          if (data.permission === FILE_PERMISSION.PROTECTED && payload.role !== ROLE.ADMIN)
+            return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+        }
       }
 
       const url = await getSignedUrl(

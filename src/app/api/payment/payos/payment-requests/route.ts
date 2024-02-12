@@ -42,6 +42,8 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *         description: Payment request object
  *       500:
  *         description: Error message
+ *       403:
+ *         description: Forbidden
  */
 
 export async function POST(req: NextRequest) {
@@ -49,7 +51,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const token = req.cookies.get('token');
     const response = await payOSPaymentService.createPaymentLink(body, token);
-    if (response === undefined) throw new Error('Empty response');
     return NextResponse.json(response.responseBody(), { status: response.status });
   } catch (err: any) {
     return NextResponse.json({ success: false, message: err.message, data: {} }, { status: 500 });

@@ -15,7 +15,7 @@ export default class BucketRepository {
         data: entity,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -26,7 +26,7 @@ export default class BucketRepository {
         where: entity,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -38,7 +38,7 @@ export default class BucketRepository {
         data: entity,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -49,7 +49,7 @@ export default class BucketRepository {
         where: entity,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

@@ -19,7 +19,7 @@ import getParams from '@/utils/getParams';
  *       example: 1
  *     responses:
  *       200:
- *         description: Payment request object
+ *         description: Return requested file
  *       500:
  *         description: Error message
  *       403:
@@ -39,7 +39,7 @@ import getParams from '@/utils/getParams';
  *       example: 1
  *     responses:
  *       200:
- *         description: Payment request object
+ *         description: Success message
  *       500:
  *         description: Error message
  *       403:
