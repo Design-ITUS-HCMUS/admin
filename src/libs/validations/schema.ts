@@ -17,5 +17,7 @@ export class Schema {
       'Đường dẫn Facebook không hợp lệ'
     );
 
-  static phone = yup.string().matches(/^(\(\+?\d{1,2}\)\d{9,10}|\d{10}|\d{11})$/, 'Số điện thoại không hợp lệ');
+  static phone = yup
+    .string()
+    .matches(/^\(\+?84\)0?[3|5|7|8|9][0-9]{8}|0[3|5|7|8|9][0-9]{8}$/, 'Số điện thoại không hợp lệ');
 }
