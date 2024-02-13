@@ -1,11 +1,11 @@
-import UserRepository from '@repositories/userRepository';
+import { SignJWT, jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
-import { SignJWT } from 'jose';
-
-import { AccountInformation, SendOTP, User } from '@/interfaces/user';
 import CommonService from '@/services/commonService';
-import { STATUS_CODE, templateRegister, templateResetPassword, TYPE_OTP } from '@/utils';
+import UserRepository from '@repositories/userRepository';
+import { AccountInformation, User, SendOTP, ResetPassword } from '@/interfaces/user';
 import BaseResponse from '@/utils/baseResponse';
+import { STATUS_CODE, TYPE_OTP, templateRegister, templateResetPassword } from '@/utils';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 class AuthService {
   private repository: UserRepository;
@@ -151,6 +151,16 @@ class AuthService {
   private getQueryField(usernameOrEmail: string) {
     const validEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     return usernameOrEmail.match(validEmailRegex) ? { email: usernameOrEmail } : { username: usernameOrEmail };
+  }
+
+  async getDataFromToken(token: RequestCookie | undefined) {
+    try {
+      const value = token?.value || '';
+      const { payload } = await jwtVerify(value, new TextEncoder().encode(process.env.JWT_SECRET_KEY));
+      return payload;
+    } catch (err: any) {
+      return null;
+    }
   }
 }
 

@@ -20,9 +20,6 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *               - description
  *               - items
  *             properties:
- *               buyerID:
- *                 type: integer
- *                 default: 1
  *               description:
  *                 type: string
  *                 default: 'OUTRSPACE8'
@@ -45,13 +42,15 @@ import payOSPaymentService from '@/services/payOSPaymentService';
  *         description: Payment request object
  *       500:
  *         description: Error message
+ *       403:
+ *         description: Forbidden
  */
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const response = await payOSPaymentService.createPaymentLink(body);
-    if (response === undefined) throw new Error('Empty response');
+    const token = req.cookies.get('token');
+    const response = await payOSPaymentService.createPaymentLink(body, token);
     return NextResponse.json(response.responseBody(), { status: response.status });
   } catch (err: any) {
     return NextResponse.json({ success: false, message: err.message, data: {} }, { status: 500 });
