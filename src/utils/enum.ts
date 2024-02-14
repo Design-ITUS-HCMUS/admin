@@ -46,8 +46,8 @@ export enum POSITION {
   TV = 'Thành viên',
 }
 
-export enum LOADING_STATUS {
-  LOADING = 0,
-  SUCCESS = 1,
-  ERROR = 2,
-}
+export const FILE_PERMISSION: any = {
+  PRIVATE: 0,
+  PROTECTED: 1,
+  PUBLIC: 2,
+};
