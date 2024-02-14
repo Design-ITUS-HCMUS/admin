@@ -1,65 +1,60 @@
 'use client';
 import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { orderBy } from 'lodash';
 
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import { EnhancedTable, IHeadCell, Search, colors } from '@/libs/ui';
-import { Order } from '@/utils';
+import { EnhancedTable, IHeadCell, Search, colors, SupportTable } from '@/libs/ui';
+import { shortenFBLink, tableHandler, Query } from '@/utils';
 import { CreateAccountModal } from './_components';
-
-const ToolBar = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-});
 
 const headCells: readonly IHeadCell[] = [
   {
-    id: 'name',
-    numeric: false,
+    key: 'name',
     disablePadding: true,
     label: 'Họ tên',
   },
   {
-    id: 'gen',
+    key: 'gen',
     label: 'Gen',
   },
   {
-    id: 'departments',
+    key: 'departments',
     label: 'Ban hoạt động',
   },
   {
-    id: 'facebook',
+    key: 'facebook',
     label: 'Facebook',
   },
 ];
 
-interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Element | string> {
+interface ITableCell extends Record<(typeof headCells)[number]['key'], JSX.Element | string> {
   _id: string;
 }
 
 export default function AccountsPage() {
+  const [loading, setLoading] = useState(true);
   const [accountsData, setAccountsData] = useState([]);
+  // The open state of create account modal
   const [open, setOpen] = useState(false);
+  // Table actions
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
-  const rowsPerPage = 10;
-  const [rows, setRows] = useState<ITableCell[]>([]);
-  const [page, setPage] = useState(0);
+  // Mock BE query state
+  const [query, setQuery] = useState<Query>({ page: 1, limit: 10 });
 
   useEffect(() => {
     fetch('/api/user/all-users')
       .then((res) => res.json())
       .then((res) => {
-        const loadedData = res.data.map((item: any) => ({
+        const { success, data } = res;
+        if (!success) throw new Error('Có lỗi khi tải dữ liệu');
+        const loadedData = data.map((item: any) => ({
           _id: item.id,
           name: item.profile ? item.profile.fullName : '',
           email: item.email,
@@ -67,19 +62,11 @@ export default function AccountsPage() {
           departments: item.profile ? item.profile.departments.join(', ') : '', // join array to string
           facebook: item.profile ? item.profile.facebook : '',
         }));
-        setRows(loadedData);
         setAccountsData(loadedData);
-      });
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
-
-  const handleSort = (_event: unknown, order: Order, orderByID: number | null) => {
-    if (orderByID !== null) {
-      const key = headCells[orderByID].id;
-      if (!key) return;
-      const sortRows = orderBy(accountsData, key, order) as ITableCell[];
-      setRows(sortRows);
-    } else setRows(accountsData);
-  };
 
   const refactorData = (data: ITableCell[]): ITableCell[] => {
     const newData = data.map((item: ITableCell) => ({
@@ -98,26 +85,27 @@ export default function AccountsPage() {
       facebook: (
         <Typography
           component={Link}
-          href={`/events/${item.facebook}`}
+          href={`${item.facebook}`}
           sx={{ color: 'primary.main', maxWidth: '250px' }}
           textOverflow='ellipsis'
           overflow='hidden'>
-          {item.facebook}
+          {shortenFBLink(item.facebook as string)}
         </Typography>
       ),
     }));
     return newData;
   };
+
   const visibleRows: ITableCell[] = useMemo(() => {
-    return refactorData(rows.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-  }, [rows, page]);
+    return refactorData(tableHandler({ query, data: accountsData }));
+  }, [accountsData, query]);
 
   return (
     <>
       <Typography variant='h6' fontWeight='600'>
         Quản lý tài khoản
       </Typography>
-      <ToolBar>
+      <Stack direction='row' alignItems='center' justifyContent='space-between'>
         <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
         <Stack direction='row' spacing={2}>
           <Button color='info' onClick={() => setOpen(true)}>
@@ -127,21 +115,27 @@ export default function AccountsPage() {
             Xuất file
           </Button>
         </Stack>
-      </ToolBar>
+      </Stack>
       {/* All members data table */}
-      <EnhancedTable
-        headCells={headCells}
-        rows={visibleRows}
-        totalRows={accountsData.length}
-        onChangePage={(_e, page) => setPage(page)}
-        onSort={handleSort}
-        onAct={(_e, id) => setSelectedRow(id)}>
-        <Link href={`/members/accounts/${selectedRow}`}>
-          <MenuItem>Xem chi tiết</MenuItem>
-        </Link>
-        <Divider sx={{ my: 1 }} />
-        <MenuItem sx={{ color: 'error.main' }}>Xóa tài khoản</MenuItem>
-      </EnhancedTable>
+      {loading ? (
+        <SupportTable headCells={headCells} />
+      ) : accountsData.length === 0 ? (
+        <SupportTable headCells={headCells} state='empty' />
+      ) : (
+        <EnhancedTable
+          headCells={headCells}
+          rows={visibleRows}
+          totalRows={accountsData.length}
+          onChangePage={(_e, page) => setQuery({ ...query, page })}
+          onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
+          onAct={(_e, id) => setSelectedRow(id)}>
+          <Link href={`/members/accounts/${selectedRow}`}>
+            <MenuItem>Xem chi tiết</MenuItem>
+          </Link>
+          <Divider sx={{ my: 1 }} />
+          <MenuItem sx={{ color: 'error.main' }}>Xóa tài khoản</MenuItem>
+        </EnhancedTable>
+      )}
       <CreateAccountModal open={open} onClose={() => setOpen(false)} />
     </>
   );

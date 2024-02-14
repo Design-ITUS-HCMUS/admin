@@ -1,5 +1,5 @@
 'use client';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import * as React from 'react';
 
 import Chip from '@mui/material/Chip';
@@ -20,6 +20,7 @@ export interface CustomSelectProps {
 
 export function SelectDepartment({ ratio = 0.5, readOnly }: CustomSelectProps) {
   const options = Object.values(DEPARTMENT);
+  const { values } = useFormikContext();
 
   const renderValue = (departments: string[]) => {
     if (Boolean(departments) && departments.length > 0) {
@@ -51,7 +52,8 @@ export function SelectDepartment({ ratio = 0.5, readOnly }: CustomSelectProps) {
         name='profile.departments'
         multiple
         inputProps={{ readOnly: readOnly }}
-        renderValue={renderValue}>
+        renderValue={renderValue}
+        value={(values as any)?.profile?.departments || []}>
         {options.map((option) => (
           <MenuItem key={option} value={option}>
             <Typography textTransform='capitalize'>{option}</Typography>

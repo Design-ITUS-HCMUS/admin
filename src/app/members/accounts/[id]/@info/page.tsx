@@ -19,9 +19,9 @@ import Typography from '@mui/material/Typography';
 
 import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
-import { InputLayout } from '@/libs/ui';
+import { InputLayout, LoadingButton } from '@/libs/ui';
 import { MemberInfoValues, MemberInfoSchema } from '@/libs/validations';
-import { POSITION, LOADING_STATUS } from '@/utils';
+import { POSITION } from '@/utils';
 import { SelectDepartment, SelectPosition, SelectRole } from '../../_components';
 import Loading from './loading';
 
@@ -49,7 +49,8 @@ const initialValues = {
 } as MemberInfoValues;
 
 export default function InfoSection({ params }: { params: { id: string } }) {
-  const [state, setState] = useState<LOADING_STATUS>(LOADING_STATUS.LOADING);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
   const [userData, setUserData] = useState<MemberInfoValues>(initialValues);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [readOnly, setReadOnly] = useState(true);
@@ -59,16 +60,16 @@ export default function InfoSection({ params }: { params: { id: string } }) {
     fetch(`/api/user?id=${params.id}`)
       .then((res) => res.json())
       .then((res) => {
-        if (res.success) {
-          setUserData(res.data);
-          setState(LOADING_STATUS.SUCCESS);
-        } else throw new Error(res.message as string);
+        const { success, data, message } = res;
+        if (success) {
+          setUserData(data);
+        } else throw new Error(message as string);
       })
       .catch((e) => {
         console.error(e);
-        setState(LOADING_STATUS.ERROR);
         router.push('/members/accounts');
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleSubmit = (values: MemberInfoValues) => {
@@ -80,6 +81,7 @@ export default function InfoSection({ params }: { params: { id: string } }) {
         },
       },
     };
+    setSaving(true);
     fetch('/api/user/information-update', {
       method: 'PUT',
       headers: {
@@ -92,7 +94,10 @@ export default function InfoSection({ params }: { params: { id: string } }) {
         if (res.success) setUserData(res.data);
       })
       .catch((e) => console.error(e))
-      .finally(() => setReadOnly(true));
+      .finally(() => {
+        setReadOnly(true);
+        setSaving(false);
+      });
   };
 
   return (
@@ -105,12 +110,8 @@ export default function InfoSection({ params }: { params: { id: string } }) {
           <MoreIcon />
         </IconButton>
       </Stack>
-      {state === LOADING_STATUS.LOADING ? (
+      {loading ? (
         <Loading />
-      ) : state === LOADING_STATUS.ERROR ? (
-        <Typography color='error' textAlign='center' sx={{ m: 8 }}>
-          Có lỗi xảy ra!
-        </Typography>
       ) : (
         <>
           <FormWrapper>
@@ -118,6 +119,7 @@ export default function InfoSection({ params }: { params: { id: string } }) {
               initialValues={userData}
               enableReinitialize
               onSubmit={handleSubmit}
+              validateOnMount
               validationSchema={MemberInfoSchema}>
               {({ resetForm, touched, errors }) => (
                 <Stack
@@ -146,7 +148,6 @@ export default function InfoSection({ params }: { params: { id: string } }) {
                     inputProps={{
                       name: 'profile.fullName',
                       readOnly: readOnly,
-                      disabled: true,
                     }}
                     formik
                   />
@@ -246,15 +247,16 @@ export default function InfoSection({ params }: { params: { id: string } }) {
                         variant='text'
                         type='reset'
                         form='edit-info-member-form'
+                        disabled={saving}
                         onClick={() => {
                           resetForm();
                           setReadOnly(true);
                         }}>
                         Hủy
                       </Button>
-                      <Button type='submit' form='edit-info-member-form'>
+                      <LoadingButton type='submit' form='edit-info-member-form' loading={saving}>
                         Lưu
-                      </Button>
+                      </LoadingButton>
                     </Stack>
                   )}
                 </Stack>
