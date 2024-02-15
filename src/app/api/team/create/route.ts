@@ -34,6 +34,10 @@ import TeamService from '@/services/teamService';
  *   responses:
  *    200:
  *     description: Create team successfully.
+ *    401:
+ *     description: Unauthorized.
+ *    403:
+ *     description: Forbidden.
  *    409:
  *     description: Team already exists.
  *    500:
@@ -42,7 +46,8 @@ import TeamService from '@/services/teamService';
 
 export async function POST(req: NextRequest) {
   const { userID, data, eventID } = await req.json();
-  const team = await TeamService.createTeam(data);
+  const token = req.cookies.get('token');
+  const team = await TeamService.createTeam(data, token);
   if (!team.data) {
     return NextResponse.json(team.responseBody(), { status: team.status });
   }
