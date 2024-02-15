@@ -10,6 +10,7 @@ export class Schema {
 
   static facebook = yup
     .string()
+    .notRequired()
     .matches(
       new RegExp(
         /^(https?:\/\/)?((w{3}\.)?)facebook.com\/.*/i.source + '|' + /^(https?:\/\/)?((w{3}\.)?)fb.com\/.*/i.source
@@ -19,5 +20,8 @@ export class Schema {
 
   static phone = yup
     .string()
+    .notRequired()
     .matches(/^((\(\+?84\))?0?[3|5|7|8|9][0-9]{8}|0[3|5|7|8|9][0-9]{8})$/, 'Số điện thoại không hợp lệ');
+
+  static dob = yup.date().notRequired().max(new Date(), 'Ngày sinh không hợp lệ');
 }

@@ -95,7 +95,7 @@ export function EditPassword({ usernameOrEmail }: { usernameOrEmail: string | un
             </Grid>
             <Grid item xs={6}></Grid>
           </Grid>
-          <Button type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
+          <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
             Hủy
           </Button>
           <Button

@@ -5,6 +5,7 @@ import { Schema } from './schema';
 export const EditBasicInfoSchema = yup.object().shape({
   phone: Schema.phone,
   facebook: Schema.facebook,
+  dob: Schema.dob,
 });
 
 export const EditPasswordSchema = yup.object().shape({

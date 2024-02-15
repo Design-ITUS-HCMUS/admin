@@ -47,7 +47,7 @@ interface IUserInfo {
 
 async function fetchUserInfo(): Promise<IUserInfo | undefined> {
   try {
-    const response = await fetch('/api/user?id=3');
+    const response = await fetch('/api/user?id=8');
     const { success, data, message } = await response.json();
 
     if (!success) {
@@ -55,6 +55,21 @@ async function fetchUserInfo(): Promise<IUserInfo | undefined> {
     }
 
     const profile = data.profile;
+    if (!profile) {
+      return {
+        profile: {
+          fullName: '',
+          dob: undefined,
+          email: data.email,
+          phone: '',
+          facebook: '',
+          school: '',
+          studentID: '',
+          userID: data.id,
+        },
+        usernameOrEmail: data.email,
+      };
+    }
     profile.dob = profile.dob ? dayjs(profile.dob) : undefined;
     profile.email = data.email;
 
@@ -69,7 +84,7 @@ function smoothScroll(event: React.MouseEvent<HTMLElement>) {
   // Prevent href from taking effect
   event.preventDefault();
 
-  const yOffset = -6 * 16;
+  const yOffset = -6 * 16; // 6rem
   const element = document.getElementById(event.currentTarget.getAttribute('href') || '');
   if (!element) return;
   const y = (element?.getBoundingClientRect().top || 0) + window.scrollY + yOffset;

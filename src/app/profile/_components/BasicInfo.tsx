@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import Grid from '@mui/material/Grid';
@@ -26,7 +27,7 @@ export function BasicInfo({
     const { id, userID, email, ...filtered } = values;
 
     const body = {
-      id: values.userID,
+      id: userID,
       data: {
         profile: filtered,
       },
@@ -49,7 +50,7 @@ export function BasicInfo({
   return (
     !!initialValues && (
       <Formik initialValues={initialValues} validationSchema={EditBasicInfoSchema} onSubmit={handleSubmit}>
-        {({ initialValues, errors, isValid, isSubmitting, touched }) => (
+        {({ initialValues, errors, touched, isValid, isSubmitting, setFieldValue }) => (
           <Form id='basic-info'>
             <Field type='hidden' name='userID' />
             <Grid container columnSpacing={2} rowSpacing={1}>
@@ -57,21 +58,20 @@ export function BasicInfo({
                 <InputLayout
                   label='Họ và tên'
                   formik
-                  helperText={errors.fullName}
                   inputProps={{
                     name: 'fullName',
-                    error: Boolean(errors.fullName),
                   }}></InputLayout>
               </Grid>
               <Grid item xs={6}>
                 <Stack spacing={1} useFlexGap>
-                  <InputLayout label='Ngày sinh'>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <InputLayout label='Ngày sinh' helperText={errors.dob}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
                       <DateTimePicker
                         name='dob'
-                        value={initialValues.dob}
+                        defaultValue={initialValues.dob}
+                        onChange={(value) => setFieldValue('dob', value)}
+                        disableFuture
                         views={['year', 'month', 'day']}
-                        format='DD/MM/YYYY'
                       />
                     </LocalizationProvider>
                   </InputLayout>
@@ -129,7 +129,7 @@ export function BasicInfo({
                 />
               </Grid>
             </Grid>
-            <Button type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
+            <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
               Hủy
             </Button>
             <Button
