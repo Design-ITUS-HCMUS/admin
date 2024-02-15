@@ -19,5 +19,5 @@ export class Schema {
 
   static phone = yup
     .string()
-    .matches(/^\(\+?84\)0?[3|5|7|8|9][0-9]{8}|0[3|5|7|8|9][0-9]{8}$/, 'Số điện thoại không hợp lệ');
+    .matches(/^((\(\+?84\))?0?[3|5|7|8|9][0-9]{8}|0[3|5|7|8|9][0-9]{8})$/, 'Số điện thoại không hợp lệ');
 }

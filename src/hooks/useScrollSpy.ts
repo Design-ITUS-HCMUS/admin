@@ -1,6 +1,20 @@
 import { useEffect, useState, useRef } from 'react';
 
-export function useScrollSpy(defaultActive = ''): string {
+/**
+ * Hook to handle scroll spy
+ * @param options
+ * @param defaultActive The default active section ID
+ * @return The active section ID
+ * @example
+ * // To start watching any element, add an id and data-section attribute to it
+ * <Typography variant='h6' fontWeight='bold' id='basicInfo' {...{'data-section':''}} >
+ *  Thông tin cơ bản
+ * </Typography>
+ */
+export function useScrollSpy(
+  { root, rootMargin = '-96px 0% -20% 0%', threshold }: IntersectionObserverInit,
+  defaultActive = ''
+): string {
   const [activeSection, setActiveSection] = useState(defaultActive);
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -8,12 +22,12 @@ export function useScrollSpy(defaultActive = ''): string {
     // Create new instance and pass a callback function
     observer.current = new IntersectionObserver(
       (entries) => {
-        const visibleSections = entries.filter((entry) => entry.intersectionRatio > 0)?.map((entry) => entry.target);
+        const visibleSection = entries.find((entry) => entry.isIntersecting)?.target;
 
         // Update state with the visible section ID
-        if (visibleSections && visibleSections.length > 0) setActiveSection(visibleSections[0].id);
+        if (visibleSection) setActiveSection(visibleSection.id);
       },
-      { rootMargin: '-64px 0px 0px' }
+      { root, rootMargin, threshold }
     );
 
     // Get custom attribute data-section from all sections

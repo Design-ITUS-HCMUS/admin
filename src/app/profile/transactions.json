@@ -28,53 +28,5 @@
     "date": "03/10/2024",
     "description": "Office supplies",
     "amount": 1000
-  },
-  {
-    "id": "0006",
-    "date": "04/05/2024",
-    "description": "Travel reimbursement",
-    "amount": 1500
-  },
-  {
-    "id": "0007",
-    "date": "05/20/2024",
-    "description": "Monthly subscription",
-    "amount": 50
-  },
-  {
-    "id": "0008",
-    "date": "06/12/2024",
-    "description": "Conference fee",
-    "amount": 2500
-  },
-  {
-    "id": "0009",
-    "date": "07/03/2024",
-    "description": "Consulting fee",
-    "amount": 3000
-  },
-  {
-    "id": "0010",
-    "date": "08/28/2024",
-    "description": "Equipment purchase",
-    "amount": 7000
-  },
-  {
-    "id": "0011",
-    "date": "09/14/2024",
-    "description": "Marketing campaign",
-    "amount": 4500
-  },
-  {
-    "id": "0012",
-    "date": "10/09/2024",
-    "description": "Software license renewal",
-    "amount": 1200
-  },
-  {
-    "id": "0013",
-    "date": "11/25/2024",
-    "description": "Charity donation",
-    "amount": 300
   }
 ]

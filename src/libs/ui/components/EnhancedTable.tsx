@@ -33,7 +33,7 @@ const StyledTableFooter = styled('div')({
 
 const StyledTableRow = styled(TableRow)({
   // bold last border
-  '&:last-child': {
+  '&:last-child td, &:last-child th': {
     borderColor: colors.neutral[300],
   },
 });

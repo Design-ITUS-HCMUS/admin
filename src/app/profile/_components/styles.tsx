@@ -9,8 +9,8 @@ import { colors } from '@/libs/ui';
 
 export function Section({ children, title, id }: { children: React.ReactNode; title: string; id?: string }) {
   return (
-    <div>
-      <Typography variant='h6' fontWeight='bold' mb={2} {...(!!id && { id: id, 'data-section': '' })}>
+    <div {...(!!id && { id: id, 'data-section': '' })}>
+      <Typography variant='h6' fontWeight='bold' mb={2}>
         {title}
       </Typography>
       {children}
