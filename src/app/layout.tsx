@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import StoreProvider from './StoreProvider';
+
+import { Message } from '@/libs/ui';
 
 import theme from '@/libs/ui/theme';
 
@@ -22,7 +25,10 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {children}
+            <StoreProvider>
+              {children}
+              <Message />
+            </StoreProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

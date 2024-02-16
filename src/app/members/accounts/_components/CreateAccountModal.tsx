@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -19,14 +19,11 @@ import { ROLE, POSITION, DEPARTMENT } from '@/utils';
 import { SelectDepartment, SelectPosition, SelectRole } from './CustomSelect';
 
 interface CreateAccountModalProps {
-  /**Control the state <code>open</code> of the MUI Dialog root component*/
-  open: boolean;
   /**The callback function to be executed when the MUI Dialog root component is closed*/
-  onClose: () => void;
+  handleClose: () => void;
 }
 
-export function CreateAccountModal(props: CreateAccountModalProps) {
-  const { open, onClose } = props;
+export function CreateAccountModal({ handleClose, ...props }: CreateAccountModalProps & DialogProps) {
   const gen = new Date();
 
   const initialValues: MemberInfoValues = {
@@ -52,7 +49,7 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} scroll='paper' maxWidth='sm' fullWidth PaperProps={{ variant: 'section' }}>
+    <Dialog {...props} onClose={handleClose} maxWidth='sm' fullWidth PaperProps={{ variant: 'section' }}>
       <DialogTitle id='alert-dialog-title' fontWeight={'bold'}>
         Tạo tài khoản
       </DialogTitle>
@@ -159,7 +156,7 @@ export function CreateAccountModal(props: CreateAccountModalProps) {
         </Formik>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} variant='text'>
+        <Button onClick={handleClose} variant='text'>
           Cancel
         </Button>
         <Button form='create-member-form' type='submit'>

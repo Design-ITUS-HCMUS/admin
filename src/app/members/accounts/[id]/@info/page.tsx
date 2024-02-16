@@ -22,7 +22,8 @@ import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 import { InputLayout, LoadingButton } from '@/libs/ui';
 import { MemberInfoValues, MemberInfoSchema } from '@/libs/validations';
 import { POSITION } from '@/utils';
-import { SelectDepartment, SelectPosition, SelectRole } from '../../_components';
+import { useToast } from '@/hooks';
+import { SelectDepartment, SelectPosition, SelectRole, DeleteAccountModal } from '../../_components';
 import Loading from './loading';
 
 const FormWrapper = styled('div')({
@@ -53,8 +54,10 @@ export default function InfoSection({ params }: { params: { id: string } }) {
   const [saving, setSaving] = useState<boolean>(false);
   const [userData, setUserData] = useState<MemberInfoValues>(initialValues);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openModal, setOpenModal] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     fetch(`/api/user?id=${params.id}`)
@@ -66,7 +69,11 @@ export default function InfoSection({ params }: { params: { id: string } }) {
         } else throw new Error(message as string);
       })
       .catch((e) => {
-        console.error(e);
+        toast.setAlert({
+          alert: 'error',
+          message: { title: 'Không thể tải dữ liệu người dùng này', description: e.message },
+        });
+        toast.setOpen();
         router.push('/members/accounts');
       })
       .finally(() => setLoading(false));
@@ -90,11 +97,17 @@ export default function InfoSection({ params }: { params: { id: string } }) {
       body: JSON.stringify(request),
     })
       .then((res) => res.json())
-      .then((res) => {
-        if (res.success) setUserData(res.data);
+      .then(({ success, data }) => {
+        if (success) {
+          setUserData(data);
+          toast.setAlert({ alert: 'success', message: { title: 'Cập nhật thông tin thành công' } });
+        } else throw new Error('Có lỗi khi cập nhật thông tin');
       })
-      .catch((e) => console.error(e))
+      .catch((e) =>
+        toast.setAlert({ alert: 'error', message: { title: 'Cập nhật thông tin thất bại', description: e.message } })
+      )
       .finally(() => {
+        toast.setOpen();
         setReadOnly(true);
         setSaving(false);
       });
@@ -114,6 +127,12 @@ export default function InfoSection({ params }: { params: { id: string } }) {
         <Loading />
       ) : (
         <>
+          <DeleteAccountModal
+            open={openModal}
+            handleClose={() => setOpenModal(false)}
+            userID={parseInt(params.id)}
+            fullName={userData.profile?.fullName || userData.username}
+          />
           <FormWrapper>
             <Formik
               initialValues={userData}
@@ -278,7 +297,9 @@ export default function InfoSection({ params }: { params: { id: string } }) {
             onClose={() => setAnchorEl(null)}>
             <MenuItem onClick={() => setReadOnly(false)}>Chỉnh sửa</MenuItem>
             <Divider sx={{ my: 1 }} />
-            <MenuItem sx={{ color: 'error.main' }}>Xóa tài khoản</MenuItem>
+            <MenuItem onClick={() => setOpenModal(true)} sx={{ color: 'error.main' }}>
+              Xóa tài khoản
+            </MenuItem>
           </Menu>
         </>
       )}

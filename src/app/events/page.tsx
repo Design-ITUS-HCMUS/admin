@@ -14,6 +14,7 @@ import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
 import { EnhancedTable, IHeadCell, ProgressTag, Search, SupportTable } from '@/libs/ui';
 import { tableHandler, Query } from '@/utils';
+import { useToast } from '@/hooks';
 
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
@@ -60,8 +61,9 @@ interface ITableCell extends Record<(typeof headCells)[number]['key'], JSX.Eleme
 export default function EventsPage({ modal }: { modal: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [eventsData, setEventsData] = useState<ITableCell[]>([]);
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+  const [selectedRow, setSelectedRow] = useState<ITableCell | null>(null);
   const [query, setQuery] = useState<Query>({ page: 1, limit: 10 });
+  const toast = useToast();
 
   useEffect(() => {
     fetch('/api/event/all-events')
@@ -69,6 +71,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
       .then((res) => {
         const { success, data } = res;
         if (!success) throw new Error('Có lỗi khi tải dữ liệu');
+        toast.setAlert({ alert: 'success', message: { title: 'Tải dữ liệu thành công' } });
         const loadData = data.map((item: any) => ({
           _id: item.id,
           name: item.name,
@@ -79,8 +82,17 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
         }));
         setEventsData(loadData);
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        toast.setAlert({
+          alert: 'error',
+          message: { title: 'Tải dữ liệu không thành công', description: err.message },
+        });
+        console.error(err);
+      })
+      .finally(() => {
+        toast.setOpen();
+        setLoading(false);
+      });
   }, []);
 
   const refactorData = (eventsData: ITableCell[]): ITableCell[] => {
@@ -132,8 +144,8 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
             totalRows={eventsData.length}
             onChangePage={(_e, page) => setQuery({ ...query, page })}
             onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
-            onAct={(_e, id) => setSelectedRow(id)}>
-            <MenuItem component={Link} href={`/events/${selectedRow}`}>
+            onAct={(_e, row) => setSelectedRow(row as ITableCell)}>
+            <MenuItem component={Link} href={`/events/${selectedRow?._id}`}>
               Xem chi tiết
             </MenuItem>
             <MenuItem>Dừng sự kiện</MenuItem>

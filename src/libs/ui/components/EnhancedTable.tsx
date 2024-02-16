@@ -153,7 +153,7 @@ interface EnhancedTableProps {
   /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
    * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
    */
-  onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  onAct?: (event: MouseEvent<HTMLElement>, _row: object | null) => void;
   /** The children of the table menu. */
   children?: React.ReactNode;
 }
@@ -172,7 +172,7 @@ export function EnhancedTable({
   onChangePage,
   onSort,
   disableAction = false,
-  onAct = (_e, _id) => {},
+  onAct = (_e, _row) => {},
   children,
 }: EnhancedTableProps) {
   const [order, setOrder] = useState<TableOrder>({ key: null });
@@ -200,9 +200,9 @@ export function EnhancedTable({
     onSort(event, 'asc', null);
   };
 
-  const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
+  const handleClick = (event: MouseEvent<HTMLElement>, _row: object | null) => {
     setAnchorEl(event.currentTarget);
-    if (_id) onAct(event, _id);
+    if (_row) onAct(event, _row);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -259,7 +259,7 @@ export function EnhancedTable({
                   })}
                   {disableAction ? null : (
                     <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
-                      <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
+                      <IconButton onClick={(_e) => handleClick(_e, row)} sx={{ margin: 0 }}>
                         <MoreIcon />
                       </IconButton>
                     </TableCell>
