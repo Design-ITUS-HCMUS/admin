@@ -1,0 +1,32 @@
+[
+  {
+    "id": "0001",
+    "date": "01/01/2024",
+    "description": "Our space 8",
+    "amount": 20000
+  },
+  {
+    "id": "0002",
+    "date": "01/08/2023",
+    "description": "Quỹ tháng 8/2023",
+    "amount": 20000
+  },
+  {
+    "id": "0003",
+    "date": "01/09/2024",
+    "description": "Quỹ tháng 8/2023",
+    "amount": 20000
+  },
+  {
+    "id": "0004",
+    "date": "02/15/2024",
+    "description": "Team lunch",
+    "amount": 500
+  },
+  {
+    "id": "0005",
+    "date": "03/10/2024",
+    "description": "Office supplies",
+    "amount": 1000
+  }
+]

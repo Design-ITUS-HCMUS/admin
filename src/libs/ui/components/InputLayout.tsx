@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Field } from 'formik';
 
 import FormHelperText from '@mui/material/FormHelperText';
@@ -43,45 +43,53 @@ interface InputLayoutProps {
   formik?: boolean;
 }
 
-export function InputLayout({
-  required = false,
-  direction = 'column',
-  label,
-  ratio = 0,
-  children,
-  helperText,
-  inputProps,
-  labelProps,
-  containerProps,
-  formik = false,
-}: InputLayoutProps) {
-  const calRatio = Math.max(0, Math.min(1, ratio));
-  let labelWidth = 'inherit';
-  let fieldsetWidth = 'inherit';
-  if (direction === 'row') {
-    labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : 'inherit';
-    fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : 'inherit';
-  }
+export const InputLayout = forwardRef(
+  (
+    {
+      required = false,
+      direction = 'column',
+      label,
+      ratio = 0,
+      children,
+      helperText,
+      inputProps,
+      labelProps,
+      containerProps,
+      formik = false,
+    }: InputLayoutProps,
+    ref: React.Ref<HTMLInputElement>
+  ) => {
+    const calRatio = Math.max(0, Math.min(1, ratio));
+    let labelWidth = 'inherit';
+    let fieldsetWidth = 'inherit';
+    if (direction === 'row') {
+      labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : 'inherit';
+      fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : 'inherit';
+    }
 
-  return (
-    <Stack spacing={1} alignItems='baseline' direction={direction} sx={{ width: '100%' }} {...containerProps}>
-      {Boolean(label) ? (
-        <StyledInputLabel htmlFor={inputProps?.name} sx={{ width: labelWidth }} required={required} {...labelProps}>
-          <Typography variant='subtitle2' component='span'>
-            {label}
-          </Typography>
-        </StyledInputLabel>
-      ) : null}
-      <Stack sx={{ width: fieldsetWidth }}>
-        {children ? (
-          children
-        ) : formik ? (
-          <Field as={OutlinedInput} {...inputProps} />
-        ) : (
-          <OutlinedInput {...inputProps} />
-        )}
-        {Boolean(helperText) ? <FormHelperText error>{helperText}</FormHelperText> : null}
+    return (
+      <Stack spacing={1} alignItems='baseline' direction={direction} sx={{ width: '100%' }} {...containerProps}>
+        {Boolean(label) ? (
+          <StyledInputLabel htmlFor={inputProps?.name} sx={{ width: labelWidth }} required={required} {...labelProps}>
+            <Typography variant='subtitle2' component='span'>
+              {label}
+            </Typography>
+          </StyledInputLabel>
+        ) : null}
+        <Stack sx={{ width: fieldsetWidth }}>
+          {children ? (
+            children
+          ) : formik ? (
+            <Field as={OutlinedInput} {...inputProps} ref={ref} />
+          ) : (
+            <OutlinedInput {...inputProps} ref={ref} />
+          )}
+          {Boolean(helperText) ? <FormHelperText error>{helperText}</FormHelperText> : null}
+        </Stack>
       </Stack>
-    </Stack>
-  );
-}
+    );
+  }
+);
+
+// This name is used by React in debugging messages. Only arrow functions have to do this
+InputLayout.displayName = 'InputLayout';

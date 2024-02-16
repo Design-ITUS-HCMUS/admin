@@ -40,3 +40,6 @@ next-env.d.ts
 
 # schema.prisma
 /prisma/schema.prisma
+
+# local scripts
+removeMergedBranches.ps1

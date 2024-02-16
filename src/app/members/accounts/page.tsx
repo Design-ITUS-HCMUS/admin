@@ -82,7 +82,7 @@ export default function AccountsPage() {
       facebook: (
         <Typography
           component={Link}
-          href={`/events/${item.facebook}`}
+          href={item.facebook as string}
           sx={{ color: 'primary.main', maxWidth: '250px' }}
           textOverflow='ellipsis'
           overflow='hidden'>
