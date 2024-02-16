@@ -107,7 +107,7 @@ export default function AccountsPage() {
       facebook: (
         <Typography
           component={Link}
-          href={`${item.facebook}`}
+          href={item.facebook as string}
           target='_blank'
           sx={{ color: 'primary.main', maxWidth: '250px' }}
           textOverflow='ellipsis'
