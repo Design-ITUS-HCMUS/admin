@@ -1,12 +1,13 @@
 'use client';
 // React, Formik and Next
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Field, Formik } from 'formik';
 
 // Material UI Components
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
@@ -31,26 +32,39 @@ function SignInPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { signIn, setSignIn } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState('');
 
-  function handleSubmit(values: { username: string; password: string }) {
-    /* eslint-disable no-console */
-    setIsLoading(true);
-    fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ usernameOrEmail: values.username, password: values.password }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          router.push('/');
-        } else {
-          setIsLoading(false);
-        }
+  async function handleSubmit(values: { username: string; password: string }) {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ usernameOrEmail: values.username, password: values.password }),
       });
+
+      switch (response.status) {
+        case 200:
+          router.push('/');
+          break;
+        case 400:
+          setAlertMessage('Chưa có thông tin username hoặc mật khẩu');
+          throw new Error('Missing username or password');
+        case 403:
+          setAlertMessage('Username hoặc mật khẩu không đúng');
+          throw new Error('Invalid username or password');
+        default:
+          setAlertMessage('Đăng nhập thất bại, vui lòng thử lại');
+          throw new Error('Error message');
+      }
+    } catch (error: any) {
+      console.error('Error:', error.message);
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -97,6 +111,16 @@ function SignInPage() {
           Hoặc đăng nhập với tài khoản
         </Typography>
       </Divider>
+      {alertMessage !== '' && (
+        <Alert
+          icon={false}
+          severity='error'
+          onClose={() => {
+            setAlertMessage('');
+          }}>
+          {alertMessage}
+        </Alert>
+      )}
       <Formik
         initialValues={{
           username: signIn.username || '',

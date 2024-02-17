@@ -6,6 +6,7 @@ import { Field, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
 // Material UI Components
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -31,28 +32,50 @@ function SignUpPage() {
   const router = useRouter();
   const { signUp, setSignUp } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
-  function handleSubmit(values: IFormData) {
-    setIsLoading(true);
-    fetch('/api/auth/otpRegistration', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: values.username, email: values.email }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          router.push('/sign-up/otp');
-        } else {
-          setIsLoading(false);
-        }
+  async function handleSubmit(values: IFormData) {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch('/api/auth/otpRegistration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: values.username, email: values.email }),
       });
+
+      switch (response.status) {
+        case 200:
+          setSignUp({ ...signUp, isSigningUp: true });
+          router.push('/sign-up/otp');
+          break;
+        case 409:
+          setAlertMessage('Username hoặc email đã tồn tại');
+          throw new Error('Existed email or username');
+        default:
+          setAlertMessage('Đăng ký thất bại, vui lòng thử lại');
+          throw new Error('Error message');
+      }
+    } catch (error: any) {
+      console.error('Error:', error.message);
+      setIsLoading(false);
+    }
   }
 
   return (
     <CardLayout header='Đăng ký tài khoản' showFooter page='signup'>
+      {alertMessage !== '' && (
+        <Alert
+          icon={false}
+          severity='error'
+          onClose={() => {
+            setAlertMessage('');
+          }}>
+          {alertMessage}
+        </Alert>
+      )}
       <Formik
         initialValues={
           {

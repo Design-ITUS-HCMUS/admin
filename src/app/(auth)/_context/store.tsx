@@ -7,10 +7,12 @@ interface ISignUp {
   username?: string;
   email?: string;
   password?: string;
+  isSigningUp?: boolean;
 }
 
 interface ISignIn {
   username?: string;
+  isForgettingPassword?: boolean;
 }
 
 interface IContextProps {
@@ -21,15 +23,15 @@ interface IContextProps {
 }
 
 const AuthContext = createContext<IContextProps>({
-  signUp: { username: '', email: '', password: '' },
+  signUp: { username: '', email: '', password: '', isSigningUp: false },
   setSignUp: () => {},
-  signIn: { username: '' },
+  signIn: { username: '', isForgettingPassword: false },
   setSignIn: () => {},
 });
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [signUp, setSignUp] = useState<ISignUp>({ username: '', email: '', password: '' });
-  const [signIn, setSignIn] = useState<ISignIn>({ username: '' });
+  const [signUp, setSignUp] = useState<ISignUp>({ username: '', email: '', password: '', isSigningUp: false });
+  const [signIn, setSignIn] = useState<ISignIn>({ username: '', isForgettingPassword: false });
 
   return <AuthContext.Provider value={{ signUp, setSignUp, signIn, setSignIn }}>{children}</AuthContext.Provider>;
 };
