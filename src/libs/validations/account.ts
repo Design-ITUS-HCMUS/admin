@@ -34,7 +34,7 @@ export const MemberInfoSchema = yup.object().shape({
     studentID: yup.string().nullable(),
     gen: yup.number().nullable(),
     school: yup.string().nullable(),
-    dob: yup.date().nullable(),
+    dob: Schema.dob.nullable(),
     departments: yup
       .array()
       .default([])

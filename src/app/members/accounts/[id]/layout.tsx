@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 
 import Breadcumbs from '@mui/material/Breadcrumbs';

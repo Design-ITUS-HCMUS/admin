@@ -1,4 +1,4 @@
-import { useState } from 'react';
+'use client';
 import { usePathname, useRouter } from 'next/navigation';
 
 import Box from '@mui/material/Box';
@@ -10,7 +10,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 
 import { LoadingButton } from '@/libs/ui';
+import { useUsers } from '@/libs/queryClient/users';
 import { useToast } from '@/hooks';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function DeleteAccountModal({
   fullName,
@@ -22,53 +24,46 @@ export function DeleteAccountModal({
   userID: number;
   handleClose: () => void;
 } & DialogProps) {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { setAlert, setOpen } = useToast();
+  const { deleteUser } = useUsers();
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const { mutate, status } = useMutation({
+    mutationFn: (id: number) => deleteUser(id),
+    mutationKey: ['users', 'deleteUser', userID],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'], refetchType: 'all' });
+      queryClient.removeQueries({ queryKey: ['users', userID.toString()], exact: true });
+    },
+  });
 
   const handleDelete = () => {
-    setLoading(true);
-    fetch('/api/user/users-remove', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ids: [userID] }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const { success, data } = res;
-        if (!success || data.count === 0) {
-          throw new Error(res.message);
-        }
-        setAlert({
+    mutate(userID, {
+      onSuccess: () => {
+        if (pathname !== '/members/accounts') router.push('/members/accounts');
+        toast.setAlert({
           alert: 'success',
           message: {
             title: 'Xóa thành viên thành công',
-            description: 'Vui lòng chờ một chút để cập nhật dữ liệu',
+            description: 'Vui lòng chờ trong giây lát để cập nhật dữ liệu',
           },
         });
-        setOpen();
-        if (pathname === '/members/accounts') {
-          window.location.reload();
-        } else router.push('/members/accounts');
-      })
-      .catch((e) => {
-        setAlert({
+        handleClose();
+      },
+      onError: (error) => {
+        toast.setAlert({
           alert: 'error',
           message: {
             title: 'Xóa thành viên thất bại',
-            description: e.message,
+            description: error.message,
           },
         });
-        setOpen();
-        console.error(e);
-      })
-      .finally(() => {
-        setLoading(false);
-        handleClose();
-      });
+      },
+      onSettled: () => {
+        toast.setOpen();
+      },
+    });
   };
   return (
     <Dialog {...props} onClick={handleClose} maxWidth='xs' PaperProps={{ variant: 'section' }}>
@@ -86,10 +81,10 @@ export function DeleteAccountModal({
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button disabled={loading} variant='text' onClick={handleClose}>
+        <Button disabled={status === 'pending'} variant='text' onClick={handleClose}>
           Hủy
         </Button>
-        <LoadingButton loading={loading} color='error' onClick={handleDelete}>
+        <LoadingButton loading={status === 'pending'} color='error' onClick={handleDelete}>
           Xóa
         </LoadingButton>
       </DialogActions>

@@ -8,11 +8,9 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 
+import transactions from '@/libs/mock/transactions.json';
 import { SideBarItem } from '@/libs/ui';
-import { Section, WhiteCard } from './_components';
-
-import transactions from './transactions.json';
-import { BasicInfo, TransactionTable, EditPassword } from './_components';
+import { Section, WhiteCard, BasicInfo, TransactionTable, EditPassword } from './_components';
 
 const SideBarItems = [
   {

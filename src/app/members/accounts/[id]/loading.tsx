@@ -1,11 +1,5 @@
-import LoadingInfo from './@info/loading';
-import LoadingEvent from './@events/loading';
+import Skeleton from '@mui/material/Skeleton';
 
 export default function Loading() {
-  return (
-    <>
-      <LoadingInfo />
-      <LoadingEvent />
-    </>
-  );
+  return <Skeleton variant='text' width={100} component='span' sx={{ mr: 1 }} />;
 }

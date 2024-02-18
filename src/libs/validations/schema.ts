@@ -23,5 +23,11 @@ export class Schema {
     .notRequired()
     .matches(/^((\(\+?84\))?0?[3|5|7|8|9][0-9]{8}|0[3|5|7|8|9][0-9]{8})$/, 'Số điện thoại không hợp lệ');
 
-  static dob = yup.date().notRequired().max(new Date(), 'Ngày sinh không hợp lệ');
+  static dob = yup
+    .date()
+    .typeError('Định dạng ngày không đúng')
+    .notRequired()
+    .max(new Date(), 'Ngày sinh không hợp lệ')
+    .notRequired()
+    .max(new Date(), 'Ngày sinh không hợp lệ');
 }

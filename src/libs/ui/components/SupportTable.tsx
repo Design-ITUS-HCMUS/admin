@@ -1,5 +1,6 @@
 'use client';
 import { Theme, useMediaQuery } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,12 +22,13 @@ interface SupportTableProps {
    *   numeric?: boolean;<br/>
    * }</code>
    */
-  headCells: readonly IHeadCell[];
+  headCells?: readonly IHeadCell[];
   /** The state of the table, can be <code>loading</code> or <code>empty</code>. */
   state?: State;
+  number?: number;
 }
 
-export function SupportTable({ headCells, state = 'loading' }: SupportTableProps) {
+export function SupportTable({ headCells, state = 'loading', number = 0 }: SupportTableProps) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const dense = isMobile ? true : false;
 
@@ -40,20 +42,32 @@ export function SupportTable({ headCells, state = 'loading' }: SupportTableProps
                 borderColor: colors.neutral[300],
               },
             }}>
-            {headCells.map((headCell) => (
-              <TableCell
-                key={headCell.key}
-                align={headCell.numeric ? 'right' : 'left'}
-                padding={headCell.disablePadding ? 'none' : 'normal'}
-                sx={{ fontWeight: 'bold', minWidth: '150px', maxWidth: '200px' }}>
-                {headCell.label}
-              </TableCell>
-            ))}
+            {Boolean(headCells)
+              ? headCells?.map((headCell) => (
+                  <TableCell
+                    key={headCell.key} // Add type assertion here
+                    align={headCell.numeric ? 'right' : 'left'}
+                    padding={headCell.disablePadding ? 'none' : 'normal'}
+                    sx={{ fontWeight: 'bold', minWidth: '150px', maxWidth: '200px' }}>
+                    {headCell.label}
+                  </TableCell>
+                ))
+              : [...Array(number)].map((_, index) => (
+                  <TableCell
+                    key={index}
+                    align='center'
+                    sx={{ fontWeight: 'bold', minWidth: '150px', maxWidth: '200px' }}>
+                    <Skeleton variant='text' width={120} />
+                  </TableCell>
+                ))}
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell colSpan={headCells.length} align='center' sx={{ height: '400px' }}>
+            <TableCell
+              colSpan={headCells ? headCells.length : number ? number : 6}
+              align='center'
+              sx={{ height: '400px' }}>
               {state === 'empty' ? <Typography color='textSecondary'>Không có dữ liệu</Typography> : <Loading />}
             </TableCell>
           </TableRow>
