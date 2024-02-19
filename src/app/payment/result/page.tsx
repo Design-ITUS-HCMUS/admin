@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/legacy/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { styled, Typography } from '@mui/material';
+import Link from 'next/link';
+import Button from '@mui/material/Button';
+import { colors } from '@/libs/ui';
 
-import { MyButton } from '@/libs/ui';
-import color from '@/libs/ui/color';
-import Loading from '@/app/loading';
+import Loading from '@/app/payment/loading';
 import transactionCompleted from '@/assets/transactionCompleted.gif';
 
 // query string:
@@ -19,34 +20,26 @@ const Paper = styled('div')({
   alignItems: 'center',
   justifyContent: 'center',
   gap: '20px',
-  padding: '20px',
-  marginTop: '50px',
+  padding: '32px',
   maxWidth: '500px',
-  margin: 'auto',
+  margin: '56px auto',
+  backgroundColor: colors.neutral.white,
+  borderRadius: '10px',
 });
 
-const getStyledComponents = (color: string, bgColor: string, hoverColor: string) => {
-  const StyledTypography = styled(Typography)({ color });
-  const StyledButton = styled(MyButton)({
-    backgroundColor: bgColor,
-    '&:hover': {
-      backgroundColor: hoverColor,
-    },
-  });
-
-  return { StyledTypography, StyledButton };
+type StatusButtonProps = {
+  status: 'success' | 'error';
+  href: string;
 };
 
-const { StyledTypography: SuccessText, StyledButton: SuccessButton } = getStyledComponents(
-  color.notification.success,
-  color.notification.success,
-  'darkgreen'
-);
-const { StyledTypography: ErrorText, StyledButton: ErrorButton } = getStyledComponents(
-  color.notification.error,
-  color.notification.error,
-  'darkred'
-);
+const StatusButton = styled(({ href, status, ...otherProps }: StatusButtonProps & { children?: React.ReactNode }) => (
+  <Button {...otherProps} component={Link} href={href} />
+))<StatusButtonProps>(({ theme, status }) => ({
+  backgroundColor: status === 'success' ? theme.palette.success.main : theme.palette.error.main,
+  '&:hover': {
+    backgroundColor: status === 'success' ? theme.palette.success.dark : theme.palette.error.dark,
+  },
+}));
 
 const translateStatus = (status: any) => {
   status = status.toLowerCase();
@@ -63,7 +56,6 @@ const translateStatus = (status: any) => {
 export default function PaymentSuccess() {
   const [loading, setLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState('Đang xử lý giao dịch...');
-  const router = useRouter();
 
   useEffect(() => {
     setTimeout(() => {
@@ -72,41 +64,36 @@ export default function PaymentSuccess() {
   }, []);
 
   const searchParams = useSearchParams();
-
-  const cancel = searchParams.get('cancel');
   const orderCode = searchParams.get('orderCode');
   const status = searchParams.get('status');
+  const isCancelled = searchParams.get('cancel') === 'true' || status === 'CANCELLED';
 
   return (
     <>
       {loading ? (
         <Loading loadingMessage={loadingMessage} />
-      ) : cancel === 'true' || status === 'CANCELLED' ? (
-        <Paper>
-          <ErrorText variant='h4' gutterBottom>
-            Đã hủy giao dịch!
-          </ErrorText>
-          <ErrorButton variant='contained' onClick={() => router.push('/payment')}>
-            Trở lại trang thanh toán
-          </ErrorButton>
-        </Paper>
       ) : (
         <Paper>
-          <Image
-            src={transactionCompleted}
-            alt='Giao dịch thành công'
-            priority
-            width={300}
-            height={300}
-            objectFit='contain'
-          />{' '}
-          <SuccessText variant='h4' gutterBottom>
+          {!isCancelled && (
+            <Image
+              src={transactionCompleted}
+              alt='Giao dịch thành công'
+              priority
+              width={300}
+              height={300}
+              objectFit='contain'
+            />
+          )}
+          <Typography
+            variant='h4'
+            gutterBottom
+            color={isCancelled ? colors.notification.error : colors.notification.success}>
             Đơn hàng {typeof status === 'string' ? `${translateStatus(status)}` : ''}!
-          </SuccessText>
-          <Typography variant='h6'>Mã đơn hàng: {orderCode}</Typography>
-          <SuccessButton variant='contained' onClick={() => router.push('/payment')}>
+          </Typography>
+          {orderCode && <Typography variant='h6'>Mã đơn hàng: {orderCode}</Typography>}
+          <StatusButton status={isCancelled ? 'error' : 'success'} href='/payment'>
             Trở lại trang thanh toán
-          </SuccessButton>
+          </StatusButton>
         </Paper>
       )}
     </>

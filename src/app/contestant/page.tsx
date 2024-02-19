@@ -1,22 +1,23 @@
 'use client';
 import React from 'react';
-import { Button } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { Button, Stack } from '@mui/material';
+import Link from 'next/link';
 
 export default function Contestant() {
-  const router = useRouter();
   return (
     <div>
-      <h1>Contestant</h1>
-      <Button variant='contained' color='primary' onClick={() => router.push('/contestant/submission')}>
-        Go to Submission Page
-      </Button>
-      <Button variant='contained' color='secondary' onClick={() => router.push('/contestant/team-management')}>
-        Go to Team Management Page
-      </Button>
-      <Button variant='contained' color='secondary' onClick={() => router.push('/payment')}>
-        Go to Payment Page
-      </Button>
+      <Stack direction='column' spacing={2} alignItems='center'>
+        <h1>Contestant</h1>
+        <Button component={Link} href='/contestant/submission'>
+          Đến trang nộp bài
+        </Button>
+        <Button component={Link} href='/contestant/team-management'>
+          Đến trang quản lý đội
+        </Button>
+        <Button component={Link} href='/payment'>
+          Đến trang thanh toán
+        </Button>
+      </Stack>
     </div>
   );
 }

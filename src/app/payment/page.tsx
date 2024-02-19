@@ -2,40 +2,15 @@
 
 import { lazy, useEffect, Suspense, useState, FC, Dispatch, SetStateAction, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Button,
-  Container,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  styled,
-  TextField,
-} from '@mui/material';
-import color from '@/libs/ui/color';
+import { Button, Container, styled } from '@mui/material';
+import { colors } from '@/libs/ui';
 import { MyDialog } from '@/libs/ui/components/Dialog';
+import { TextFieldWithLabel } from '@/libs/ui';
 
-const Loading = lazy(() => import('@/app/loading'));
+const Loading = lazy(() => import('@/app/payment/loading'));
 
 const API_ENDPOINT = '/api/payment/payos/payment-requests';
 const ERROR_MESSAGE = 'Có lỗi xảy ra khi tạo link thanh toán';
-
-type ErrorDialogProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
-const ErrorDialog: FC<ErrorDialogProps> = ({ open, onClose }) => (
-  <StyledDialog open={open} onClose={onClose}>
-    <DialogTitle style={{ color: color.notification.error }}>Lỗi</DialogTitle>
-    <DialogContent>
-      <DialogContentText>Buyer ID chỉ được phép là số</DialogContentText>
-    </DialogContent>
-    <DialogActions>
-      <StyledErrButton onClick={onClose}>OK</StyledErrButton>
-    </DialogActions>
-  </StyledDialog>
-);
 
 type FormComponentProps = {
   buyerID: string;
@@ -55,18 +30,9 @@ const StyledForm = styled('form')({
 });
 
 const StyledErrButton = styled(Button)({
-  backgroundColor: color.notification.error,
+  backgroundColor: colors.notification.error,
   '&:hover': {
     backgroundColor: 'darkred',
-  },
-});
-
-const StyledDialog = styled(MyDialog)({
-  '& .MuiDialogContent-root': {
-    padding: '8px',
-  },
-  '& .MuiDialogTitle-root': {
-    padding: '8px',
   },
 });
 
@@ -98,20 +64,31 @@ function FormComponent({
     <Container maxWidth='sm'>
       {loading && <Loading loadingMessage={loadingMessage} />}
       <StyledForm onSubmit={handleSubmit}>
-        <TextField
+        <TextFieldWithLabel
           label='Buyer ID'
-          placeholder='Buyer ID chỉ được phép là số'
-          multiline
-          variant='standard'
-          value={buyerID}
-          error={buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0)}
-          onChange={(e) => setBuyerID(e.target.value)}
+          inputProps={{
+            placeholder: 'Buyer ID chỉ được phép là số',
+            value: buyerID,
+            error: buyerID.length > 0 && (isNaN(Number(buyerID)) || Number(buyerID) <= 0),
+            onChange: (e) => setBuyerID(e.target.value),
+          }}
+          containerStyle={{
+            marginTop: '16px',
+          }}
         />
         <Button variant='contained' type='submit'>
           Đến trang thanh toán PayOS
         </Button>
       </StyledForm>
-      <ErrorDialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)} />
+      <MyDialog
+        open={errorDialogOpen}
+        onClose={() => setErrorDialogOpen(false)}
+        title='Lỗi'
+        content='Buyer ID chỉ được phép là số'
+        titleStyle={{ color: colors.notification.error }}
+        contentStyle={{ color: colors.notification.error }}
+        actions={<StyledErrButton onClick={() => setErrorDialogOpen(false)}>OK</StyledErrButton>}
+      />
     </Container>
   );
 }
@@ -131,6 +108,7 @@ export default function Payment() {
       setErrorDialogOpen(true);
       return;
     }
+    setErrorDialogOpen(false);
     setLoadingMessage('Đang tạo link thanh toán...');
     setLoading(true);
     try {

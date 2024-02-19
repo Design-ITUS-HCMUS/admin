@@ -1,6 +1,7 @@
 'use client';
 import { styled } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
+import Link from 'next/link';
 
 interface Member {
   id: number;
@@ -20,9 +21,27 @@ interface Team {
   category: Category;
   paymentStatus: string;
   isVerified: boolean;
-  proofOfPayment: string; // URL
-  submission: string; // URL
+  proofOfPayment: string;
+  submission: string;
 }
+
+interface IRow {
+  label: string;
+  value: string;
+}
+
+const rows: IRow[] = [
+  { label: 'Tên đội', value: 'Đội 1' },
+  { label: 'Thành viên 1', value: 'Thành viên 1' },
+  { label: 'Thành viên 2', value: 'Thành viên 2' },
+  { label: 'Thành viên 3', value: 'Thành viên 3' },
+  { label: 'Thành viên 4', value: 'Thành viên 4' },
+  { label: 'Thể loại', value: 'Thể loại 1' },
+  { label: 'Trạng thái thanh toán', value: 'Đã thanh toán' },
+  { label: 'Đã xác nhận', value: 'Có' },
+  { label: 'Minh chứng thanh toán', value: 'http://example.com/proof.pdf' },
+  { label: 'Bài nộp', value: 'http://example.com/submission.pdf' },
+];
 
 const Container = styled('div')({
   padding: '20px',
@@ -38,60 +57,20 @@ const Title = styled('h1')({
   fontSize: '24px',
 });
 
-const Link = styled('a')({
-  color: '#007bff',
-});
-
 export default function TeamManagement() {
-  const [team, setTeam] = useState<Team>({
-    id: 1,
-    name: 'Team 1',
-    teamLeader: { id: 1, name: 'Leader 1' },
-    isPassed: false,
-    category: { id: 1, name: 'Category 1' },
-    paymentStatus: 'Paid',
-    isVerified: true,
-    proofOfPayment: 'http://example.com/proof.pdf',
-    submission: 'http://example.com/submission.pdf',
-  });
+  const urlPattern = new RegExp('^(http|https)://', 'i');
 
   return (
     <Container>
       <Title>Team Management</Title>
       <table>
         <tbody>
-          <tr>
-            <td>Team Name</td>
-            <td>{team.name}</td>
-          </tr>
-          <tr>
-            <td>Team Leader</td>
-            <td>{team.teamLeader.name}</td>
-          </tr>
-          <tr>
-            <td>Category</td>
-            <td>{team.category.name}</td>
-          </tr>
-          <tr>
-            <td>Payment Status</td>
-            <td>{team.paymentStatus}</td>
-          </tr>
-          <tr>
-            <td>Is Verified</td>
-            <td>{team.isVerified ? 'Yes' : 'No'}</td>
-          </tr>
-          <tr>
-            <td>Proof of Payment</td>
-            <td>
-              <Link href={team.proofOfPayment}>Download</Link>
-            </td>
-          </tr>
-          <tr>
-            <td>Submission</td>
-            <td>
-              <Link href={team.submission}>Download</Link>
-            </td>
-          </tr>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              <td>{row.label}</td>
+              <td>{urlPattern.test(row.value) ? <Link href={row.value}>Tải về</Link> : row.value}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Container>

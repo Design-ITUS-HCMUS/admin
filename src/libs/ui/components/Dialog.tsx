@@ -1,20 +1,32 @@
 import React, { FC } from 'react';
-import { Dialog as MuiDialog, DialogProps as MuiDialogProps, DialogTitle, DialogContent, styled } from '@mui/material';
+import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
-type MyDialogProps = MuiDialogProps & {
-  title?: string;
-  content?: string;
-  data?: any;
-  style?: React.CSSProperties;
-};
+interface MyDialogProps {
+  open: boolean;
+  onClose?: () => void;
+  title?: React.ReactNode;
+  content?: React.ReactNode;
+  titleStyle?: React.CSSProperties;
+  contentStyle?: React.CSSProperties;
+  actions?: React.ReactNode;
+  children?: React.ReactNode;
+}
 
-export const StyledDialogContent = styled(DialogContent)({});
-
-export const MyDialog: FC<MyDialogProps> = ({ title, content, children, style, ...rest }) => {
+export const MyDialog: FC<MyDialogProps> = ({
+  open,
+  onClose,
+  title,
+  titleStyle,
+  content,
+  contentStyle,
+  actions,
+  children,
+}) => {
   return (
-    <MuiDialog style={style} {...rest}>
-      {title && <DialogTitle>{title}</DialogTitle>}
-      {content && <DialogContent>{content}</DialogContent>}
+    <MuiDialog open={open} onClose={onClose}>
+      {title && <DialogTitle style={titleStyle}>{title}</DialogTitle>}
+      {content && <DialogContent style={contentStyle}>{content}</DialogContent>}
+      {actions && <DialogActions>{actions}</DialogActions>}
       {children}
     </MuiDialog>
   );
