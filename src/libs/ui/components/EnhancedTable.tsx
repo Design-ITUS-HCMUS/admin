@@ -1,28 +1,29 @@
 'use client';
-import { useState, MouseEvent } from 'react';
-import { styled } from '@mui/material/styles';
-import { Theme, useMediaQuery } from '@mui/material';
-import {
-  Box,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Typography,
-  Pagination,
-} from '@mui/material';
+import { MouseEvent, useState } from 'react';
 import { visuallyHidden } from '@mui/utils';
-import { Order } from '@/utils';
-// need to resolve this issue to load from storybook
-// import { colors } from '@/libs/ui';
-// temporary solution: import from local, no alias link
-import colors from '../color';
 
-const TableFooter = styled('div')({
+import { Theme, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Pagination from '@mui/material/Pagination';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Typography from '@mui/material/Typography';
+
+import MoreIcon from '@mui/icons-material/MoreHorizRounded';
+
+import { colors } from '@/libs/ui';
+import { Order } from '@/utils';
+
+const StyledTableFooter = styled('div')({
   display: 'flex',
   flexDirection: 'row-reverse',
   justifyContent: 'space-between',
@@ -38,10 +39,10 @@ const StyledTableRow = styled(TableRow)({
 });
 
 export interface IHeadCell {
-  disablePadding?: boolean | false;
+  disablePadding?: boolean;
   id: string;
   label: string;
-  numeric?: boolean | false;
+  numeric?: boolean;
 }
 
 export interface IRowCell {
@@ -51,12 +52,13 @@ export interface IRowCell {
 interface EnhancedTableHeadProps {
   onRequestSort: (event: MouseEvent<unknown>, property: number) => void;
   order: Order;
-  orderBy: null | number;
+  orderByID: null | number;
   headCells: readonly IHeadCell[];
+  disableAction?: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableHeadProps) {
-  const { order, orderBy, onRequestSort, headCells } = props;
+  const { order, orderByID, onRequestSort, headCells, disableAction } = props;
   const createSortHandler = (property: number) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
@@ -74,14 +76,14 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy !== null ? (orderBy === index ? order : false) : false}
+            sortDirection={orderByID !== null ? (orderByID === index ? order : false) : false}
             sx={{ fontWeight: 'bold' }}>
             <TableSortLabel
-              active={orderBy === index}
-              direction={orderBy === index ? order : 'asc'}
+              active={orderByID === index}
+              direction={orderByID === index ? order : 'asc'}
               onClick={createSortHandler(index)}>
               {headCell.label}
-              {orderBy === index ? (
+              {orderByID === index ? (
                 <Box component='span' sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
@@ -89,46 +91,121 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             </TableSortLabel>
           </TableCell>
         ))}
+        {disableAction ? null : <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
       </TableRow>
     </TableHead>
   );
 }
 
-interface EnhancedTableProps {
-  headCells: readonly IHeadCell[];
-  rows: IRowCell[];
-  totalRows: number;
-  rowsPerPage?: number;
-  currentPage?: number;
-  onChangePage: (event: unknown, page: number) => void;
-  onSort: (event: unknown, order: Order, orderBy: number | null) => void;
+function TableMenu({
+  anchorEl,
+  onClose,
+  children,
+}: {
+  anchorEl?: HTMLElement | null;
+  onClose?: () => void;
+  children?: React.ReactNode;
+}) {
+  return (
+    <Menu
+      elevation={5}
+      id='detail-menu'
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      disableScrollLock
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      onClose={onClose}
+      MenuListProps={{
+        role: 'listbox',
+      }}>
+      {children}
+    </Menu>
+  );
 }
 
-export function EnhancedTable(props: EnhancedTableProps) {
-  const { headCells, rows, totalRows, rowsPerPage = 10, currentPage = 0, onChangePage, onSort } = props;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
+interface EnhancedTableProps {
+  /** The head cells of the table, each cell must have a unique <code>id</code> to handle sorting. <br/>
+   * <code>interface IHeadCell {
+   *   disablePadding?: boolean;<br/>
+   *   id: string;<br/>
+   *   label: string;<br/>
+   *   numeric?: boolean;<br/>
+   * }</code>
+   */
+  headCells: readonly IHeadCell[];
+  /** The data of the table, each row must have a unique <code>id</code> to handle action.
+   * Moreover, other keys must match the <code>id</code> of the head cell. Otherwise, the data will not be rendered.
+   */
+  rows: IRowCell[];
+  /** The total rows of the table support counting the total pages of table's pagination and show the total summary on the left side of table footer.*/
+  totalRows: number;
+  /** The number of rows per page support counting the total pages of table's pagination. */
+  rowsPerPage?: number;
+  /** Specify the current page of the table for the table pagination to highlight. */
+  currentPage?: number;
+  /** The callback function when the page is changed by the table pagination. The <code>page</code> will be passed by. */
+  onChangePage: (event: unknown, page: number) => void;
+  onSort: (event: unknown, order: Order, orderByID: number | null) => void;
+  /** Disable the more action column. */
+  disableAction?: boolean;
+  /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
+   * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
+   */
+  onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  /** The children of the table menu. */
+  children?: React.ReactNode;
+}
+
+export function EnhancedTable({
+  headCells,
+  rows,
+  totalRows,
+  rowsPerPage = 10,
+  currentPage = 0,
+  onChangePage,
+  onSort,
+  disableAction = false,
+  onAct = (_e, _id) => {},
+  children,
+}: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<null | number>(null);
+  const [orderByID, setOrderByID] = useState<null | number>(null);
   const [page, setPage] = useState(currentPage);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const dense = isMobile ? true : false;
   const align = headCells.map((cell) => (cell.numeric ? 'right' : 'left'));
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage - 1);
     onChangePage(event, newPage - 1);
   };
 
   const handleRequestSort = (event: MouseEvent<unknown>, property: number) => {
-    const isAsc = orderBy === property && order === 'asc';
+    const isAsc = orderByID === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    setOrderByID(property);
     onSort(event, isAsc ? 'desc' : 'asc', property);
   };
 
   const clearSort = (event: MouseEvent<unknown>) => {
     setOrder('asc');
-    setOrderBy(null);
+    setOrderByID(null);
     onSort(event, 'asc', null);
+  };
+
+  const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
+    setAnchorEl(event.currentTarget);
+    if (_id) onAct(event, _id);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -137,13 +214,13 @@ export function EnhancedTable(props: EnhancedTableProps) {
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        {orderBy !== null && (
+        {orderByID !== null ? (
           <Chip
             label={
               <Typography>
                 {'Sắp xếp theo '}
                 <Typography component='span' fontWeight='bold'>
-                  {headCells[orderBy].label}
+                  {headCells[orderByID].label}
                 </Typography>
               </Typography>
             }
@@ -151,46 +228,59 @@ export function EnhancedTable(props: EnhancedTableProps) {
             color='primary'
             variant='outlined'
           />
-        )}
+        ) : null}
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
-          <EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} headCells={headCells} />
+          <EnhancedTableHead
+            order={order}
+            orderByID={orderByID}
+            onRequestSort={handleRequestSort}
+            headCells={headCells}
+            disableAction={disableAction}
+          />
           <TableBody>
             {rows.map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <StyledTableRow hover tabIndex={-1} key={index} sx={{ cursor: 'pointer' }}>
-                  {Object.values(row).map((value, id) =>
-                    id == 0 ? (
+                  {/* Filter: just render the data match the head cell */}
+                  {headCells.map((head, id) => {
+                    return id == 0 ? (
                       <TableCell
                         key={`${headCells[id].id}-${index}`}
                         component='th'
-                        id={labelId}
+                        id={`row-${index}-${id}`}
                         scope='row'
                         padding='none'
                         align={align[id]}>
-                        {value}
+                        {row[head.id]}
                       </TableCell>
                     ) : (
                       <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
-                        {value}
+                        {row[head.id]}
                       </TableCell>
-                    )
+                    );
+                  })}
+                  {disableAction ? null : (
+                    <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
+                      <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
+                        <MoreIcon />
+                      </IconButton>
+                    </TableCell>
                   )}
                 </StyledTableRow>
               );
             })}
-            {emptyRows > 0 && (
+            {emptyRows > 0 ? (
               <StyledTableRow
                 style={{
                   height: (dense ? 33 : 53) * emptyRows,
                 }}>
                 <TableCell colSpan={6} />
               </StyledTableRow>
-            )}
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>
-      <TableFooter>
+      <StyledTableFooter>
         <Pagination
           variant='outlined'
           color='primary'
@@ -202,8 +292,13 @@ export function EnhancedTable(props: EnhancedTableProps) {
           showLastButton
           boundaryCount={0}
         />
-        {totalRows && <Typography>Tổng: {totalRows}</Typography>}
-      </TableFooter>
+        {Boolean(totalRows) ? <Typography>Tổng: {totalRows}</Typography> : null}
+      </StyledTableFooter>
+      {!disableAction && children ? (
+        <TableMenu anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
+          {children}
+        </TableMenu>
+      ) : null}
     </Box>
   );
 }

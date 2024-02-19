@@ -1,7 +1,9 @@
 import UserRepository from '@repositories/userRepository';
+import bcrypt from 'bcryptjs';
+
+import { User } from '@/interfaces/user';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import { User } from '@/interfaces/user';
 
 enum RoleID {
   ADMIN = 1,
@@ -17,7 +19,10 @@ class UserService {
   }
   async createUser(data: User) {
     try {
-      const { username, email } = data;
+      const { username, email, password } = data;
+      if (!username || !email || !password) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'Missed information');
+      }
       const existedUserName = await this.repository.getByEntity({ username });
       if (existedUserName) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Username existed');
@@ -26,6 +31,8 @@ class UserService {
       if (existedEmail) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Email existed');
       }
+
+      data.password = await bcrypt.hash(password, 10);
       const user = await this.repository.add(data);
       if (!user) {
         throw new Error('create user failed');
@@ -98,10 +105,13 @@ class UserService {
 
   async deleteUsers(ids: number[]) {
     try {
-      const deletedUsers = await this.repository.delete(ids);
-      if (!deletedUsers) {
-        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'No user found');
+      if (ids === null || ids === undefined) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'Missing value');
       }
+      if (ids.length === 0) {
+        return new BaseResponse(STATUS_CODE.BAD_REQUEST, false, 'List ids can not be empty');
+      }
+      const deletedUsers = await this.repository.delete(ids);
       return new BaseResponse(STATUS_CODE.OK, true, 'Users deleted', deletedUsers);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

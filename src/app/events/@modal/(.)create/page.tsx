@@ -1,16 +1,22 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import { CreateEventForm } from '../../_components';
 
-export default function Page() {
+export default function EventCreateModal() {
   const router = useRouter();
 
   function handleClose() {
     router.back();
   }
 
-  function handleSubmit(formData: FormData) {}
+  function handleSubmit(_formData: FormData) {}
 
   return (
     <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth PaperProps={{ variant: 'section' }}>

@@ -1,17 +1,33 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Badge, Button, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { EnhancedTable, IHeadCell, Search, ProgressTag } from '@/libs/ui/components';
-import { FilterListRounded, IosShareRounded } from '@mui/icons-material';
-import colors from '@/libs/ui/color';
-import data from './events.json';
-import { Order, stableSort, getComparator } from '@/utils';
+import { orderBy } from 'lodash';
 
-const ButtonGroup = styled('div')({
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
+import IosShareRounded from '@mui/icons-material/IosShareRounded';
+
+// import eventsData from '@/libs/mock/events.json';
+import { EnhancedTable, IHeadCell, ProgressTag, Search } from '@/libs/ui';
+import { Order } from '@/utils';
+
+const Section = styled('section')(({ theme }) => ({
+  padding: theme.spacing(3, 3, 3),
+  minHeight: 'calc(100vh - 64px - 48px)',
+  marginTop: '64px',
+}));
+
+const StyledPaper = styled(Paper)({
   display: 'flex',
+  flexDirection: 'column',
   gap: '1rem',
+  minHeight: 'inherit',
 });
 
 const ToolBar = styled('div')({
@@ -32,16 +48,12 @@ const headCells: readonly IHeadCell[] = [
     label: 'Khóa',
   },
   {
-    id: 'type',
+    id: 'tag',
     label: 'Phân loại',
   },
   {
-    id: 'startTime',
+    id: 'start',
     label: 'Ngày bắt đầu',
-  },
-  {
-    id: 'leader',
-    label: 'Trưởng BTC',
   },
   {
     id: 'status',
@@ -49,86 +61,96 @@ const headCells: readonly IHeadCell[] = [
   },
 ];
 
-interface ITableCell {
-  name: JSX.Element;
-  key: string;
-  type: string;
-  startTime: string;
-  leader: string;
-  status: JSX.Element;
+interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Element | string> {
+  _id: string;
 }
 
-export default function Events({ modal }: { modal: React.ReactNode }) {
+export default function EventsPage({ modal }: { modal: React.ReactNode }) {
+  let eventsData: ITableCell[] = [];
   const rowsPerPage = 10;
-  const [rows, setRows] = useState(data);
+  const [rows, setRows] = useState<ITableCell[]>(eventsData);
   const [page, setPage] = useState(0);
-  const handleChangePage = (_event: unknown, tablePage: number) => {
-    setPage(tablePage);
+  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/event/all-events')
+      .then((res) => res.json())
+      .then((res) => res.data)
+      .then((res) => {
+        eventsData = res.map((item: any) => ({
+          _id: item.id,
+          name: item.name,
+          key: item.key,
+          tag: item.tag.join(', '),
+          start: new Date(item.start).toLocaleDateString(),
+          status: item.status,
+        }));
+        setRows(eventsData);
+      });
+  }, []);
+
+  const handleSort = (_event: unknown, order: Order, orderByID: number | null) => {
+    if (orderByID !== null) {
+      const key = headCells[orderByID].id;
+      if (!key) return;
+      const sortRows = orderBy(eventsData, key, order) as ITableCell[];
+      setRows(sortRows);
+    } else setRows(eventsData);
   };
 
-  const handleSort = (_event: unknown, order: Order, orderBy: number | null) => {
-    if (orderBy !== null) {
-      setRows(stableSort(data, getComparator(order, headCells[orderBy].id)));
-    } else setRows(data);
-  };
-
-  const refactorData = (data: any): ITableCell[] => {
-    return data.map((item: any) => {
-      return {
-        name: (
-          <Typography sx={{ color: colors.blue[500] }}>
-            <Link href={`/events/${item.key}`}>{item.name}</Link>
-          </Typography>
-        ),
-        key: item.key,
-        type: item.type,
-        startTime: item.startTime,
-        leader: (
-          <Typography sx={{ color: colors.blue[500] }}>
-            <Link href={`/events`}>{item.leader}</Link>
-          </Typography>
-        ),
-        status: <ProgressTag variant={item.status == 'Đang diễn ra' ? 'done' : 'todo'} label={item.status} />,
-      };
-    }) as ITableCell[];
+  const refactorData = (eventsData: ITableCell[]): ITableCell[] => {
+    const newData = eventsData.map((item: ITableCell) => ({
+      ...item,
+      name: (
+        <Typography sx={{ color: 'primary.main' }} component={Link} href={`/events/${item._id}`}>
+          {item.name}
+        </Typography>
+      ),
+      status: (
+        <ProgressTag variant={item.status ? 'done' : 'todo'} label={item.status ? 'Đang diễn ra' : 'Đã kết thúc'} />
+      ),
+    })) as ITableCell[];
+    return newData;
   };
 
   const visibleRows: ITableCell[] = useMemo(() => {
-    const tableRows = refactorData(rows.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-    return tableRows;
+    return refactorData(rows.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
   }, [rows, page]);
 
   return (
-    <>
-      {modal}
-      <Typography variant='h6' fontWeight='600'>
-        Sự kiện
-      </Typography>
-      <ToolBar>
-        <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-        <ButtonGroup>
-          <Link href='/events/create'>
-            <Button variant='contained' color='info'>
+    <Section>
+      {/* Include shared UI here e.g. a header or sidebar */}
+      <StyledPaper variant='section'>
+        {modal}
+        <Typography variant='h6' fontWeight='600'>
+          Sự kiện
+        </Typography>
+        <ToolBar>
+          <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
+          <Stack direction='row' spacing={2}>
+            <Button color='info' component={Link} href='/events/create'>
               Tạo sự kiện
             </Button>
-          </Link>
-          <Badge badgeContent={11} max={9} color='primary'>
-            <Button variant='contained' color='info' startIcon={<FilterListRounded />}>
-              Bộ lọc
+            <Button color='info' startIcon={<IosShareRounded />}>
+              Xuất file
             </Button>
-          </Badge>
-          <Button variant='contained' color='info' startIcon={<IosShareRounded />}>
-            Xuất file
-          </Button>
-        </ButtonGroup>
-      </ToolBar>
-      <EnhancedTable
-        headCells={headCells}
-        rows={visibleRows}
-        totalRows={data.length}
-        onChangePage={handleChangePage}
-        onSort={handleSort}
-      />
-    </>
+          </Stack>
+        </ToolBar>
+        <EnhancedTable
+          headCells={headCells}
+          rows={visibleRows}
+          totalRows={eventsData.length}
+          onChangePage={(_e, page) => setPage(page)}
+          onSort={handleSort}
+          onAct={(_e, id) => setSelectedRow(id)}>
+          <MenuItem component={Link} href={`/events/${selectedRow}`}>
+            Xem chi tiết
+          </MenuItem>
+          <MenuItem>Dừng sự kiện</MenuItem>
+          <Divider />
+          <MenuItem sx={{ color: 'error.main' }}>Xóa sự kiện</MenuItem>
+        </EnhancedTable>
+      </StyledPaper>
+    </Section>
   );
 }

@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { Select, SelectProps, SvgIconProps } from '@mui/material';
-import { ExpandMoreRounded } from '@mui/icons-material';
+
+import Select, { SelectProps } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
+import { SvgIconProps } from '@mui/material/SvgIcon';
+
+import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 
 const StyledSelect = styled(Select)({
   '& .MuiSelect-standard': {
@@ -28,16 +31,10 @@ function ExpandMoreIcon(props: SvgIconProps) {
 }
 ExpandMoreIcon.muiName = 'SvgIcon';
 
-export interface DropdownTextProps extends SelectProps {
-  variant?: 'standard';
-  displayEmpty?: true;
-}
-function DropdownText(props: DropdownTextProps) {
+export function DropdownText(props: SelectProps) {
   return (
     <StyledSelect IconComponent={ExpandMoreIcon} variant='standard' displayEmpty {...props}>
       {props.children}
     </StyledSelect>
   );
 }
-
-export { DropdownText, ExpandMoreIcon };

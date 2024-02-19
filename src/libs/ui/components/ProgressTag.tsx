@@ -1,13 +1,7 @@
-import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ProgressIcon, colors } from '@/libs/ui';
+import Typography from '@mui/material/Typography';
 
-type Progress = 'done' | 'inprogress' | 'todo';
-interface ProgressProps {
-  variant?: Progress;
-  label: string;
-  collapsed?: boolean;
-}
+import { colors, ProgressIcon } from '@/libs/ui';
 
 const ProgressItem = styled('div')({
   display: 'inline-flex',
@@ -15,30 +9,32 @@ const ProgressItem = styled('div')({
   alignItems: 'center',
   gap: '.25rem',
 });
-export function ProgressTag({ variant = 'done', label, collapsed }: ProgressProps) {
+
+type Progress = 'done' | 'inprogress' | 'todo';
+
+interface ProgressProps {
+  /** The variant of the progress tag, controls the related color. */
+  variant?: Progress;
+  /** The label of the progress tag. */
+  label: string;
+  /** The collapsed state of the progress tag. */
+  collapsed?: boolean;
+}
+
+export function ProgressTag({ variant = 'done', label, collapsed = false }: ProgressProps) {
   return (
     <>
       {collapsed ? (
         <ProgressIcon
           sx={{
-            color:
-              variant == 'done'
-                ? colors.notification.success
-                : variant == 'inprogress'
-                  ? colors.blue[500]
-                  : colors.neutral[300],
+            color: variant == 'done' ? 'success.light' : variant == 'inprogress' ? 'primary' : colors.neutral[300],
           }}
         />
       ) : (
         <ProgressItem>
           <ProgressIcon
             sx={{
-              color:
-                variant == 'done'
-                  ? colors.notification.success
-                  : variant == 'inprogress'
-                    ? colors.blue[500]
-                    : colors.neutral[300],
+              color: variant == 'done' ? 'success.light' : variant == 'inprogress' ? 'primary' : colors.neutral[300],
             }}
             fontSize='small'
           />

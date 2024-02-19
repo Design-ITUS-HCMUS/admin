@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import UserService from '@/services/userService';
 
 /**
@@ -26,6 +27,8 @@ import UserService from '@/services/userService';
  *     responses:
  *       200:
  *         description: Delete action finish successfully
+ *       400:
+ *          description: Missing value or list ids can not be empty.
  *       500:
  *         description: Error message.
  */

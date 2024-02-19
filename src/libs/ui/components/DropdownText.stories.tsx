@@ -1,31 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import * as React from 'react';
-import { DropdownText, ExpandMoreIcon, DropdownTextProps } from './DropdownText';
-import { MenuItem } from '@mui/material';
 
-const meta: Meta<typeof DropdownText> = {
+import type { Meta, StoryObj } from '@storybook/react';
+import MenuItem from '@mui/material/MenuItem';
+import { SelectProps } from '@mui/material/Select';
+
+import { DropdownText } from './DropdownText';
+
+const meta: Meta<SelectProps> = {
+  title: 'Global/Input/Dropdown',
   component: DropdownText,
-};
-
-export default meta;
-type Story = StoryObj;
-
-// /*
-//  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
-//  * See https://storybook.js.org/docs/api/csf
-//  * to learn how to use render functions.
-//  */
-
-const renderValue = (value: any) => {
-  if (!value) return 'Chọn 1 option';
-  return value;
-};
-
-export const Default: Story = {
-  name: 'DropdownText',
+  parameters: {
+    layout: 'centered',
+  },
   args: {
-    IconComponent: ExpandMoreIcon,
     children: [
       <MenuItem value={1} key={1}>
         One
@@ -40,7 +27,14 @@ export const Default: Story = {
     sx: {
       width: '300px',
     },
-    renderValue: renderValue,
+    renderValue: (value: any) => {
+      if (!value) return 'Chọn 1 option';
+      return value;
+    },
   },
-  render: (args: DropdownTextProps) => <DropdownText {...args}></DropdownText>,
+};
+
+export default meta;
+export const DefaultText: StoryObj = {
+  name: 'Text',
 };

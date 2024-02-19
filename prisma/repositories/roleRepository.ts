@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+
+import { prisma } from '../client';
 
 export default class RoleRepository {
   private model: Prisma.RoleDelegate<DefaultArgs>;
@@ -27,7 +28,7 @@ export default class RoleRepository {
       });
       return newRole;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -35,14 +36,20 @@ export default class RoleRepository {
   async getAll() {
     try {
       const allRoles = await this.model.findMany({
-        include: {
-          users: true,
-          AccountEvent: true,
+        select: {
+          id: true,
+          name: true,
+          _count: {
+            select: {
+              users: true,
+              AccountEvent: true,
+            },
+          },
         },
       });
       return allRoles;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -58,7 +65,7 @@ export default class RoleRepository {
       });
       return role;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -95,7 +102,7 @@ export default class RoleRepository {
       });
       return updatedRole;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }
@@ -119,7 +126,7 @@ export default class RoleRepository {
       });
       return deletedRole;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

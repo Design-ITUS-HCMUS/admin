@@ -1,7 +1,15 @@
 'use client';
-import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { Be_Vietnam_Pro } from 'next/font/google';
+
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+
 import colors from './color';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+
+const beVietnamPro = Be_Vietnam_Pro({
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['vietnamese'],
+});
 
 let theme = createTheme({
   palette: {
@@ -37,7 +45,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Be Vietnam Pro, sans-serif',
+    fontFamily: beVietnamPro.style.fontFamily + ',Be Vietnam Pro, sans-serif',
     linkPrimary: {
       color: colors.blue[500],
       textDecoration: 'underline',
@@ -56,16 +64,19 @@ let theme = createTheme({
         color: colors.blue[700],
       },
     },
-  } as TypographyOptions,
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          color: 'inherit',
+          textDecoration: 'none',
+        },
+      },
+    },
     MuiTypography: {
       defaultProps: {
         variant: 'body2',
-      },
-      styleOverrides: {
-        root: {
-          fontFamily: '"Be Vietnam Pro", san-serif',
-        },
       },
     },
     MuiButton: {
@@ -93,14 +104,6 @@ let theme = createTheme({
           style: {
             '&:hover': {
               backgroundColor: colors.blue[50],
-            },
-          },
-        },
-        {
-          props: { color: 'info' },
-          style: {
-            '&:hover': {
-              backgroundColor: alpha(colors.neutral[100], 0.5),
             },
           },
         },
@@ -153,6 +156,15 @@ let theme = createTheme({
         },
       },
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '& .MuiFormLabel-asterisk': {
+            color: 'red',
+          },
+        },
+      },
+    },
     MuiAlert: {
       variants: [
         {
@@ -171,6 +183,8 @@ let theme = createTheme({
           props: { severity: 'error' },
           style: {
             color: colors.notification.error,
+            justifyContent: 'space-between',
+            alignItems: 'center',
           },
         },
       ],
@@ -179,6 +193,17 @@ let theme = createTheme({
           padding: '.5rem 1rem',
           border: '1px solid',
           borderRadius: '.5rem',
+          '& .MuiAlert-message': {
+            padding: 0,
+          },
+          '& .MuiAlert-action': {
+            padding: 0,
+            margin: 0,
+            height: '19px',
+            width: '19px',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
         },
       },
     },

@@ -3,47 +3,71 @@ import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
 import { CheckoutRequestType, WebhookType } from '@/interfaces/payOS';
 import { getUnixTimeStamp, calcTotalPrice } from '@/utils/payOSUtils';
-import { payOS } from '@payOS';
+import PayOS from '@payos/node';
+import authService from './authService';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 class PayOSPaymentService {
   private repository: PaymentRepository;
 
+  private static readonly PAYOS_CLIENT_ID = String(process.env.PAYOS_CLIENT_ID);
+  private static readonly PAYOS_API_KEY = String(process.env.PAYOS_API_KEY);
+  private static readonly PAYOS_CHECKSUM_KEY = String(process.env.PAYOS_CHECKSUM_KEY);
+  private static readonly PAYOS_CANCEL_URL = String(process.env.PAYOS_CANCEL_URL);
+  private static readonly PAYOS_RETURN_URL = String(process.env.PAYOS_RETURN_URL);
+  private static readonly PAYOS_WEBHOOK_URL = String(process.env.PAYOS_WEBHOOK_URL);
+
+  private static readonly payOS = new PayOS(
+    PayOSPaymentService.PAYOS_CLIENT_ID,
+    PayOSPaymentService.PAYOS_API_KEY,
+    PayOSPaymentService.PAYOS_CHECKSUM_KEY
+  );
+
   constructor() {
     this.repository = new PaymentRepository();
+    PayOSPaymentService.payOS.confirmWebhook(PayOSPaymentService.PAYOS_WEBHOOK_URL).catch((err: any) => {
+      console.error(err);
+    });
   }
 
-  async createPaymentLink(body: any) {
-    // Add maximum execution time later
+  async createPaymentLink(body: any, token: RequestCookie | undefined) {
     try {
+      // Get data from cookie
+      const payload = await authService.getDataFromToken(token);
+      if (!payload) return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+
+      // Get data from payload
+      const buyerID = Number(payload.id);
+
       // Get data from body
-      const buyerID = body.buyerID;
       const description = body.description;
       const items = body.items;
 
-      const description = 'OUTRSPACE';
-      const cancelUrl = 'http://localhost:3000/payment/result';
-      const returnUrl = 'http://localhost:3000/payment/result';
-      const items = [
-        {
-          name: 'Phí tham gia Outrspace',
-          quantity: 1,
-          price: 10000,
-        },
-      ];
+      if (
+        buyerID === null || // buyerID can be 0
+        !description ||
+        !items
+      )
+        throw new Error('Invalid request');
+
+      const cancelUrl = PayOSPaymentService.PAYOS_CANCEL_URL;
+      const returnUrl = PayOSPaymentService.PAYOS_RETURN_URL;
 
       // Calculate total price
       const amount = calcTotalPrice(items);
 
       // Get first available orderCode
-      let orderCode = (await this.repository.getCurrentID()) + 1;
+      const currentID = await this.repository.getCurrentID();
+      if (currentID === null) throw new Error('Get currentID failed'); // currentID can be 0
+      let orderCode = currentID + 1;
 
       // Start timer
       const startTime = Date.now();
 
       while (true) {
         // If time out (1 min) -> Return error
-        // if (Date.now() - startTime > 60000)
-        //   return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
+        if (Date.now() - startTime > 60000)
+          return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Time out');
 
         // Create payOS checkout object
         const payOSCheckout: CheckoutRequestType = {
@@ -57,7 +81,7 @@ class PayOSPaymentService {
         };
 
         try {
-          const response = await payOS.createPaymentLink(payOSCheckout);
+          const response = await PayOSPaymentService.payOS.createPaymentLink(payOSCheckout);
 
           // If that payment is available -> Create new entry in database
           try {
@@ -88,27 +112,18 @@ class PayOSPaymentService {
     }
   }
 
-  async confirmWebhook(body: any) {
-    try {
-      const url = body.url;
-      await payOS.confirmWebhook(url);
-      return new BaseResponse(STATUS_CODE.OK, true, 'Webhook confirmed successfully: ' + url);
-    } catch (err: any) {
-      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
-    }
-  }
-
   async handleWebhookEvent(body: any) {
     try {
       // If default webhook -> Pass it
       if (body.signature === '2ddc42638e5efe5dc562c49d538598227c75db17deaa618b1a8d408517c881fd')
         return new BaseResponse(STATUS_CODE.OK, true, 'Default webhook data by PayOS');
 
-      const webhookData: WebhookType = payOS.verifyPaymentWebhookData(body);
+      const webhookData: WebhookType = PayOSPaymentService.payOS.verifyPaymentWebhookData(body);
 
       // If wekhookData is verified -> Check if is updated or not
       // If updated -> Pass it
       const payment = await this.repository.getByEntity({ id: webhookData.orderCode });
+      if (!payment) throw new Error('Get payment failed');
       if (payment.paymentStatus === 1)
         return new BaseResponse(STATUS_CODE.OK, true, 'Webhook event has been handled before');
 
