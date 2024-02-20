@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -7,17 +8,6 @@ import { styled } from '@mui/material/styles';
 
 import { colors } from '@/libs/ui';
 
-export function Section({ children, title, id }: { children: React.ReactNode; title: string; id?: string }) {
-  return (
-    <div {...(!!id && { id: id, 'data-section': '' })}>
-      <Typography variant='h6' fontWeight='bold' mb={2}>
-        {title}
-      </Typography>
-      {children}
-    </div>
-  );
-}
-
 export const WhiteCard = styled(Paper)(({ theme }) => ({
   borderRadius: '0.75rem',
   display: 'flex',
@@ -25,13 +15,30 @@ export const WhiteCard = styled(Paper)(({ theme }) => ({
   rowGap: theme.spacing(3),
   padding: theme.spacing(3),
   marginBottom: theme.spacing(2),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+    rowGap: theme.spacing(2),
+  },
 }));
 
-export const TableHeadCellStyled = styled(TableCell)(() => ({
+export function Section({ children, title, id }: { children: React.ReactNode; title: string; id?: string }) {
+  return (
+    <WhiteCard>
+      <section {...(!!id && { id: id })}>
+        <Typography variant='h6' fontWeight='bold' mb={2}>
+          {title}
+        </Typography>
+        {children}
+      </section>
+    </WhiteCard>
+  );
+}
+
+export const TableHeadCellStyled = styled(TableCell)({
   fontWeight: 600,
-}));
+});
 
-export const TableRowStyled = styled(TableRow)(() => ({
+export const TableRowStyled = styled(TableRow)({
   '&:hover': {
     backgroundColor: 'rgba(0, 0, 0, 0.04)',
   },
@@ -39,4 +46,4 @@ export const TableRowStyled = styled(TableRow)(() => ({
   '&:last-child td, &:last-child th': {
     borderColor: colors.neutral[300],
   },
-}));
+});

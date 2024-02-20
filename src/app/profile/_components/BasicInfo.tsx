@@ -1,146 +1,177 @@
+'use client';
 import React from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/en-gb';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { InputLayout } from '@/libs/ui';
 
-import { EditBasicInfoSchema } from '@/libs/validations';
+import { InputLayout, LoadingButton } from '@/libs/ui';
+import { ProfileBasicInfoSchema } from '@/libs/validations';
+import { User } from '@/libs/models';
+import { useToast } from '@/hooks';
+import { useUsers } from '@/libs/query';
 
-import { IBasicInfo } from '../page';
+export function BasicInfo({ id }: { id: string }) {
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const { getUserByID, updateInfo } = useUsers();
+  const { data, refetch } = useQuery({
+    queryKey: ['users', id],
+    queryFn: () => getUserByID(id),
+  });
 
-export function BasicInfo({
-  initialValues,
-  refreshHandler,
-}: {
-  initialValues: IBasicInfo | undefined;
-  refreshHandler: () => void;
-}) {
-  function handleSubmit(values: any) {
-    // Remove unnecessary fields
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, userID, email, ...filtered } = values;
+  const { mutate, status } = useMutation({
+    mutationFn: (data: User) => updateInfo(id, data),
+    mutationKey: ['users', 'updateInfo', id],
+    onSuccess: (data) => {
+      queryClient.setQueryData(['users', id], data);
+      // Invalidate all users queries start with key 'users'
+      // Expected result: all queries must refetch, both active and inactive state.
+      queryClient.invalidateQueries({ queryKey: ['users'], refetchType: 'all' });
+    },
+  });
 
-    const body = {
-      id: userID,
-      data: {
-        profile: filtered,
+  React.useEffect(() => {
+    refetch();
+  }, [id, refetch]);
+
+  function handleSubmit(values: User) {
+    mutate(values, {
+      onSuccess: () => {
+        toast.setAlert({
+          alert: 'success',
+          message: {
+            title: 'Cập nhật thông tin thành công',
+            description: 'Vui lòng chờ trong giây lát để hệ thống cập nhật giao diện.',
+          },
+        });
       },
-    };
-
-    fetch('/api/user/information-update', { method: 'PUT', body: JSON.stringify(body) })
-      .then((response) => response.json())
-      .then(({ success, message }) => {
-        if (success) {
-          alert('Cập nhật thông tin thành công');
-          refreshHandler();
-        } else throw new Error(message);
-      })
-      .catch((error) => {
-        alert('Cập nhật thông tin thất bại ' + error.message);
-        console.error(error);
-      });
+      onError: () => {
+        toast.setAlert({
+          alert: 'error',
+          message: {
+            title: 'Cập nhật thông tin thất bại',
+            description: 'Vui lòng thử lại sau ít phút nữa, nếu có trục trặc vui lòng liên hệ đội ngũ phát triển.',
+          },
+        });
+      },
+      onSettled: () => {
+        toast.setOpen();
+      },
+    });
   }
 
   return (
-    !!initialValues && (
-      <Formik initialValues={initialValues} validationSchema={EditBasicInfoSchema} onSubmit={handleSubmit}>
-        {({ initialValues, errors, touched, isValid, isSubmitting, setFieldValue }) => (
-          <Form id='basic-info'>
-            <Field type='hidden' name='userID' />
-            <Grid container columnSpacing={2} rowSpacing={1}>
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Họ và tên'
-                  formik
-                  inputProps={{
-                    name: 'fullName',
-                  }}></InputLayout>
-              </Grid>
-              <Grid item xs={6}>
-                <Stack spacing={1} useFlexGap>
-                  <InputLayout label='Ngày sinh' helperText={errors.dob}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
-                      <DateTimePicker
-                        name='dob'
-                        defaultValue={initialValues.dob}
-                        onChange={(value) => setFieldValue('dob', value)}
-                        disableFuture
-                        views={['year', 'month', 'day']}
-                      />
-                    </LocalizationProvider>
-                  </InputLayout>
-                </Stack>
-              </Grid>
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Email'
-                  formik
-                  inputProps={{
-                    name: 'email',
-                    disabled: true,
-                  }}></InputLayout>
-              </Grid>
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Số điện thoại'
-                  formik
-                  helperText={errors.phone}
-                  inputProps={{
-                    name: 'phone',
-                    error: Boolean(errors.phone),
-                  }}></InputLayout>
-              </Grid>
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Facebook'
-                  formik
-                  helperText={errors.facebook}
-                  inputProps={{
-                    name: 'facebook',
-                    error: Boolean(errors.facebook),
-                  }}></InputLayout>
-              </Grid>
-              <Grid item xs={6} />
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Trường'
-                  formik
-                  containerProps={{ width: '50%' }}
-                  inputProps={{
-                    name: 'school',
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6} />
-              <Grid item xs={6}>
-                <InputLayout
-                  label='Mã số sinh viên'
-                  formik
-                  containerProps={{ width: '50%' }}
-                  inputProps={{
-                    name: 'studentID',
-                  }}
-                />
-              </Grid>
+    <Formik initialValues={data} validationSchema={ProfileBasicInfoSchema} onSubmit={handleSubmit}>
+      {({ errors, touched, resetForm, isValid }) => (
+        <Form id='basic-info'>
+          <Field type='hidden' name='id' />
+          <Grid container columnSpacing={2} rowSpacing={1}>
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Họ và tên'
+                formik
+                inputProps={{
+                  name: 'profile.fullName',
+                  error: touched.profile?.fullName && Boolean(errors.profile?.fullName),
+                }}
+                helperText={touched.profile?.fullName ? errors.profile?.fullName : ''}
+              />
             </Grid>
-            <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
-              Hủy
-            </Button>
-            <Button
-              type='submit'
-              sx={{ width: 'fit-content', mt: 2 }}
-              disabled={!isValid || isSubmitting || Object.keys(touched).length === 0}>
-              Lưu
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    )
+            <Grid item xs={12} md={6}>
+              <InputLayout label='Ngày sinh' helperText={errors.profile?.dob}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Field name='profile.dob'>
+                    {({ field, form }: { field: any; form: any }) => {
+                      const handleDateChange = (date: any) => {
+                        form.setFieldValue(field.name, date);
+                      };
+                      return (
+                        <DateTimePicker
+                          {...field}
+                          value={field.value ? dayjs(field.value) : null}
+                          views={['year', 'month', 'day']}
+                          format='DD/MM/YYYY'
+                          onChange={handleDateChange}
+                          error={Boolean(touched.profile?.dob && errors.profile?.dob)}
+                        />
+                      );
+                    }}
+                  </Field>
+                </LocalizationProvider>
+              </InputLayout>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Email'
+                formik
+                inputProps={{
+                  name: 'email',
+                  disabled: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Số điện thoại'
+                formik
+                helperText={errors.profile?.phone}
+                inputProps={{
+                  name: 'profile.phone',
+                  error: Boolean(touched.profile?.phone && errors.profile?.phone),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Facebook'
+                formik
+                helperText={errors.profile?.facebook}
+                inputProps={{
+                  name: 'profile.facebook',
+                  error: Boolean(touched.profile?.facebook && errors.profile?.facebook),
+                }}></InputLayout>
+            </Grid>
+            <Grid item xs={0} md={6} />
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Trường'
+                formik
+                containerProps={{ width: '50%' }}
+                inputProps={{
+                  name: 'profile.school',
+                }}
+              />
+            </Grid>
+            <Grid item xs={0} md={6} />
+            <Grid item xs={12} md={6}>
+              <InputLayout
+                label='Mã số sinh viên'
+                formik
+                containerProps={{ width: '50%' }}
+                inputProps={{
+                  name: 'profile.studentID',
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }} onClick={() => resetForm()}>
+            Hủy
+          </Button>
+          <LoadingButton
+            type='submit'
+            sx={{ width: 'fit-content', mt: 2 }}
+            loading={status === 'pending'}
+            disabled={!isValid || Object.keys(touched).length === 0}>
+            Lưu
+          </LoadingButton>
+        </Form>
+      )}
+    </Formik>
   );
 }

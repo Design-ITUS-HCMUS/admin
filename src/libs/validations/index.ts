@@ -1,4 +1,3 @@
-export * from './account';
+export * from './users';
 export * from './auth';
 export * from './schema';
-export * from './profile';

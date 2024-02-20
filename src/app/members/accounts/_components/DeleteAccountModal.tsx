@@ -1,5 +1,5 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 
 import { LoadingButton } from '@/libs/ui';
-import { useUsers } from '@/libs/queryClient/users';
+import { useUsers } from '@/libs/query';
 import { useToast } from '@/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -24,24 +24,30 @@ export function DeleteAccountModal({
   userID: number;
   handleClose: () => void;
 } & DialogProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const { deleteUser } = useUsers();
   const toast = useToast();
+  const { deleteUser } = useUsers();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate, status } = useMutation({
     mutationFn: (id: number) => deleteUser(id),
     mutationKey: ['users', 'deleteUser', userID],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'], refetchType: 'all' });
-      queryClient.removeQueries({ queryKey: ['users', userID.toString()], exact: true });
+    },
+    onError: (error) => {
+      toast.setAlert({
+        alert: 'error',
+        message: {
+          title: 'Xóa thành viên thất bại',
+          description: error.message,
+        },
+      });
     },
   });
 
   const handleDelete = () => {
     mutate(userID, {
       onSuccess: () => {
-        if (pathname !== '/members/accounts') router.push('/members/accounts');
         toast.setAlert({
           alert: 'success',
           message: {
@@ -50,24 +56,20 @@ export function DeleteAccountModal({
           },
         });
         handleClose();
-      },
-      onError: (error) => {
-        toast.setAlert({
-          alert: 'error',
-          message: {
-            title: 'Xóa thành viên thất bại',
-            description: error.message,
-          },
-        });
+        router.prefetch('/members/accounts');
+        router.replace('/members/accounts');
       },
       onSettled: () => {
         toast.setOpen();
       },
     });
   };
+
   return (
     <Dialog {...props} onClick={handleClose} maxWidth='xs' PaperProps={{ variant: 'section' }}>
-      <DialogTitle>Xóa thành viên</DialogTitle>
+      <DialogTitle fontWeight='bold' variant='h6'>
+        Xóa thành viên
+      </DialogTitle>
       <DialogContent>
         <Typography>
           Thao tác này không thể khôi phục được, bạn có chắc chắn muốn xóa thành viên{' '}

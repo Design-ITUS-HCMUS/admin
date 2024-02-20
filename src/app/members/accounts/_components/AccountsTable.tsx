@@ -13,7 +13,7 @@ import IosShareRounded from '@mui/icons-material/IosShareRounded';
 import { EnhancedTable, IHeadCell, Search, colors, SupportTable } from '@/libs/ui';
 import { shortenFBLink, tableHandler, Query } from '@/utils';
 import { useToast } from '@/hooks';
-import { useUsers } from '@/libs/queryClient/users';
+import { useUsers } from '@/libs/query';
 import { CreateAccountModal, DeleteAccountModal } from '.';
 import { useQuery } from '@tanstack/react-query';
 
@@ -43,7 +43,7 @@ export interface ITableCell extends Record<(typeof headCells)[number]['key'], JS
 
 export default function AccountsTable() {
   const { getMembers } = useUsers();
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['users', 'members'],
     queryFn: getMembers,
   });
@@ -66,6 +66,10 @@ export default function AccountsTable() {
     });
     setOpen();
   }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const refactorData = (data: ITableCell[]): ITableCell[] => {
     const newData = data.map((item: ITableCell) => ({

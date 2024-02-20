@@ -14,7 +14,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 
 import { InputLayout } from '@/libs/ui';
-import { MemberInfoValues, MemberInfoSchema } from '@/libs/validations';
+import { MemberInfoSchema } from '@/libs/validations';
+import { User } from '@/libs/models';
 import { ROLE, POSITION, DEPARTMENT } from '@/utils';
 import { SelectDepartment, SelectPosition, SelectRole } from './CustomSelect';
 
@@ -26,7 +27,7 @@ interface CreateAccountModalProps {
 export function CreateAccountModal({ handleClose, ...props }: CreateAccountModalProps & DialogProps) {
   const gen = new Date();
 
-  const initialValues: MemberInfoValues = {
+  const initialValues: User = {
     username: '',
     email: '',
     roleID: ROLE.MEMBER,
@@ -43,7 +44,7 @@ export function CreateAccountModal({ handleClose, ...props }: CreateAccountModal
     },
   };
 
-  const handleSubmit = (values: MemberInfoValues) => {
+  const handleSubmit = (values: User) => {
     /* eslint-disable */
     console.log('Submit create-member', values);
   };

@@ -1,12 +1,12 @@
 import Typography from '@mui/material/Typography';
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
-import { useUsers } from '@/libs/queryClient/users';
+import { useUsers } from '@/libs/query';
 import { AccountsTable } from './_components';
 
 export default async function AccountsPage() {
-  const queryClient = new QueryClient();
   const { getMembers } = useUsers();
+  const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['users', 'members'],
     queryFn: getMembers,

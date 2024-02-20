@@ -1,6 +1,6 @@
 import { pick } from 'lodash';
 
-import { MemberInfoValues } from '../validations';
+import { User } from '@/libs/models';
 const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getMembers = async () => {
@@ -25,7 +25,7 @@ const getUserByID = async (id: string) => {
   return data;
 };
 
-const updateInfo = async (id: string, data: MemberInfoValues) => {
+const updateInfo = async (id: string, data: User) => {
   const request = {
     id,
     data: {
@@ -67,11 +67,11 @@ const deleteUser = async (id: number) => {
   if (!success || data.count === 0) throw new Error(message);
 };
 
-export const useUsers = () => {
+export default function useUsers() {
   return {
     getMembers,
     getUserByID,
     updateInfo,
     deleteUser,
   };
-};
+}

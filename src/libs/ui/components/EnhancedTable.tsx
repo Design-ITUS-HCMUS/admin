@@ -269,7 +269,7 @@ export function EnhancedTable({
             })}
             {emptyRows > 0 ? (
               <StyledTableRow
-                style={{
+                sx={{
                   height: (dense ? 33 : 53) * emptyRows,
                 }}>
                 <TableCell colSpan={6} />
