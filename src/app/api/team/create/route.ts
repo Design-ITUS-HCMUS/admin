@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import TeamService from '@/services/teamService';
+import authService from '@/services/authService';
 
 /**
  * @swagger
@@ -16,9 +17,6 @@ import TeamService from '@/services/teamService';
  *      schema:
  *       type: object
  *       properties:
- *        userID:
- *         type: integer
- *         example: 3
  *        eventID:
  *         type: integer
  *         example: 2
@@ -45,13 +43,19 @@ import TeamService from '@/services/teamService';
  */
 
 export async function POST(req: NextRequest) {
-  const { userID, data, eventID } = await req.json();
+  const { data, eventID } = await req.json();
   const token = req.cookies.get('token');
-  const team = await TeamService.createTeam(data, token);
+
+  // Only registered contestants can create a team
+  const payload = await authService.getDataFromToken(token);
+  if (!payload) return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+  if (payload.role !== 3) return NextResponse.json({ message: 'Permission denied' }, { status: 403 });
+
+  const team = await TeamService.createTeam(data);
   if (!team.data) {
     return NextResponse.json(team.responseBody(), { status: team.status });
   }
-  const res = await TeamService.joinTeam(userID, team.data.id, eventID);
+  const res = await TeamService.joinTeam(Number(payload.id), team.data.id, eventID);
   if (!res.data) {
     await TeamService.deleteTeam(team.data.id);
   }

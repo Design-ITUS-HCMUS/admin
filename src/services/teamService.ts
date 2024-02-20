@@ -6,8 +6,6 @@ import bcrypt from 'bcryptjs';
 import { Team } from '@/interfaces/team';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import authService from './authService';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 class TeamService {
   private repository: TeamRepository;
@@ -20,11 +18,8 @@ class TeamService {
     this.accountEventRepository = new AccountEventRepository();
   }
 
-  async createTeam(data: Team, token: RequestCookie | undefined) {
+  async createTeam(data: Team) {
     try {
-      const payload = await authService.getDataFromToken(token);
-      if (!payload) return new BaseResponse(STATUS_CODE.UNAUTHORIZED, false, 'Invalid token');
-      if (payload.role !== 3) return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
       const { name } = data;
       const existedTeam = await this.repository.getByEntity({ name });
       if (existedTeam) {
@@ -73,7 +68,10 @@ class TeamService {
       if (!event) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
-      const teams = await this.repository.getManyByEntity({ accountEvents: { some: { eventID: event.id } } });
+      const teams = await this.repository.getManyByEntity(
+        { accountEvents: { some: { eventID: event.id } } },
+        { id: true, name: true, category: true, paymentStatus: true }
+      );
       if (!teams) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Teams not found');
       }

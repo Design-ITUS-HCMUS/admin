@@ -44,10 +44,11 @@ export default class TeamRepository {
     }
   }
 
-  async getManyByEntity(entity: Prisma.TeamWhereInput) {
+  async getManyByEntity(entity: Prisma.TeamWhereInput, select: Prisma.TeamSelect = {}) {
     try {
       const teams = await this.model.findMany({
         where: entity,
+        select,
       });
       return teams;
     } catch (error) {

@@ -16,8 +16,8 @@ import getParams from '@/utils/getParams';
  *       description: key of event
  *       required: true
  *       schema:
- *        type: integer
- *       example: 2
+ *        type: string
+ *       example: OS8
  *    responses:
  *      200:
  *        description: Get all teams successfully.
