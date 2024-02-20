@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Field, Formik } from 'formik';
@@ -14,33 +14,21 @@ import Typography from '@mui/material/Typography';
 
 // Internal
 import { CardLayout, Countdown, StyledForm } from '@/app/(auth)/_components';
+import { useAuthContext } from '@/app/(auth)/_context/store';
 
 // Libs
 import { colors, InputLayout, PasswordInput } from '@/libs/ui';
 import { ForgetPasswordSchema } from '@/libs/validations';
 
-async function getUsernameOrEmail(): Promise<string | undefined> {
-  try {
-    const response = await fetch('/api/user?id=3');
-    const { success, data, message } = await response.json();
-
-    if (!success) {
-      throw new Error(message);
-    }
-
-    return data.username;
-  } catch (error) {
-    console.error('Error fetching user information:', error);
-    return undefined;
-  }
-}
-
 function ChangePasswordPage() {
   const router = useRouter();
+  const { signIn, setSignIn } = useAuthContext();
   const [success, setSuccess] = useState(false);
   const [isLoadingToSignIn, setIsLoadingToSignIn] = useState(false);
   const [isLoadingChange, setIsLoadingChange] = useState(false);
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState('');
+  const usernameOrEmail = signIn.username;
 
   const backSignInPage = () => {
     router.replace('/sign-in');
@@ -52,9 +40,6 @@ function ChangePasswordPage() {
 
   async function handleSubmit(values: { password: string; repassword: string }) {
     try {
-      const usernameOrEmail = await getUsernameOrEmail();
-      if (!usernameOrEmail) return;
-
       setIsLoadingChange(true);
 
       const response = await fetch('/api/auth/resetPassword', {
@@ -85,6 +70,15 @@ function ChangePasswordPage() {
     }
   }
 
+  useEffect(() => {
+    if (!signIn.isForgettingPassword) {
+      router.replace('/sign-in/forget-password');
+    } else {
+      setIsLoadingPage(false);
+      setSignIn({ ...signIn, isForgettingPassword: false });
+    }
+  }, []);
+
   return success ? (
     <CardLayout header='Thay đổi mật khẩu thành công'>
       <Typography variant='body1'>
@@ -99,6 +93,8 @@ function ChangePasswordPage() {
         )}
       </Button>
     </CardLayout>
+  ) : isLoadingPage ? (
+    <CircularProgress sx={{ color: 'primary.main', alignSelf: 'center' }} />
   ) : (
     <CardLayout header='Thay đổi mật khẩu'>
       {alertMessage !== '' && (

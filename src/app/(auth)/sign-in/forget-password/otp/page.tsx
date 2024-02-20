@@ -104,7 +104,8 @@ function OTPPage() {
 
       switch (response.status) {
         case 200:
-          router.replace('/'); // Sign in success
+          setSignIn({ ...signIn, isForgettingPassword: true });
+          router.replace('/sign-in/change-password');
           break;
         case 403:
           setAlertMessage('Mã OTP không hợp lệ, vui lòng thử lại');
