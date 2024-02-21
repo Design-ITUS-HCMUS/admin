@@ -2,7 +2,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
 import CommonService from '@/services/commonService';
 import UserRepository from '@repositories/userRepository';
-import { AccountInformation, User, SendOTP, ResetPassword } from '@/interfaces/user';
+import { AccountInformation, User, SendOTP } from '@/interfaces/user';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE, TYPE_OTP, templateRegister, templateResetPassword } from '@/utils';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
