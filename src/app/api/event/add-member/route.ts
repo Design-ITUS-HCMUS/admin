@@ -16,7 +16,7 @@ import accountEventService from '@/services/accountEventService';
  *      schema:
  *       type: object
  *       properties:
- *        userId:
+ *        userID:
  *         type: integer
  *         example: 3
  *        eventID:

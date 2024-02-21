@@ -1,7 +1,7 @@
 import AccountEventRepository from '@repositories/accountEventRepository';
 import EventRepository from '@repositories/eventRepository';
 
-import { AccountEvent } from '@/interfaces/accountEvent';
+import { AccountEvent, AccountEventID } from '@/interfaces/accountEvent';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
 
@@ -16,7 +16,7 @@ class AccountEventService {
   async createAccountEvent(data: AccountEvent) {
     try {
       const { userID, eventID } = data;
-      const existedAccountEvent = await this.repository.getByEntity({ userID, eventID });
+      const existedAccountEvent = await this.repository.getByEntity({ id: { userID, eventID } });
       if (existedAccountEvent) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'AccountEvent already exists');
       }
@@ -27,16 +27,17 @@ class AccountEventService {
     }
   }
 
-  async getContestantsByEventID(eventID: number) {
+  async getContestantsByEventKey(key: string) {
     try {
-      const event = await this.eventRepository.getByEntity({ id: eventID });
+      const event = await this.eventRepository.getByEntity({ key });
       if (!event) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
       const accountEvents = await this.repository.getManyByEntity(
-        { eventID, user: { roleID: 3 } },
+        { eventID: event.id, user: { roleID: 3 } },
         {
-          id: true,
+          eventID: true,
+          userID: true,
           team: {
             select: {
               name: true,
@@ -62,16 +63,17 @@ class AccountEventService {
     }
   }
 
-  async getOrganizersByEventID(eventID: number) {
+  async getOrganizersByEventKey(key: string) {
     try {
-      const event = await this.eventRepository.getByEntity({ id: eventID });
+      const event = await this.eventRepository.getByEntity({ key });
       if (!event) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
       const accountEvents = await this.repository.getManyByEntity(
-        { eventID, user: { roleID: { not: 3 } } },
+        { eventID: event.id, user: { roleID: { not: 3 } } },
         {
-          id: true,
+          eventID: true,
+          userID: true,
           role: {
             select: {
               name: true,
@@ -98,7 +100,7 @@ class AccountEventService {
     }
   }
 
-  async deleteAccountEvent(id: number) {
+  async deleteAccountEvent(id: AccountEventID) {
     try {
       const accountEvent = await this.repository.getByEntity({ id });
       if (!accountEvent) {

@@ -5,30 +5,30 @@ import getParams from '@/utils/getParams';
 
 /**
  * @swagger
- * /api/event/{id}/all-organizers:
+ * /api/event/{key}/all-contestants:
  *  get:
  *    tags:
  *      - Event
- *    description: Get all organizers by event ID.
+ *    description: Get all contestants by event key.
  *    parameters:
  *     - in: path
- *       name: id
- *       description: ID of event
+ *       name: key
+ *       description: key of event
  *       required: true
  *       schema:
- *        type: integer
- *       example: 2
+ *        type: string
+ *       example: OS8
  *    responses:
  *      200:
- *        description: Get all organizers successfully.
+ *        description: Get all contestants successfully.
  *      404:
- *        description: Event or organizers not found.
+ *        description: Event not found.
  *      500:
  *        description: Error message.
  */
 
 export async function GET(req: NextRequest) {
-  const id = getParams(req, -2);
-  const res = await AccountEventService.getOrganizersByEventID(Number(id));
+  const key = getParams(req, -2);
+  const res = await AccountEventService.getContestantsByEventKey(key as string);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
