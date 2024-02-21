@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-// import { replaceFile } from '@/libs/fileHelper';
+import { replaceFile } from '@/libs/fileHelper';
 
 const Admin = () => {
   const [files, setFiles] = React.useState<File[]>([]);
@@ -26,7 +26,7 @@ const Admin = () => {
       filename.push(file.name);
     });
 
-    // const response = await replaceFile([], files);
+    await replaceFile([], files);
   };
 
   return (

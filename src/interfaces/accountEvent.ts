@@ -1,7 +1,12 @@
 export interface AccountEvent {
-  eventID: any;
-  roleID: any;
-  teamID?: any;
+  eventID: number;
+  roleID: number;
+  teamID?: number;
   department?: string;
-  userID?: any;
+  userID: number;
+}
+
+export interface AccountEventID {
+  eventID: number;
+  userID: number;
 }

@@ -1,12 +1,13 @@
 model AccountEvent {
-  id         Int     @id @default(autoincrement())
   eventID    Int
   roleID     Int?
-  userID     Int?
+  userID     Int
   department String?
   teamID     Int?
   event      Event   @relation(fields: [eventID], references: [id])
   role       Role?   @relation(fields: [roleID], references: [id])
-  team       Team?   @relation(fields: [teamID], references: [id])
-  user       User?   @relation(fields: [userID], references: [id], map: "AccountEvent_userId_fkey")
+  team       Team?   @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  user       User    @relation(fields: [userID], references: [id], onDelete: Cascade)
+
+  @@id(name: "id", [eventID, userID])
 }

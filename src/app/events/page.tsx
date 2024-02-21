@@ -78,7 +78,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
       .then((res) => res.data)
       .then((res) => {
         eventsData = res.map((item: any) => ({
-          _id: item.id,
+          _id: item.key,
           name: item.name,
           key: item.key,
           tag: item.tag.join(', '),
