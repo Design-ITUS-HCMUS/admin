@@ -37,9 +37,9 @@ class EventService {
     }
   }
 
-  async getEventById(id: number) {
+  async getEventByKey(key: string) {
     try {
-      const event = await this.repository.getByEntity({ id });
+      const event = await this.repository.getByEntity({ key });
       if (!event) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
@@ -49,13 +49,13 @@ class EventService {
     }
   }
 
-  async updateEvent(id: number, data: Event) {
+  async updateEvent(data: Event, id?: number) {
     try {
-      const event = await this.repository.getByEntity({ id });
+      const event = await this.repository.getByEntity({ id, key: data.key });
       if (!event) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
       }
-      const updatedEvent = await this.repository.update(id, data);
+      const updatedEvent = await this.repository.update(event.id, data);
       return new BaseResponse(STATUS_CODE.OK, true, 'Event updated successfully', updatedEvent);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);

@@ -13,27 +13,27 @@ export const MemberInfoSchema = yup.object().shape({
   roleID: yup.number().required('Vai trò không được để trống').oneOf([ROLE.ADMIN, ROLE.MEMBER], 'Vai trò không hợp lệ'),
   profile: yup.object().shape({
     fullName: yup.string().required('Họ tên không được để trống'),
-    phone: Schema.phone.nullable(),
-    studentID: yup.string().nullable(),
-    gen: yup.number().nullable(),
-    school: yup.string().nullable(),
-    dob: Schema.dob.nullable(),
+    phone: Schema.phone.notRequired(),
+    studentID: yup.string().notRequired(),
+    gen: yup.number().notRequired(),
+    school: yup.string().notRequired(),
+    dob: Schema.dob.notRequired(),
     departments: yup
       .array()
       .default([])
       .of(yup.string().oneOf(Object.values(DEPARTMENT), 'Ban hoạt động không hợp lệ'))
-      .nullable(),
+      .notRequired(),
     position: yup.string().required('Vị trí không được để trống').oneOf(Object.values(POSITION), 'Vị trí không hợp lệ'),
-    facebook: Schema.facebook.nullable(),
+    facebook: Schema.facebook.notRequired(),
   }),
 });
 
 export const ProfileBasicInfoSchema = yup.object().shape({
   profile: yup.object().shape({
     fullName: yup.string().required('Họ tên không được để trống'),
-    phone: Schema.phone.nullable(),
+    phone: Schema.phone.notRequired(),
     facebook: Schema.facebook,
-    dob: Schema.dob.nullable(),
+    dob: Schema.dob.notRequired(),
   }),
 });
 

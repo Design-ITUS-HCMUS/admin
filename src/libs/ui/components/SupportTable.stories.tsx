@@ -28,7 +28,7 @@ const headCells: readonly IHeadCell[] = [
 ];
 
 const meta: Meta<typeof SupportTable> = {
-  title: 'Global/Table',
+  title: 'Global/Table/Support Table',
   component: SupportTable,
   parameters: {
     layout: 'centered',

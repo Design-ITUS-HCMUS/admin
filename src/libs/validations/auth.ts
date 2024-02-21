@@ -29,7 +29,7 @@ export const OTPSchema = yup.object().shape({
 });
 
 export const ForgetPasswordSchema = yup.object().shape({
-  currentPassword: yup.string().required('Vui lòng nhập mật khẩu cũ'),
+  // currentPassword: yup.string().required('Vui lòng nhập mật khẩu cũ'),
   password: Schema.password,
   repassword: yup
     .string()

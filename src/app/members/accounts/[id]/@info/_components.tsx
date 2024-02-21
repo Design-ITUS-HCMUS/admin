@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -22,7 +23,7 @@ import { User } from '@/libs/models';
 import { useUsers } from '@/libs/query';
 import { MemberInfoSchema } from '@/libs/validations';
 import { useToast } from '@/hooks';
-import { SelectDepartment, SelectPosition, SelectRole, DeleteAccountModal } from '../../_components';
+import { SelectDepartment, SelectPosition, DeleteAccountModal } from '../../_components';
 
 export default function InfoSection({ id }: { id: string }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,7 +50,7 @@ export default function InfoSection({ id }: { id: string }) {
 
   useEffect(() => {
     refetch();
-  }, [id, refetch]);
+  }, [refetch]);
 
   if (!Boolean(data)) throw new Error('Không tìm thấy người dùng này.');
 
@@ -184,30 +185,28 @@ export default function InfoSection({ id }: { id: string }) {
                 formik
               />
               <InputLayout label='Ngày sinh' direction='row' ratio={0.25} helperText={errors.profile?.dob}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Field name='profile.dob'>
-                    {({ field, form }: { field: any; form: any }) => {
-                      const handleDateChange = (date: any) => {
-                        form.setFieldValue(field.name, date);
-                      };
-                      return (
+                <Field name='profile.dob'>
+                  {({ field, form }: { field: any; form: any }) => {
+                    const handleDateChange = (date: any) => {
+                      form.setFieldValue(field.name, date);
+                    };
+                    return (
+                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
                         <DateTimePicker
                           {...field}
                           value={field.value ? dayjs(field.value) : null}
                           readOnly={readOnly}
                           views={['year', 'month', 'day']}
-                          format='DD/MM/YYYY'
                           onChange={handleDateChange}
                           error={Boolean(touched.profile?.dob && errors.profile?.dob)}
                         />
-                      );
-                    }}
-                  </Field>
-                </LocalizationProvider>
+                      </LocalizationProvider>
+                    );
+                  }}
+                </Field>
               </InputLayout>
               <SelectDepartment ratio={0.25} readOnly={readOnly} />
               <SelectPosition ratio={0.25} readOnly={readOnly} />
-              <SelectRole ratio={0.25} readOnly={readOnly} />
               <InputLayout
                 label='Facebook'
                 direction='row'

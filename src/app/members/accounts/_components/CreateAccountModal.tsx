@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import * as React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import 'dayjs/locale/en-gb';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
@@ -24,10 +25,12 @@ interface CreateAccountModalProps {
   handleClose: () => void;
 }
 
+type NewUser = Omit<User, 'id'>;
+
 export function CreateAccountModal({ handleClose, ...props }: CreateAccountModalProps & DialogProps) {
   const gen = new Date();
 
-  const initialValues: User = {
+  const initialValues: NewUser = {
     username: '',
     email: '',
     roleID: ROLE.MEMBER,
@@ -44,7 +47,7 @@ export function CreateAccountModal({ handleClose, ...props }: CreateAccountModal
     },
   };
 
-  const handleSubmit = (values: User) => {
+  const handleSubmit = (values: NewUser) => {
     /* eslint-disable */
     console.log('Submit create-member', values);
   };
@@ -118,24 +121,23 @@ export function CreateAccountModal({ handleClose, ...props }: CreateAccountModal
                   formik
                 />
                 <InputLayout label='Ngày sinh' direction='row' ratio={0.5}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Field name='profile.dob'>
-                      {({ field, form }: { field: any; form: any }) => {
-                        const handleDateChange = (date: any) => {
-                          form.setFieldValue(field.name, date);
-                        };
-                        return (
+                  <Field name='profile.dob'>
+                    {({ field, form }: { field: any; form: any }) => {
+                      const handleDateChange = (date: any) => {
+                        form.setFieldValue(field.name, date);
+                      };
+                      return (
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
                           <DateTimePicker
                             {...field}
                             value={field.value ? dayjs(field.value) : null}
                             views={['year', 'month', 'day']}
-                            format='DD/MM/YYYY'
                             onChange={handleDateChange}
                           />
-                        );
-                      }}
-                    </Field>
-                  </LocalizationProvider>
+                        </LocalizationProvider>
+                      );
+                    }}
+                  </Field>
                 </InputLayout>
                 <SelectDepartment />
                 <SelectRole />

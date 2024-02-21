@@ -181,7 +181,7 @@ export function EnhancedTable({
 
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  const dense = isMobile ? true : false;
+  const dense = isMobile;
   const align = headCells.map((cell) => (cell.numeric ? 'right' : 'left'));
 
   const handleChangePage = (event: unknown, newPage: number) => {

@@ -30,7 +30,7 @@ interface SupportTableProps {
 
 export function SupportTable({ headCells, state = 'loading', number = 0 }: SupportTableProps) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  const dense = isMobile ? true : false;
+  const dense = isMobile;
 
   return (
     <TableContainer sx={{ width: '100%' }}>

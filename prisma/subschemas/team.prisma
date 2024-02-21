@@ -4,6 +4,7 @@ model Team {
   status        Boolean        @default(true)
   category      String?
   paymentStatus Boolean        @default(false) // false = Unverified, true = Verified
+  inviteCode    String?        @unique
   paymentProof  Int?
   submission    Int[]
   paymentID     Int?           @unique

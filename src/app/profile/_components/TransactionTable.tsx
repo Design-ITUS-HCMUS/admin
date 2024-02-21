@@ -14,7 +14,7 @@ import { TableRowStyled, TableHeadCellStyled } from '.';
 
 export function TransactionTable({ transactions }: { transactions: any[] }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  const dense = isMobile ? true : false;
+  const dense = isMobile;
 
   return (
     <Stack useFlexGap gap={2}>

@@ -1,34 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import EventService from '@/services/eventService';
+import AccountEventService from '@/services/accountEventService';
 import getParams from '@/utils/getParams';
 
 /**
  * @swagger
- * /api/event/{id}:
+ * /api/event/{key}/all-organizers:
  *  get:
  *    tags:
  *      - Event
- *    description: Get event by ID.
+ *    description: Get all organizers by event key.
  *    parameters:
  *     - in: path
- *       name: id
- *       description: ID of event
+ *       name: key
+ *       description: key of event
  *       required: true
  *       schema:
  *        type: integer
- *       example: 1
+ *       example: 2
  *    responses:
  *      200:
- *        description: Get event successfully.
+ *        description: Get all organizers successfully.
  *      404:
- *        description: Event not found.
+ *        description: Event or organizers not found.
  *      500:
  *        description: Error message.
  */
 
 export async function GET(req: NextRequest) {
-  const id = getParams(req);
-  const res = await EventService.getEventById(Number(id));
+  const key = getParams(req, -2);
+  const res = await AccountEventService.getOrganizersByEventKey(key as string);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

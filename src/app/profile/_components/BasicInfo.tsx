@@ -3,6 +3,7 @@ import React from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -38,7 +39,7 @@ export function BasicInfo({ id }: { id: string }) {
 
   React.useEffect(() => {
     refetch();
-  }, [id, refetch]);
+  }, [refetch]);
 
   function handleSubmit(values: User) {
     mutate(values, {
@@ -68,7 +69,7 @@ export function BasicInfo({ id }: { id: string }) {
 
   return (
     <Formik initialValues={data} validationSchema={ProfileBasicInfoSchema} onSubmit={handleSubmit}>
-      {({ errors, touched, resetForm, isValid }) => (
+      {({ errors, touched, isValid }) => (
         <Form id='basic-info'>
           <Field type='hidden' name='id' />
           <Grid container columnSpacing={2} rowSpacing={1}>
@@ -85,25 +86,24 @@ export function BasicInfo({ id }: { id: string }) {
             </Grid>
             <Grid item xs={12} md={6}>
               <InputLayout label='Ngày sinh' helperText={errors.profile?.dob}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Field name='profile.dob'>
-                    {({ field, form }: { field: any; form: any }) => {
-                      const handleDateChange = (date: any) => {
-                        form.setFieldValue(field.name, date);
-                      };
-                      return (
+                <Field name='profile.dob'>
+                  {({ field, form }: { field: any; form: any }) => {
+                    const handleDateChange = (date: any) => {
+                      form.setFieldValue(field.name, date);
+                    };
+                    return (
+                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
                         <DateTimePicker
                           {...field}
                           value={field.value ? dayjs(field.value) : null}
                           views={['year', 'month', 'day']}
-                          format='DD/MM/YYYY'
                           onChange={handleDateChange}
                           error={Boolean(touched.profile?.dob && errors.profile?.dob)}
                         />
-                      );
-                    }}
-                  </Field>
-                </LocalizationProvider>
+                      </LocalizationProvider>
+                    );
+                  }}
+                </Field>
               </InputLayout>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -160,7 +160,7 @@ export function BasicInfo({ id }: { id: string }) {
               />
             </Grid>
           </Grid>
-          <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }} onClick={() => resetForm()}>
+          <Button variant='text' type='reset' sx={{ width: 'fit-content', mt: 2, mr: 2 }}>
             Hủy
           </Button>
           <LoadingButton

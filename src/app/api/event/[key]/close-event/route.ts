@@ -5,19 +5,19 @@ import getParams from '@/utils/getParams';
 
 /**
  * @swagger
- * /api/event/{id}/close-event:
+ * /api/event/{key}/close-event:
  *  patch:
  *    tags:
  *      - Event
- *    description: Close event by ID.
+ *    description: Close event by key.
  *    parameters:
  *     - in: path
- *       name: id
- *       description: ID of event
+ *       name: key
+ *       description: key of event
  *       required: true
  *       schema:
- *        type: integer
- *       example: 1
+ *        type: string
+ *       example: OS8
  *    responses:
  *      200:
  *        description: Close event successfully.
@@ -28,7 +28,7 @@ import getParams from '@/utils/getParams';
  */
 
 export async function PATCH(req: NextRequest) {
-  const id = getParams(req, -2);
-  const res = await EventService.updateEvent(Number(id), { end: new Date(), status: false } as any);
+  const key = getParams(req, -2);
+  const res = await EventService.updateEvent({ key: key as string, end: new Date(), status: false } as any);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

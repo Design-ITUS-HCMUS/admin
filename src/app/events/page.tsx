@@ -99,7 +99,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
     const newData = eventsData.map((item: ITableCell) => ({
       ...item,
       name: (
-        <Typography sx={{ color: 'primary.main' }} component={Link} href={`/events/${item._id}`}>
+        <Typography sx={{ color: 'primary.main' }} component={Link} href={`/events/${item.key}`}>
           {item.name}
         </Typography>
       ),

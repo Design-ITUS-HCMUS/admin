@@ -25,9 +25,7 @@ function SlideTransition(props: SlideProps) {
   return <Slide {...props} direction='right' />;
 }
 
-const Progress = styled('div', {
-  shouldForwardProp: (prop) => prop === 'color',
-})(({ color, theme }) => ({
+const Progress = styled('div')(({ color, theme }) => ({
   position: 'absolute',
   bottom: 0,
   left: 0,
@@ -54,11 +52,7 @@ const Progress = styled('div', {
 export function Message() {
   const toast = useToast();
   return (
-    <Snackbar
-      open={toast.open}
-      autoHideDuration={5000}
-      onClose={() => toast.setClose()}
-      TransitionComponent={SlideTransition}>
+    <Snackbar open={toast.open} autoHideDuration={5000} onClose={toast.setClose} TransitionComponent={SlideTransition}>
       <Paper
         sx={{
           boxShadow:

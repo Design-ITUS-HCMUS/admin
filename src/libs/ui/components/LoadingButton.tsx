@@ -1,4 +1,3 @@
-'use client';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button, { ButtonProps } from '@mui/material/Button';
 
