@@ -6,8 +6,8 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import PeopleAltRounded from '@mui/icons-material/PeopleAltRounded';
-import SettingsRounded from '@mui/icons-material/SettingsRounded';
+import PeopleIcon from '@mui/icons-material/PeopleAltRounded';
+import PermissionIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 
 import { ISideBarItem, SideBar } from '@/libs/ui';
 
@@ -34,12 +34,12 @@ const SideBarItems: ISideBarItem[] = [
   {
     key: 'accounts',
     label: 'Tài khoản',
-    icon: <PeopleAltRounded />,
+    icon: <PeopleIcon />,
   },
   {
     key: 'permissions',
     label: 'Quyền truy cập',
-    icon: <SettingsRounded />,
+    icon: <PermissionIcon />,
   },
 ];
 

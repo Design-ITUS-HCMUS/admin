@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { orderBy } from 'lodash';
 
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -13,9 +12,9 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-// import eventsData from '@/libs/mock/events.json';
-import { EnhancedTable, IHeadCell, ProgressTag, Search } from '@/libs/ui';
-import { Order } from '@/utils';
+import { EnhancedTable, IHeadCell, ProgressTag, Search, SupportTable } from '@/libs/ui';
+import { tableHandler, Query } from '@/utils';
+import { useToast } from '@/hooks';
 
 const Section = styled('section')(({ theme }) => ({
   padding: theme.spacing(3, 3, 3),
@@ -30,79 +29,77 @@ const StyledPaper = styled(Paper)({
   minHeight: 'inherit',
 });
 
-const ToolBar = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-});
-
 const headCells: readonly IHeadCell[] = [
   {
-    id: 'name',
+    key: 'name',
     numeric: false,
     disablePadding: true,
     label: 'Tên sự kiện',
   },
   {
-    id: 'key',
+    key: 'key',
     label: 'Khóa',
   },
   {
-    id: 'tag',
+    key: 'tag',
     label: 'Phân loại',
   },
   {
-    id: 'start',
+    key: 'start',
     label: 'Ngày bắt đầu',
   },
   {
-    id: 'status',
+    key: 'status',
     label: 'Tình trạng',
   },
 ];
 
-interface ITableCell extends Record<(typeof headCells)[number]['id'], JSX.Element | string> {
+interface ITableCell extends Record<(typeof headCells)[number]['key'], JSX.Element | string> {
   _id: string;
 }
 
 export default function EventsPage({ modal }: { modal: React.ReactNode }) {
-  let eventsData: ITableCell[] = [];
-  const rowsPerPage = 10;
-  const [rows, setRows] = useState<ITableCell[]>(eventsData);
-  const [page, setPage] = useState(0);
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [eventsData, setEventsData] = useState<ITableCell[]>([]);
+  const [selectedRow, setSelectedRow] = useState<ITableCell | null>(null);
+  const [query, setQuery] = useState<Query>({ page: 1, limit: 10 });
+  const toast = useToast();
 
   useEffect(() => {
     fetch('/api/event/all-events')
       .then((res) => res.json())
-      .then((res) => res.data)
       .then((res) => {
-        eventsData = res.map((item: any) => ({
-          _id: item.key,
+        const { success, data } = res;
+        if (!success) throw new Error('Có lỗi khi tải dữ liệu');
+        toast.setAlert({ alert: 'success', message: { title: 'Tải dữ liệu thành công' } });
+        const loadData = data.map((item: any) => ({
+          _id: item.id,
           name: item.name,
           key: item.key,
           tag: item.tag.join(', '),
           start: new Date(item.start).toLocaleDateString(),
           status: item.status,
         }));
-        setRows(eventsData);
+        setEventsData(loadData);
+      })
+      .catch((err) => {
+        toast.setAlert({
+          alert: 'error',
+          message: { title: 'Tải dữ liệu không thành công', description: err.message },
+        });
+        console.error(err);
+      })
+      .finally(() => {
+        toast.setOpen();
+        setLoading(false);
       });
   }, []);
-
-  const handleSort = (_event: unknown, order: Order, orderByID: number | null) => {
-    if (orderByID !== null) {
-      const key = headCells[orderByID].id;
-      if (!key) return;
-      const sortRows = orderBy(eventsData, key, order) as ITableCell[];
-      setRows(sortRows);
-    } else setRows(eventsData);
-  };
 
   const refactorData = (eventsData: ITableCell[]): ITableCell[] => {
     const newData = eventsData.map((item: ITableCell) => ({
       ...item,
       name: (
-        <Typography sx={{ color: 'primary.main' }} component={Link} href={`/events/${item._id}`}>
+        <Typography sx={{ color: 'primary.main' }} component={Link} href={`/events/${item.key}`}>
           {item.name}
         </Typography>
       ),
@@ -114,8 +111,8 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
   };
 
   const visibleRows: ITableCell[] = useMemo(() => {
-    return refactorData(rows.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-  }, [rows, page]);
+    return refactorData(tableHandler({ query, data: eventsData }));
+  }, [eventsData, query]);
 
   return (
     <Section>
@@ -125,7 +122,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
         <Typography variant='h6' fontWeight='600'>
           Sự kiện
         </Typography>
-        <ToolBar>
+        <Stack direction='row' justifyContent='space-between' alignItems='center'>
           <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
           <Stack direction='row' spacing={2}>
             <Button color='info' component={Link} href='/events/create'>
@@ -135,21 +132,27 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
               Xuất file
             </Button>
           </Stack>
-        </ToolBar>
-        <EnhancedTable
-          headCells={headCells}
-          rows={visibleRows}
-          totalRows={eventsData.length}
-          onChangePage={(_e, page) => setPage(page)}
-          onSort={handleSort}
-          onAct={(_e, id) => setSelectedRow(id)}>
-          <MenuItem component={Link} href={`/events/${selectedRow}`}>
-            Xem chi tiết
-          </MenuItem>
-          <MenuItem>Dừng sự kiện</MenuItem>
-          <Divider />
-          <MenuItem sx={{ color: 'error.main' }}>Xóa sự kiện</MenuItem>
-        </EnhancedTable>
+        </Stack>
+        {loading ? (
+          <SupportTable headCells={headCells} />
+        ) : eventsData.length === 0 ? (
+          <SupportTable headCells={headCells} state='empty' />
+        ) : (
+          <EnhancedTable
+            headCells={headCells}
+            rows={visibleRows}
+            totalRows={eventsData.length}
+            onChangePage={(_e, page) => setQuery({ ...query, page })}
+            onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
+            onAct={(_e, row) => setSelectedRow(row as ITableCell)}>
+            <MenuItem component={Link} href={`/events/${selectedRow?._id}`}>
+              Xem chi tiết
+            </MenuItem>
+            <MenuItem>Dừng sự kiện</MenuItem>
+            <Divider sx={{ my: 1 }} />
+            <MenuItem sx={{ color: 'error.main' }}>Xóa sự kiện</MenuItem>
+          </EnhancedTable>
+        )}
       </StyledPaper>
     </Section>
   );

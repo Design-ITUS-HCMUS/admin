@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { abort } from 'process';
 
 export async function uploadFile(files: File[], permission: number = 0) {
   // Default size per part (8MB/part)

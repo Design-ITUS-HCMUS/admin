@@ -9,21 +9,21 @@ import { EnhancedTable, IHeadCell } from './EnhancedTable';
 
 const headCells: readonly IHeadCell[] = [
   {
-    id: 'name',
+    key: 'name',
     numeric: false,
     disablePadding: true,
     label: 'Tên sự kiện',
   },
   {
-    id: 'key',
+    key: 'key',
     label: 'Khóa',
   },
   {
-    id: 'leader',
+    key: 'leader',
     label: 'Trưởng BTC',
   },
   {
-    id: 'status',
+    key: 'status',
     label: 'Tình trạng',
   },
 ];
@@ -134,7 +134,7 @@ const refactorData = (data: any): ITableCell[] => {
 };
 
 const meta: Meta<typeof EnhancedTable> = {
-  title: 'Global/Enhanced Table',
+  title: 'Global/Table',
   component: EnhancedTable,
   args: {
     headCells: headCells,

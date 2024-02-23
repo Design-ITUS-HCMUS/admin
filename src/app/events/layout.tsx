@@ -1,6 +1,5 @@
 'use client';
-
-import Navbar from '@/libs/ui/components/Navbar';
+import { Navbar } from '@/libs/ui';
 
 export default function EventLayout({
   modal,

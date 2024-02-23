@@ -1,3 +1,4 @@
+'use client';
 import React, { forwardRef } from 'react';
 import { Field } from 'formik';
 
@@ -60,11 +61,11 @@ export const InputLayout = forwardRef(
     ref: React.Ref<HTMLInputElement>
   ) => {
     const calRatio = Math.max(0, Math.min(1, ratio));
-    let labelWidth = 'inherit';
-    let fieldsetWidth = 'inherit';
+    let labelWidth = '100%';
+    let fieldsetWidth = '100%';
     if (direction === 'row') {
-      labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : 'inherit';
-      fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : 'inherit';
+      labelWidth = calRatio ? `${Math.floor(100.0 * calRatio)}%` : '100%';
+      fieldsetWidth = 1 - calRatio ? `${Math.floor(100.0 * (1 - calRatio))}%` : '100%';
     }
 
     return (

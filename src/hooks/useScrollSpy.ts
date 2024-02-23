@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState, useRef } from 'react';
 
 /**
@@ -31,7 +32,7 @@ export function useScrollSpy(
     );
 
     // Get custom attribute data-section from all sections
-    const sections = document.querySelectorAll('[data-section]');
+    const sections = document.querySelectorAll('section');
 
     sections.forEach((section) => {
       observer.current?.observe(section);

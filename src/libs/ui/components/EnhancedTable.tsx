@@ -1,6 +1,5 @@
 'use client';
 import { MouseEvent, useState } from 'react';
-import { visuallyHidden } from '@mui/utils';
 
 import { Theme, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -40,7 +39,7 @@ const StyledTableRow = styled(TableRow)({
 
 export interface IHeadCell {
   disablePadding?: boolean;
-  id: string;
+  key: string;
   label: string;
   numeric?: boolean;
 }
@@ -50,18 +49,15 @@ export interface IRowCell {
 }
 
 interface EnhancedTableHeadProps {
-  onRequestSort: (event: MouseEvent<unknown>, property: number) => void;
+  onRequestSort: (event: MouseEvent<unknown>, property: string) => void;
   order: Order;
-  orderByID: null | number;
+  orderByKey: null | string;
   headCells: readonly IHeadCell[];
   disableAction?: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableHeadProps) {
-  const { order, orderByID, onRequestSort, headCells, disableAction } = props;
-  const createSortHandler = (property: number) => (event: MouseEvent<unknown>) => {
-    onRequestSort(event, property);
-  };
+  const { order, orderByKey, onRequestSort, headCells, disableAction } = props;
 
   return (
     <TableHead>
@@ -71,26 +67,24 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
             borderColor: colors.neutral[300],
           },
         }}>
-        {headCells.map((headCell, index) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderByID !== null ? (orderByID === index ? order : false) : false}
-            sx={{ fontWeight: 'bold' }}>
-            <TableSortLabel
-              active={orderByID === index}
-              direction={orderByID === index ? order : 'asc'}
-              onClick={createSortHandler(index)}>
-              {headCell.label}
-              {orderByID === index ? (
-                <Box component='span' sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {headCells.map((headCell) => {
+          const { label, key, numeric, disablePadding } = headCell;
+          return (
+            <TableCell
+              key={key}
+              align={numeric ? 'right' : 'left'}
+              padding={disablePadding ? 'none' : 'normal'}
+              sortDirection={orderByKey !== null ? (orderByKey === key ? order : false) : false}
+              sx={{ fontWeight: 'bold', minWidth: '150px', maxWidth: '200px' }}>
+              <TableSortLabel
+                active={orderByKey === key}
+                direction={orderByKey === key ? order : 'asc'}
+                onClick={(e) => onRequestSort(e, key)}>
+                {label}
+              </TableSortLabel>
+            </TableCell>
+          );
+        })}
         {disableAction ? null : <TableCell align='right' sx={{ fontWeight: 'bold' }} />}
       </TableRow>
     </TableHead>
@@ -140,8 +134,9 @@ interface EnhancedTableProps {
    * }</code>
    */
   headCells: readonly IHeadCell[];
-  /** The data of the table, each row must have a unique <code>id</code> to handle action.
-   * Moreover, other keys must match the <code>id</code> of the head cell. Otherwise, the data will not be rendered.
+  /** The data of the table, each row must have a unique <code>_id</code> to handle action.
+   * Moreover, the <code>key</code> in the object of body cell must match the <code>key</code> of the head cell.
+   * Otherwise, data will not be rendered.
    */
   rows: IRowCell[];
   /** The total rows of the table support counting the total pages of table's pagination and show the total summary on the left side of table footer.*/
@@ -152,16 +147,21 @@ interface EnhancedTableProps {
   currentPage?: number;
   /** The callback function when the page is changed by the table pagination. The <code>page</code> will be passed by. */
   onChangePage: (event: unknown, page: number) => void;
-  onSort: (event: unknown, order: Order, orderByID: number | null) => void;
+  onSort: (event: unknown, order: Order, orderByKey: string | null) => void;
   /** Disable the more action column. */
   disableAction?: boolean;
   /** The callback function when the more action button is clicked. The <code>id</code> of that row will be passed by.
    * If no <code>id</code> is provided, the <code>onAct</code> callback will not be executed.
    */
-  onAct?: (event: MouseEvent<HTMLElement>, _id: string | null) => void;
+  onAct?: (event: MouseEvent<HTMLElement>, _row: object | null) => void;
   /** The children of the table menu. */
   children?: React.ReactNode;
 }
+
+type TableOrder = {
+  direction?: Order;
+  key: string | null;
+};
 
 export function EnhancedTable({
   headCells,
@@ -172,17 +172,16 @@ export function EnhancedTable({
   onChangePage,
   onSort,
   disableAction = false,
-  onAct = (_e, _id) => {},
+  onAct = (_e, _row) => {},
   children,
 }: EnhancedTableProps) {
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderByID, setOrderByID] = useState<null | number>(null);
+  const [order, setOrder] = useState<TableOrder>({ key: null });
   const [page, setPage] = useState(currentPage);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const totalPages = Math.ceil(totalRows / rowsPerPage);
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  const dense = isMobile ? true : false;
+  const dense = isMobile;
   const align = headCells.map((cell) => (cell.numeric ? 'right' : 'left'));
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -190,22 +189,20 @@ export function EnhancedTable({
     onChangePage(event, newPage - 1);
   };
 
-  const handleRequestSort = (event: MouseEvent<unknown>, property: number) => {
-    const isAsc = orderByID === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderByID(property);
+  const handleRequestSort = (event: MouseEvent<unknown>, property: string) => {
+    const isAsc = order.key === property && order.direction === 'asc';
+    setOrder({ direction: isAsc ? 'desc' : 'asc', key: property });
     onSort(event, isAsc ? 'desc' : 'asc', property);
   };
 
   const clearSort = (event: MouseEvent<unknown>) => {
-    setOrder('asc');
-    setOrderByID(null);
+    setOrder({ key: null });
     onSort(event, 'asc', null);
   };
 
-  const handleClick = (event: MouseEvent<HTMLElement>, _id: string | null) => {
+  const handleClick = (event: MouseEvent<HTMLElement>, _row: object | null) => {
     setAnchorEl(event.currentTarget);
-    if (_id) onAct(event, _id);
+    if (_row) onAct(event, _row);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -214,13 +211,13 @@ export function EnhancedTable({
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        {orderByID !== null ? (
+        {order.key !== null ? (
           <Chip
             label={
               <Typography>
                 {'Sắp xếp theo '}
                 <Typography component='span' fontWeight='bold'>
-                  {headCells[orderByID].label}
+                  {headCells.find((cell) => cell.key === order.key)?.label}
                 </Typography>
               </Typography>
             }
@@ -231,8 +228,8 @@ export function EnhancedTable({
         ) : null}
         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
           <EnhancedTableHead
-            order={order}
-            orderByID={orderByID}
+            order={order.direction || 'asc'}
+            orderByKey={order.key}
             onRequestSort={handleRequestSort}
             headCells={headCells}
             disableAction={disableAction}
@@ -243,25 +240,26 @@ export function EnhancedTable({
                 <StyledTableRow hover tabIndex={-1} key={index} sx={{ cursor: 'pointer' }}>
                   {/* Filter: just render the data match the head cell */}
                   {headCells.map((head, id) => {
+                    const { key } = head;
                     return id == 0 ? (
                       <TableCell
-                        key={`${headCells[id].id}-${index}`}
+                        key={`${key}-${index}`}
                         component='th'
-                        id={`row-${index}-${id}`}
+                        id={`row-${key}-${index}`}
                         scope='row'
-                        padding='none'
+                        sx={{ px: 0 }}
                         align={align[id]}>
-                        {row[head.id]}
+                        {row[key]}
                       </TableCell>
                     ) : (
-                      <TableCell key={`${headCells[id].id}-${index}`} align={align[id]}>
-                        {row[head.id]}
+                      <TableCell key={`${key}-${index}`} align={align[id]}>
+                        {row[key]}
                       </TableCell>
                     );
                   })}
                   {disableAction ? null : (
                     <TableCell align='right' padding='none' sx={{ fontWeight: 'bold' }}>
-                      <IconButton onClick={(_e) => handleClick(_e, row._id)} sx={{ margin: 0 }}>
+                      <IconButton onClick={(_e) => handleClick(_e, row)} sx={{ margin: 0 }}>
                         <MoreIcon />
                       </IconButton>
                     </TableCell>
@@ -271,7 +269,7 @@ export function EnhancedTable({
             })}
             {emptyRows > 0 ? (
               <StyledTableRow
-                style={{
+                sx={{
                   height: (dense ? 33 : 53) * emptyRows,
                 }}>
                 <TableCell colSpan={6} />

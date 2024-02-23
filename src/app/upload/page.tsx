@@ -26,7 +26,7 @@ const Admin = () => {
       filename.push(file.name);
     });
 
-    const response = await replaceFile([], files);
+    await replaceFile([], files);
   };
 
   return (

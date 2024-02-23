@@ -16,3 +16,12 @@ export function hiddenEmail(email: string) {
 export function eventKey(str: string) {
   return str.replace(/\s+/g, '').toUpperCase();
 }
+
+export function shortenFBLink(link: string) {
+  if (link)
+    return link
+      .replace(/(http:\/\/|https:\/\/)/, '') // Remove http:// or https://
+      .replace('www.', '') // Remove www.
+      .replace('facebook.com', 'fb.com'); // Replace facebook.com with fb.com
+  return link;
+}
