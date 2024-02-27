@@ -5,7 +5,8 @@ model Event {
   tag           String[]
   start         DateTime       @db.Date
   end           DateTime?      @db.Date
-  thumbnail     Int
+  thumbnail     Bucket         @relation(fields: [bucketID], references: [id])
+  bucketID      Int            @unique
   description   String
   url           String?
   status        Boolean        @default(true)
