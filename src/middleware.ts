@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(request.nextUrl);
   }
 
-  // if the request uses the public api, return the request
+  // if the request uses the public api or auth api, return the request
   if (
     request.nextUrl.pathname.startsWith(routesConfig.publicApiRoutePrefix) ||
     request.nextUrl.pathname.startsWith(routesConfig.authApiRoutePrefix)
@@ -23,14 +23,15 @@ export async function middleware(request: NextRequest) {
   return await validateToken(token)
     .then((result) => {
       if (!result) {
-        request.cookies.delete('token');
-        if (routesConfig.authRoutes.includes(request.nextUrl.pathname)) {
-          return NextResponse.rewrite(request.nextUrl);
-        }
-        return new NextResponse(null, { status: 404 });
+        // if token is invalid or expired, redirect to resetRoute
+        const response = routesConfig.authRoutes.includes(request.nextUrl.pathname)
+          ? NextResponse.rewrite(request.nextUrl)
+          : NextResponse.redirect(new URL(routesConfig.resetRoute, request.url));
+        response.cookies.delete('token');
+        return response;
       } else {
         if (routesConfig.authRoutes.includes(request.nextUrl.pathname)) {
-          return NextResponse.rewrite(new URL(routesConfig.defaultRoute, request.url));
+          return NextResponse.redirect(new URL(routesConfig.defaultRoute, request.url));
         }
         return NextResponse.rewrite(request.nextUrl);
       }
