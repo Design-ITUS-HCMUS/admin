@@ -38,23 +38,23 @@ class TeamService {
     }
   }
 
-  async joinTeam(userID: number, teamID: number, eventID: number) {
+  async joinTeam(userID: number, inviteCode: string, eventID: number) {
     try {
-      const team = await this.repository.getByEntity({ id: teamID });
+      const team = await this.repository.getByEntity({ inviteCode });
       if (!team) {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Team not found');
       }
-      const members = (await this.getAllMembersByTeamId(teamID)).data;
+      const members = (await this.getAllMembersByTeamId(team.id)).data;
       if (members.length >= 4) {
         return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Team is full');
       }
-      const updatedTeam = await this.repository.update(teamID, { accountEvents: { create: { userID, eventID } } });
+      const existedMember = members.find((member: any) => member.user.id === userID);
+      if (existedMember) {
+        return new BaseResponse(STATUS_CODE.CONFLICT, false, 'You are already in this team');
+      }
+      const updatedTeam = await this.repository.update(team.id, { accountEvents: { create: { userID, eventID } } });
       if (!updatedTeam) {
         return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, 'Join team failed');
-      }
-      // Remove invite code if team is full
-      if (members.length === 3) {
-        await this.repository.update(teamID, { inviteCode: null });
       }
       return new BaseResponse(STATUS_CODE.OK, true, 'Join team successfully', updatedTeam);
     } catch (err: any) {
@@ -142,6 +142,32 @@ class TeamService {
       }
       const deletedTeam = await this.repository.delete(id);
       return new BaseResponse(STATUS_CODE.OK, true, 'Team deleted successfully', deletedTeam);
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async removeMember(ownerID: number, teamID: number, eventID: number, userID: number) {
+    try {
+      const team = await this.repository.getByEntity({ id: teamID }, { accountEvents: true });
+      const owner = team?.accountEvents[0];
+      if (owner?.userID !== ownerID) {
+        return new BaseResponse(
+          STATUS_CODE.FORBIDDEN,
+          false,
+          'User is not the owner of the team, cannot delete member'
+        );
+      }
+      if (owner?.userID === userID) {
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Owner cannot delete himself');
+      }
+
+      const accountEvent = await this.accountEventRepository.getByEntity({ teamID, id: { userID, eventID } });
+      if (!accountEvent) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Member not found');
+      }
+      const deletedMember = await this.accountEventRepository.delete({ userID, eventID });
+      return new BaseResponse(STATUS_CODE.OK, true, 'Member deleted successfully', deletedMember);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
