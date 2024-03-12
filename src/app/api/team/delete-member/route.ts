@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * @swagger
- * /api/team/remove-member:
+ * /api/team/delete-member:
  *  delete:
  *    tags:
  *      - Team
- *    description: Remove member from team
+ *    description: Delete member from team
  *    requestBody:
  *      required: true
  *      content:
@@ -28,8 +28,6 @@ import { NextRequest, NextResponse } from 'next/server';
  *    responses:
  *      200:
  *        description: Remove member from team successfully.
- *      401:
- *        description: Unauthorized.
  *      403:
  *        description: Forbidden.
  *      404:
@@ -41,7 +39,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function DELETE(req: NextRequest) {
   const { userID, teamID, eventID } = await req.json();
   const payload = await authService.getDataFromToken(req.cookies.get('token'));
-  if (!payload) return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
-  const res = await teamService.deleteMember(teamID, Number(payload.id), eventID, userID);
+  const res = await teamService.removeMember(Number(payload?.id), teamID, eventID, userID);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }

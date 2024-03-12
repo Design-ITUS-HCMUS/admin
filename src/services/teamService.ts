@@ -147,7 +147,7 @@ class TeamService {
     }
   }
 
-  async deleteMember(teamID: number, ownerID: number, eventID: number, userID: number) {
+  async removeMember(ownerID: number, teamID: number, eventID: number, userID: number) {
     try {
       const team = await this.repository.getByEntity({ id: teamID }, { accountEvents: true });
       const owner = team?.accountEvents[0];
