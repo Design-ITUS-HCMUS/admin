@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { routesConfig } from '@/utils/routes';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { jwtVerify } from 'jose';
+import { routesConfig } from '@/utils/routes';
 export async function middleware(request: NextRequest) {
   // If the request path is in the publicRoutes array, return the request
   if (routesConfig.publicRoutes.includes(request.nextUrl.pathname)) {
