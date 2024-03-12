@@ -3,12 +3,15 @@ import RoleRepository from '@repositories/roleRepository';
 import { Role } from '@/interfaces/role';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
+import EventRepository from '@repositories/eventRepository';
 
 class RoleService {
   private repository: RoleRepository;
+  private eventRepository: EventRepository;
 
   constructor() {
     this.repository = new RoleRepository();
+    this.eventRepository = new EventRepository();
   }
 
   async createRole(data: Role) {
@@ -32,6 +35,21 @@ class RoleService {
         return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Role not found');
       }
       return new BaseResponse(STATUS_CODE.OK, true, 'Role found', role);
+    } catch (err: any) {
+      return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
+    }
+  }
+
+  async getRolesByEventKey(key: string) {
+    try {
+      const event = await this.eventRepository.getByEntity({ key });
+      if (!event) {
+        return new BaseResponse(STATUS_CODE.NOT_FOUND, false, 'Event not found');
+      }
+      const roles = await this.repository.getManyByEntity({
+        AccountEvent: { every: { eventID: { equals: event.id } }, some: {} },
+      });
+      return new BaseResponse(STATUS_CODE.OK, true, 'Get all roles by event key successfully', roles);
     } catch (err: any) {
       return new BaseResponse(STATUS_CODE.INTERNAL_SERVER_ERROR, false, err.message);
     }
