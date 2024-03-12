@@ -25,8 +25,6 @@ import { NextRequest, NextResponse } from 'next/server';
  *    responses:
  *      200:
  *        description: Join team successfully.
- *      401:
- *        description: Unauthorized.
  *      404:
  *        description: Team not found.
  *      500:
@@ -36,7 +34,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   const { inviteCode, eventID } = await req.json();
   const payload = await authService.getDataFromToken(req.cookies.get('token'));
-  if (!payload) return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
-  const res = await teamService.joinTeam(Number(payload.id), inviteCode, eventID);
+  const res = await teamService.joinTeam(Number(payload?.id), inviteCode, eventID);
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
