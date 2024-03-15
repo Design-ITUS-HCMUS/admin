@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export async function uploadFile(files: File[], permission: number = 0) {
+export async function uploadFile(fileList: FileList, permission: number = 0): Promise<number[]> {
+  const files = Array.from(fileList);
   // Default size per part (8MB/part)
   const partSize = 1024 * 1024 * 8;
 
@@ -16,13 +17,18 @@ export async function uploadFile(files: File[], permission: number = 0) {
 
     for (const file of files) {
       // Get upload ID and key
-      const uploadIDResponse = await axios.post('/api/file/upload/start', {
-        filename: file.name,
-        contentType: file.type,
-        permission,
-      });
-      uploadID = uploadIDResponse.data.data.uploadID;
-      key = uploadIDResponse.data.data.key;
+      try {
+        const uploadIDResponse = await axios.post('/api/file/upload/start', {
+          filename: file.name,
+          contentType: file.type,
+          permission,
+        });
+        uploadID = uploadIDResponse.data.data.uploadID;
+        key = uploadIDResponse.data.data.key;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to get upload ID and key' + error);
+      }
 
       // Get presigned URL for all parts
       const presignedUrlResponse = await axios.post('/api/file/upload/presigned-url', {
@@ -83,9 +89,10 @@ export async function uploadFile(files: File[], permission: number = 0) {
         uploadID,
       });
 
-      return null;
+      return [];
     } catch (error) {
-      return null;
+      console.error(error);
+      throw new Error('Failed to upload file, also failed to abort. Please try again.');
     }
   }
 }
@@ -102,7 +109,7 @@ export async function deleteFile(ids: number[]) {
   }
 }
 
-export async function replaceFile(oldFileIDs: number[], newFiles: File[], permission: number = 0) {
+export async function replaceFile(oldFileIDs: number[], newFiles: FileList, permission: number = 0) {
   try {
     // Upload new files first
     const newFileIDs = await uploadFile(newFiles, permission);

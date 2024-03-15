@@ -17,7 +17,7 @@ export default class EventRepository {
       return newEvent;
     } catch (error) {
       console.error(error);
-      return null;
+      throw new Error('[Event Repository]: ' + error);
     }
   }
 
@@ -27,7 +27,7 @@ export default class EventRepository {
       return allEvents;
     } catch (error) {
       console.error(error);
-      return null;
+      throw new Error('[Event Repository]: ' + error);
     }
   }
 
@@ -39,7 +39,7 @@ export default class EventRepository {
       return event;
     } catch (error) {
       console.error(error);
-      return null;
+      throw new Error('[Event Repository]: ' + error);
     }
   }
 
@@ -52,7 +52,7 @@ export default class EventRepository {
       return updatedEvent;
     } catch (error) {
       console.error(error);
-      return null;
+      throw new Error('[Event Repository]: ' + error);
     }
   }
 
@@ -64,7 +64,7 @@ export default class EventRepository {
       return deletedEvent;
     } catch (error) {
       console.error(error);
-      return null;
+      throw new Error('[Event Repository]: ' + error);
     }
   }
 }

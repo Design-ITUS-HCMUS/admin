@@ -10,14 +10,10 @@ import { colors } from '@/libs/ui';
 
 export const WhiteCard = styled(Paper)(({ theme }) => ({
   borderRadius: '0.75rem',
-  display: 'flex',
-  flexDirection: 'column',
-  rowGap: theme.spacing(3),
   padding: theme.spacing(3),
   marginBottom: theme.spacing(2),
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(2),
-    rowGap: theme.spacing(2),
   },
 }));
 

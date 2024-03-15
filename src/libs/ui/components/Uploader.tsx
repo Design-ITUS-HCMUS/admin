@@ -23,28 +23,26 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-interface UploadButtonProps extends ButtonProps {
-  state?: 'resting' | 'error';
+export interface UploadButtonProps extends ButtonProps {
+  state?: 'idle' | 'uploading' | 'done' | 'error';
   onUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const UploadButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'state',
-})<UploadButtonProps>(({ state }) => ({
+const UploadButton = styled(Button)<UploadButtonProps>(({ state }) => ({
   '& .MuiTypography-body2': {
     color: 'contrastText',
   },
-  border: `${state == 'error' ? '1px solid' : '1px dashed'}`,
+  border: `${state === 'error' ? '1px solid' : '1px dashed'}`,
   minWidth: '300px',
   padding: '1.5rem',
-  background: `${state == 'error' ? colors.background.error : ''}`,
+  background: `${state === 'error' ? colors.background.error : ''}`,
 }));
 
 interface UploaderProps {
   /** <div>
    *    Extends from <code>ButtonProps</code> of MUI with additional props:
    *  <li>
-   *    <code>state</code>: Custom state of uploader <code>resing | error</code>
+   *    <code>state</code>: Custom state of uploader <code>idle | uploading | error</code>
    *  </li>
    *  <li>
    *    <code>onUpload</code>: Custom event handler, executed when a file is uploaded

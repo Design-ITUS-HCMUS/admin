@@ -25,7 +25,7 @@ const StyledPaper = styled(Paper)({
 });
 
 export default function EventCreatePage() {
-  function handleSubmit(_formData: FormData) {}
+  const [blockSubmit, setBlockSubmit] = React.useState(true);
 
   return (
     <Section>
@@ -36,12 +36,12 @@ export default function EventCreatePage() {
             <Typography variant='h6' fontWeight='bold' mb={2}>
               Tạo sự kiện
             </Typography>
-            <CreateEventForm onSubmit={handleSubmit} />
+            <CreateEventForm setBlockSubmit={setBlockSubmit} />
             <Stack direction='row' spacing={2} justifyContent='flex-end' mt={2}>
               <Button component={Link} href='/events' variant='text' color='primary' size='medium'>
                 Cancel
               </Button>
-              <Button size='medium' form='create-event-form' type='submit'>
+              <Button size='medium' form='create-event-form' type='submit' disabled={blockSubmit}>
                 Tạo sự kiện
               </Button>
             </Stack>
