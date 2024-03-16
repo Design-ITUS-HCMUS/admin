@@ -4,7 +4,7 @@ export interface Event {
   tag: string[];
   start: Date;
   end?: Date;
-  thumbnail: number;
+  thumbnail: any;
   description: string;
   url?: string;
   status: boolean;

@@ -54,6 +54,23 @@ export default class RoleRepository {
     }
   }
 
+  async getManyByEntity(entity: Prisma.RoleWhereInput) {
+    try {
+      const roles = await this.model.findMany({
+        where: entity,
+        select: {
+          id: true,
+          name: true,
+          AccountEvent: true,
+        },
+      });
+      return roles;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   async getByEntity(entity: Prisma.RoleWhereUniqueInput) {
     try {
       const role = await this.model.findUnique({

@@ -21,6 +21,11 @@ class EventService {
       if (existedEvent) {
         return new BaseResponse(STATUS_CODE.CONFLICT, false, 'Event already exists');
       }
+      data.thumbnail = {
+        connect: {
+          id: data.thumbnail,
+        },
+      };
       const event = await this.repository.add(data);
       return new BaseResponse(STATUS_CODE.OK, true, 'Event created successfully', event);
     } catch (err: any) {

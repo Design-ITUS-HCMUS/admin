@@ -1,8 +1,11 @@
 model Bucket {
-  id        Int   @id @default(autoincrement())
-  filename  String
-  owner     User @relation(fields: [ownerID], references: [id])
-  ownerID   Int
-  permission Int @default(0) // 0: Private, 1: Admin, 2: Public
-  uploadStatus Boolean @default(false)
+  id           Int         @id @default(autoincrement())
+  filename     String
+  owner        User        @relation(fields: [ownerID], references: [id])
+  ownerID      Int
+  permission   Int         @default(0) // 0: Private, 1: Admin, 2: Public
+  uploadStatus Boolean     @default(false)
+  Event        Event?
+  Submission   Submission? @relation(fields: [submissionID], references: [id], onDelete: Cascade)
+  submissionID Int?
 }

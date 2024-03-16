@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   if (!team.data) {
     return NextResponse.json(team.responseBody(), { status: team.status });
   }
-  const res = await TeamService.joinTeam(Number(payload.id), team.data.id, eventID);
+  const res = await TeamService.joinTeam(Number(payload.id), team.data.inviteCode, eventID);
   if (!res.data) {
     await TeamService.deleteTeam(team.data.id);
   }
