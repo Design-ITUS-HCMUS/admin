@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Field, Formik } from 'formik';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -20,40 +21,36 @@ import { useAuthContext } from '@/app/(auth)/_context/store';
 import { colors, InputLayout, PasswordInput } from '@/libs/ui';
 import { ForgetPasswordSchema } from '@/libs/validations';
 
+const changePasswordMutation = async (values: { password: string; usernameOrEmail: string }): Promise<number> => {
+  const response = await fetch('/api/auth/resetPassword', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ usernameOrEmail: values.usernameOrEmail, password: values.password }),
+  });
+
+  return response.status;
+};
+
 function ChangePasswordPage() {
   const router = useRouter();
   const { signIn, setSignIn } = useAuthContext();
   const [success, setSuccess] = useState(false);
   const [isLoadingToSignIn, setIsLoadingToSignIn] = useState(false);
-  const [isLoadingChange, setIsLoadingChange] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState('');
   const usernameOrEmail = signIn.username;
 
-  const backSignInPage = () => {
-    router.replace('/sign-in');
-  };
-
-  const handleOnClick = () => {
-    setIsLoadingToSignIn(true);
-  };
-
-  async function handleSubmit(values: { password: string; repassword: string }) {
-    try {
-      setIsLoadingChange(true);
-
-      const response = await fetch('/api/auth/resetPassword', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          usernameOrEmail,
-          password: values.password,
-        }),
-      });
-
-      switch (response.status) {
+  const { mutate, isPending: isLoadingChange } = useMutation({
+    mutationFn: changePasswordMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
         case 200:
           setSuccess(true);
           break;
@@ -64,10 +61,19 @@ function ChangePasswordPage() {
           setAlertMessage('Thay đổi mật khẩu thất bại');
           throw new Error(`Change password failed`);
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoadingChange(false);
-    }
+    },
+  });
+
+  const backSignInPage = () => {
+    router.replace('/sign-in');
+  };
+
+  const handleOnClick = () => {
+    setIsLoadingToSignIn(true);
+  };
+
+  async function handleSubmit(values: { password: string; repassword: string }) {
+    mutate({ password: values.password, usernameOrEmail: usernameOrEmail || '' });
   }
 
   useEffect(() => {

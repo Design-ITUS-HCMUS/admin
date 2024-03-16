@@ -3,6 +3,7 @@
 // React & Next
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -36,13 +37,35 @@ function isValidEmail(email: string): boolean {
   return regex.test(email);
 }
 
+const resendMutation = async (username: string): Promise<number> => {
+  const response = await fetch('/api/auth/otpResetPassword', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ usernameOrEmail: username }),
+  });
+
+  return response.status;
+};
+
+const submitMutation = async (OTP: string): Promise<number> => {
+  const response = await fetch('/api/auth/verifyOTP', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ OTP }),
+  });
+
+  return response.status;
+};
+
 function OTPPage() {
   const router = useRouter();
   const [OTP, setOTP] = useState('');
   const [ableResend, setAbleResend] = useState(false);
   const [key, setKey] = useState(0);
-  const [isLoadingResend, setIsLoadingResend] = useState(false);
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState('');
   const { signIn, setSignIn } = useAuthContext();
@@ -61,48 +84,38 @@ function OTPPage() {
     }
   }, []);
 
-  async function handleResend() {
-    try {
-      setIsLoadingResend(true);
-
-      const response = await fetch('/api/auth/otpResetPassword', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usernameOrEmail: signIn.username }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 500) {
+  const { mutate: resend, isPending: isLoadingResend } = useMutation({
+    mutationFn: resendMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
+        case 200:
+          setAbleResend(false);
+          setKey((key + 1) % 2); // force re-render
+          break;
+        case 500:
           setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
           throw new Error('Error message');
-        }
+        default:
+          setAlertMessage('Gửi mã thất bại, vui lòng thử lại');
+          throw new Error('Error message');
       }
+    },
+  });
 
-      setAbleResend(false);
-      setKey((key + 1) % 2); // force re-render
-
-      setIsLoadingResend(false);
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoadingResend(false);
-    }
-  }
-
-  async function handleSubmit() {
-    try {
-      setIsLoadingSubmit(true);
-
-      const response = await fetch('/api/auth/verifyOTP', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ OTP }),
-      });
-
-      switch (response.status) {
+  const { mutate: submit, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: submitMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
         case 200:
           setSignIn({ ...signIn, isForgettingPassword: true });
           router.replace('/sign-in/change-password');
@@ -114,10 +127,15 @@ function OTPPage() {
           setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
           throw new Error('Error message');
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoadingSubmit(false);
-    }
+    },
+  });
+
+  async function handleResend() {
+    resend(signIn.username || '');
+  }
+
+  async function handleSubmit() {
+    submit(OTP);
   }
 
   return isLoadingPage ? (

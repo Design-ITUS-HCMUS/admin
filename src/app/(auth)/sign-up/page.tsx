@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Field, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -28,25 +29,32 @@ interface IFormData {
   repassword: string;
 }
 
+const signUpMutation = async (values: IFormData): Promise<number> => {
+  const response = await fetch('/api/auth/otpRegistration', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username: values.username, email: values.email }),
+  });
+
+  return response.status;
+};
+
 function SignUpPage() {
   const router = useRouter();
   const { signUp, setSignUp } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  async function handleSubmit(values: IFormData) {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch('/api/auth/otpRegistration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: values.username, email: values.email }),
-      });
-
-      switch (response.status) {
+  const { mutate, isPending } = useMutation({
+    mutationFn: signUpMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
         case 200:
           setSignUp({ ...signUp, isSigningUp: true });
           router.push('/sign-up/otp');
@@ -58,10 +66,11 @@ function SignUpPage() {
           setAlertMessage('Đăng ký thất bại, vui lòng thử lại');
           throw new Error('Error message');
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoading(false);
-    }
+    },
+  });
+
+  async function handleSubmit(values: IFormData) {
+    mutate(values);
   }
 
   return (
@@ -153,7 +162,7 @@ function SignUpPage() {
         }}
       </Formik>
       <Button size='large' form='sign-up-form' type='submit'>
-        {isLoading ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Đăng ký</div>}
+        {isPending ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Đăng ký</div>}
       </Button>
     </CardLayout>
   );

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Field, Formik } from 'formik';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -27,44 +28,57 @@ import { colors, InputLayout, PasswordInput } from '@/libs/ui';
 import { useAuthContext } from '@/app/(auth)/_context/store';
 import { SigninSchema } from '@/libs/validations';
 
+interface SignInProps {
+  username: string;
+  password: string;
+}
+
+const signInMutation = async (values: SignInProps): Promise<number> => {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ usernameOrEmail: values.username, password: values.password }),
+  });
+
+  return response.status;
+};
+
 function SignInPage() {
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { signIn, setSignIn } = useAuthContext();
-  const [isLoading, setIsLoading] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState('');
 
-  async function handleSubmit(values: { username: string; password: string }) {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usernameOrEmail: values.username, password: values.password }),
-      });
-
-      switch (response.status) {
+  const { mutate, isPending } = useMutation({
+    mutationFn: signInMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
         case 200:
           router.push('/');
           break;
         case 400:
           setAlertMessage('Chưa có thông tin username hoặc mật khẩu');
-          throw new Error('Missing username or password');
+          break;
         case 403:
           setAlertMessage('Username hoặc mật khẩu không đúng');
-          throw new Error('Invalid username or password');
+          break;
         default:
           setAlertMessage('Đăng nhập thất bại, vui lòng thử lại');
-          throw new Error('Error message');
+          break;
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoading(false);
-    }
+    },
+  });
+
+  async function handleSubmit(values: { username: string; password: string }) {
+    mutate(values);
   }
 
   return (
@@ -170,7 +184,7 @@ function SignInPage() {
         }}
       </Formik>
       <Button size='large' type='submit' form='sign-in-form'>
-        {isLoading ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Đăng nhập</div>}
+        {isPending ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Đăng nhập</div>}
       </Button>
     </CardLayout>
   );
