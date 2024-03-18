@@ -22,6 +22,7 @@ import { Event } from '@/libs/models';
 import { useUsers } from '@/libs/query';
 import { useToast } from '@/hooks';
 import { uploadFile } from '@/utils/fileHelper';
+import { LinearProgress } from '@mui/material';
 
 const StyledInputHeader = styled(Input)({
   fontSize: '34px',
@@ -33,6 +34,12 @@ const StyledInputHeader = styled(Input)({
     borderBottom: 'none',
   },
 });
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 10,
+  borderRadius: 5,
+  margin: theme.spacing(-5, 6, 0),
+}));
 
 interface CreateEventFormProps {
   /** To block submit when uploading file */
@@ -51,6 +58,12 @@ const data: Event = {
 export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
   const [preview, setPreview] = React.useState('');
   const { setAlert, setOpen } = useToast();
+  const uploadProgressRef = React.useRef(0);
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    setProgress(uploadProgressRef.current);
+  }, [uploadProgressRef.current]);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.currentTarget.files;
@@ -58,7 +71,7 @@ export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
       setPreview(URL.createObjectURL(files[0]));
 
       try {
-        const id = (await uploadFile(files))[0];
+        const id = (await uploadFile(files, uploadProgressRef))[0];
         data.thumbnail = id;
         setBlockSubmit(false);
         setAlert({
@@ -161,21 +174,22 @@ export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
                   formik
                 />
               </Stack>
-              <Stack spacing={2} sx={{ width: '100%' }}>
+              <Stack useFlexGap spacing={2} sx={{ width: '100%' }}>
                 <Uploader
                   inputProps={{ onChange: handleUpload, accept: '.svg, .png, .jpg, .jpeg, .gif', name: 'thumbnail' }}
                   placeholder='SVG, PNG, JPG or GIF (1400x700px)'
                 />
-                <Box position='relative' sx={{ width: '100%', aspectRatio: 2 }}>
+                <Box sx={{ width: '100%', aspectRatio: 2, position: 'relative' }}>
                   {!!preview && (
                     <Image
                       src={preview}
                       fill
-                      alt={'Event Thumbnail'}
+                      alt='Event Thumbnail'
                       style={{ borderRadius: '4px', objectFit: 'cover' }}
                     />
                   )}
                 </Box>
+                {!!preview && <BorderLinearProgress variant='determinate' value={progress} color='success' />}
               </Stack>
             </Stack>
           </Form>
