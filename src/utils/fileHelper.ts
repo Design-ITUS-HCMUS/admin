@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { MutableRefObject } from 'react';
-
-function progressHandling(currentPartLoaded: number, totalFile: number, progressRef: MutableRefObject<number>) {
-  const percent = (progressRef.current / totalFile + currentPartLoaded / totalFile) * 100;
-  progressRef.current = Math.round(percent);
-}
+import { Dispatch, SetStateAction } from 'react';
 
 const fileBaseAxios = axios.create({ baseURL: '/api/file' });
 
-export async function uploadFile(fileList: FileList, progressRef: MutableRefObject<number>, permission: number = 0) {
+export async function uploadFile(
+  fileList: FileList,
+  setProgress: Dispatch<SetStateAction<number>>,
+  permission: number = 0
+) {
   const files = Array.from(fileList);
   // Default size per part (8MB/part)
   const partSize = 1024 * 1024 * 8;
@@ -24,6 +23,9 @@ export async function uploadFile(fileList: FileList, progressRef: MutableRefObje
     if (files.length === 0) return [];
 
     for (const file of files) {
+      // Array to store uploaded size of each part
+      const countUploadedSize = new Array(Math.ceil(file.size / partSize)).fill(0);
+
       // Get upload ID and key
       try {
         const uploadIDResponse = await fileBaseAxios.post('/upload/start', {
@@ -60,7 +62,9 @@ export async function uploadFile(fileList: FileList, progressRef: MutableRefObje
             'Content-Type': file.type,
           },
           onUploadProgress(progressEvent) {
-            progressHandling(progressEvent.loaded, file.size, progressRef);
+            countUploadedSize[i] = progressEvent.loaded;
+            const totalUploadedSize = countUploadedSize.reduce((a, b) => a + b, 0);
+            setProgress(Math.round((totalUploadedSize / file.size) * 100));
           },
         });
 

@@ -24,6 +24,8 @@ import { useToast } from '@/hooks';
 import { uploadFile } from '@/utils/fileHelper';
 import { LinearProgress } from '@mui/material';
 
+import { EventSchema } from '@/libs/validations';
+
 const StyledInputHeader = styled(Input)({
   fontSize: '34px',
   fontWeight: 700,
@@ -58,12 +60,7 @@ const data: Event = {
 export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
   const [preview, setPreview] = React.useState('');
   const { setAlert, setOpen } = useToast();
-  const uploadProgressRef = React.useRef(0);
   const [progress, setProgress] = React.useState(0);
-
-  React.useEffect(() => {
-    setProgress(uploadProgressRef.current);
-  }, [uploadProgressRef.current]);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.currentTarget.files;
@@ -71,7 +68,7 @@ export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
       setPreview(URL.createObjectURL(files[0]));
 
       try {
-        const id = (await uploadFile(files, uploadProgressRef))[0];
+        const id = (await uploadFile(files, setProgress))[0];
         data.thumbnail = id;
         setBlockSubmit(false);
         setAlert({
@@ -126,23 +123,29 @@ export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
 
   return (
     <>
-      <Formik initialValues={data} onSubmit={(values) => mutation.mutate(values)}>
-        {({ values, handleChange }) => (
+      <Formik
+        initialValues={data}
+        onSubmit={(values) => {
+          values.thumbnail = data.thumbnail;
+          mutation.mutate(values);
+        }}
+        validationSchema={EventSchema}>
+        {({ values, handleChange, touched, errors }) => (
           <Form id='create-event-form'>
             <Stack spacing={2} direction='row'>
               <Stack spacing={2} sx={{ width: '100%' }}>
-                <StyledInputHeader
-                  placeholder='Outr Space'
-                  required
-                  name='name'
-                  value={values.name}
-                  onChange={handleChange}
-                />
+                <StyledInputHeader placeholder='Outr Space' name='name' value={values.name} onChange={handleChange} />
                 <InputLayout
                   label='Khóa'
                   required
                   formik
-                  inputProps={{ name: 'key', placeholder: 'Khóa', required: true }}
+                  helperText={errors.key}
+                  inputProps={{
+                    name: 'key',
+                    placeholder: 'Khóa',
+                    required: true,
+                    error: touched.key && Boolean(errors.key),
+                  }}
                 />
                 <InputLayout label='Ngày bắt đầu' formik>
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
@@ -170,7 +173,9 @@ export function CreateEventForm({ setBlockSubmit }: CreateEventFormProps) {
                     type: 'text',
                     placeholder: "9th-time annual Design ITUS traditional's competition",
                     required: true,
+                    error: touched.description && Boolean(errors.description),
                   }}
+                  helperText={errors.description}
                   formik
                 />
               </Stack>
