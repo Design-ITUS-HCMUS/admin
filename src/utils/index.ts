@@ -4,6 +4,6 @@ export * from './enum';
 export * from './format';
 export * from './getParams';
 export * from './payOSUtils';
-export * from './route';
+export * from './routes';
 export * from './sortUtils';
 export * from './templateMail';
