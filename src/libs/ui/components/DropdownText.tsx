@@ -9,6 +9,8 @@ import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 
 const StyledSelect = styled(Select)({
   '& .MuiSelect-standard': {
+    display: 'flex',
+    columnGap: '4px',
     background: 'none !important',
   },
   '& .MuiSelect-icon': {

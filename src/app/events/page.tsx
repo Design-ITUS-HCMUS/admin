@@ -145,7 +145,7 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
             onChangePage={(_e, page) => setQuery({ ...query, page })}
             onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
             onAct={(_e, row) => setSelectedRow(row as ITableCell)}>
-            <MenuItem component={Link} href={`/events/${selectedRow?._id}`}>
+            <MenuItem component={Link} href={`/events/${selectedRow?.key}`}>
               Xem chi tiết
             </MenuItem>
             <MenuItem>Dừng sự kiện</MenuItem>

@@ -1,6 +1,14 @@
 import axios from 'axios';
+import { Dispatch, SetStateAction } from 'react';
 
-export async function uploadFile(files: File[], permission: number = 0) {
+const fileBaseAxios = axios.create({ baseURL: '/api/file' });
+
+export async function uploadFile(
+  fileList: FileList,
+  setProgress: Dispatch<SetStateAction<number>>,
+  permission: number = 0
+) {
+  const files = Array.from(fileList);
   // Default size per part (8MB/part)
   const partSize = 1024 * 1024 * 8;
 
@@ -15,17 +23,25 @@ export async function uploadFile(files: File[], permission: number = 0) {
     if (files.length === 0) return [];
 
     for (const file of files) {
+      // Array to store uploaded size of each part
+      const countUploadedSize = new Array(Math.ceil(file.size / partSize)).fill(0);
+
       // Get upload ID and key
-      const uploadIDResponse = await axios.post('/api/file/upload/start', {
-        filename: file.name,
-        contentType: file.type,
-        permission,
-      });
-      uploadID = uploadIDResponse.data.data.uploadID;
-      key = uploadIDResponse.data.data.key;
+      try {
+        const uploadIDResponse = await fileBaseAxios.post('/upload/start', {
+          filename: file.name,
+          contentType: file.type,
+          permission,
+        });
+        uploadID = uploadIDResponse.data.data.uploadID;
+        key = uploadIDResponse.data.data.key;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to get upload ID and key' + error);
+      }
 
       // Get presigned URL for all parts
-      const presignedUrlResponse = await axios.post('/api/file/upload/presigned-url', {
+      const presignedUrlResponse = await fileBaseAxios.post('/upload/presigned-url', {
         key,
         uploadID,
         totalPart: Math.ceil(file.size / partSize),
@@ -44,6 +60,11 @@ export async function uploadFile(files: File[], permission: number = 0) {
         const singlePart = axios.put(presignedUrls[i], blob, {
           headers: {
             'Content-Type': file.type,
+          },
+          onUploadProgress(progressEvent) {
+            countUploadedSize[i] = progressEvent.loaded;
+            const totalUploadedSize = countUploadedSize.reduce((a, b) => a + b, 0);
+            setProgress(Math.round((totalUploadedSize / file.size) * 100));
           },
         });
 
@@ -83,9 +104,10 @@ export async function uploadFile(files: File[], permission: number = 0) {
         uploadID,
       });
 
-      return null;
+      return [];
     } catch (error) {
-      return null;
+      console.error(error);
+      throw new Error('Failed to upload file, also failed to abort. Please try again.');
     }
   }
 }
@@ -102,23 +124,23 @@ export async function deleteFile(ids: number[]) {
   }
 }
 
-export async function replaceFile(oldFileIDs: number[], newFiles: File[], permission: number = 0) {
-  try {
-    // Upload new files first
-    const newFileIDs = await uploadFile(newFiles, permission);
-    if (!newFileIDs) return null;
+// export async function replaceFile(oldFileIDs: number[], newFiles: FileList, permission: number = 0) {
+//   try {
+//     // Upload new files first
+//     const newFileIDs = await uploadFile(newFiles, permission);
+//     if (!newFileIDs) return null;
 
-    // Delete old files if new files are uploaded successfully
-    try {
-      await deleteFile(oldFileIDs);
-    } catch (error) {
-      // If failed to delete old files -> Return new file IDs
-      // Then update the old file IDs in the database later
-      return newFileIDs;
-    }
+//     // Delete old files if new files are uploaded successfully
+//     try {
+//       await deleteFile(oldFileIDs);
+//     } catch (error) {
+//       // If failed to delete old files -> Return new file IDs
+//       // Then update the old file IDs in the database later
+//       return newFileIDs;
+//     }
 
-    return newFileIDs;
-  } catch (error) {
-    return null;
-  }
-}
+//     return newFileIDs;
+//   } catch (error) {
+//     return null;
+//   }
+// }

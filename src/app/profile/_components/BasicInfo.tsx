@@ -68,7 +68,7 @@ export function BasicInfo({ id }: { id: string }) {
   }
 
   return (
-    <Formik initialValues={data} validationSchema={ProfileBasicInfoSchema} onSubmit={handleSubmit}>
+    <Formik initialValues={data} validationSchema={ProfileBasicInfoSchema} onSubmit={handleSubmit} enableReinitialize>
       {({ errors, touched, isValid }) => (
         <Form id='basic-info'>
           <Field type='hidden' name='id' />

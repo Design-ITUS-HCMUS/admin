@@ -1,6 +1,6 @@
 import { pick } from 'lodash';
 
-import { User } from '@/libs/models';
+import { Event, User } from '@/libs/models';
 const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getMembers = async () => {
@@ -67,11 +67,24 @@ const deleteUser = async (id: number) => {
   if (!success || data.count === 0) throw new Error(message);
 };
 
+const createEvent = async (data: Event) => {
+  const res = await fetch(`${NEXT_PUBLIC_BASE_URL}/api/event/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const { success, message } = await res.json();
+  if (!success) throw new Error(message as string);
+};
+
 export default function useUsers() {
   return {
     getMembers,
     getUserByID,
     updateInfo,
     deleteUser,
+    createEvent,
   };
 }

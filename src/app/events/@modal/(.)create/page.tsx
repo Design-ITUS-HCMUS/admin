@@ -1,4 +1,5 @@
 'use client';
+import * as React from 'react';
 import { useRouter } from 'next/navigation';
 
 import Button from '@mui/material/Button';
@@ -11,12 +12,11 @@ import { CreateEventForm } from '../../_components';
 
 export default function EventCreateModal() {
   const router = useRouter();
+  const [blockSubmit, setBlockSubmit] = React.useState(true);
 
   function handleClose() {
     router.back();
   }
-
-  function handleSubmit(_formData: FormData) {}
 
   return (
     <Dialog open={true} onClose={handleClose} maxWidth='md' fullWidth PaperProps={{ variant: 'section' }}>
@@ -24,13 +24,13 @@ export default function EventCreateModal() {
         Tạo sự kiện
       </DialogTitle>
       <DialogContent id='alert-dialog-description'>
-        <CreateEventForm onSubmit={handleSubmit} />
+        <CreateEventForm setBlockSubmit={setBlockSubmit} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant='text'>
           Cancel
         </Button>
-        <Button form='create-event-form' type='submit'>
+        <Button form='create-event-form' type='submit' disabled={blockSubmit}>
           Tạo sự kiện
         </Button>
       </DialogActions>

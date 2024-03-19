@@ -20,3 +20,12 @@ export interface User {
   roleID: number;
   profile: Profile;
 }
+
+export interface Event {
+  name: string;
+  key: string;
+  tag: string[];
+  start: Date;
+  thumbnail: number;
+  description: string;
+}
