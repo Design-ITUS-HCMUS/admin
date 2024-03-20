@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       value,
       httpOnly: true,
       secure: true,
-      expires: new Date(Date.now() + 5 * 60 * 1000 + 7 * 3600 * 1000), // 5 minutes in GMT+7
+      expires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
     });
   }
   return response;
