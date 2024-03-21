@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,10 +10,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 
-import { LoadingButton } from '@/libs/ui';
-import { useUsers } from '@/libs/query';
 import { useToast } from '@/hooks';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUsers } from '@/libs/query';
+import { LoadingButton } from '@/libs/ui';
 
 export function DeleteAccountModal({
   fullName,

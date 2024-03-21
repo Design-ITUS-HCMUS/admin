@@ -1,14 +1,15 @@
 'use client';
 import * as React from 'react';
+
 import { useAppDispatch, useAppSelector } from '@/libs/redux/hooks';
-import ToastSelector from '@/libs/redux/selectors/toast.selector';
+import { RootState } from '@/libs/redux/reducers';
 import {
   setAlert as setAlertAction,
   setClose as setCloseAction,
   setOpen as setOpenAction,
   ToastState,
 } from '@/libs/redux/reducers/toast.reducer';
-import { RootState } from '@/libs/redux/reducers';
+import ToastSelector from '@/libs/redux/selectors/toast.selector';
 
 type ParaFunction = (arg: ToastState) => void;
 

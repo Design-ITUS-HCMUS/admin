@@ -1,12 +1,11 @@
 'use client';
-import dayjs from 'dayjs';
-import { Formik, Form, Field } from 'formik';
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/en-gb';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { Field, Form, Formik } from 'formik';
 
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -18,12 +17,14 @@ import Typography from '@mui/material/Typography';
 
 import MoreIcon from '@mui/icons-material/MoreHorizRounded';
 
-import { InputLayout, LoadingButton } from '@/libs/ui';
+import 'dayjs/locale/en-gb';
+
+import { useToast } from '@/hooks';
 import { User } from '@/libs/models';
 import { useUsers } from '@/libs/query';
+import { InputLayout, LoadingButton } from '@/libs/ui';
 import { MemberInfoSchema } from '@/libs/validations';
-import { useToast } from '@/hooks';
-import { SelectDepartment, SelectPosition, DeleteAccountModal } from '../../_components';
+import { DeleteAccountModal, SelectDepartment, SelectPosition } from '../../_components';
 
 export default function InfoSection({ id }: { id: string }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

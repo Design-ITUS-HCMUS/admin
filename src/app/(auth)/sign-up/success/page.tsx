@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 // Internal
 import { CardLayout, Countdown } from '@/app/(auth)/_components';
 import { useAuthContext } from '@/app/(auth)/_context/store';
-
 // Libs
 import { colors } from '@/libs/ui';
 

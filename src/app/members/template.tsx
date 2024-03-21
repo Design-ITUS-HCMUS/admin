@@ -6,8 +6,8 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import PeopleIcon from '@mui/icons-material/PeopleAltRounded';
 import PermissionIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import PeopleIcon from '@mui/icons-material/PeopleAltRounded';
 
 import { ISideBarItem, SideBar } from '@/libs/ui';
 

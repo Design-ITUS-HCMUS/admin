@@ -1,9 +1,9 @@
+import EventRepository from '@repositories/eventRepository';
 import RoleRepository from '@repositories/roleRepository';
 
 import { Role } from '@/interfaces/role';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import EventRepository from '@repositories/eventRepository';
 
 class RoleService {
   private repository: RoleRepository;

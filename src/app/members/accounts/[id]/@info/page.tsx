@@ -1,4 +1,4 @@
-import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { useUsers } from '@/libs/query';
 import InfoSection from './_components';

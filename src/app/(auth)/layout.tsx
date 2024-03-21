@@ -1,9 +1,9 @@
 'use client';
 
 // Internal
-import { AuthContextProvider } from './_context/store';
 import { FullscreenImage as Background, StyledPaper } from '@/app/(auth)/_components';
 import { Logo } from '@/libs/ui/components';
+import { AuthContextProvider } from './_context/store';
 
 export default function AuthenLayout({ children }: { children: React.ReactNode }) {
   return (

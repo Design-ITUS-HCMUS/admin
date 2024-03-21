@@ -1,10 +1,10 @@
 import * as React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
+import type { Meta, StoryObj } from '@storybook/react';
 import Paper from '@mui/material/Paper';
 
-import { SupportTable } from './SupportTable';
 import { IHeadCell } from './EnhancedTable';
+import { SupportTable } from './SupportTable';
 
 const headCells: readonly IHeadCell[] = [
   {

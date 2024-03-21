@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { ROLE, DEPARTMENT, POSITION } from '@/utils';
+import { DEPARTMENT, POSITION, ROLE } from '@/utils';
 import { Schema } from './schema';
 
 export const MemberInfoSchema = yup.object().shape({

@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Slide, { SlideProps } from '@mui/material/Slide';
@@ -8,12 +9,12 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+import SuccessIcon from '@mui/icons-material/CheckCircleRounded';
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import ErrorIcon from '@mui/icons-material/ErrorRounded';
-import SuccessIcon from '@mui/icons-material/CheckCircleRounded';
 
-import { colors } from '@/libs/ui';
 import { useToast } from '@/hooks';
+import { colors } from '@/libs/ui';
 
 const progressColors = {
   success: colors.notification.success,

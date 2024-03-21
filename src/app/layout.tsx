@@ -3,10 +3,9 @@ import type { Metadata } from 'next';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+
 import { ReactQueryProvider, StoreProvider } from '@/libs/providers';
-
 import { Message } from '@/libs/ui';
-
 import theme from '@/libs/ui/theme';
 
 export const metadata: Metadata = {

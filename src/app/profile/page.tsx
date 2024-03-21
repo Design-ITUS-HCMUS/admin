@@ -1,10 +1,11 @@
 import React from 'react';
-import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+
 import Grid from '@mui/material/Grid';
 
 import transactions from '@/libs/mock/transactions.json';
 import { useUsers } from '@/libs/query';
-import { Section, BasicInfo, TransactionTable, SideBar, EditPassword } from './_components';
+import { BasicInfo, EditPassword, Section, SideBar, TransactionTable } from './_components';
 
 const sideBarItems = [
   {

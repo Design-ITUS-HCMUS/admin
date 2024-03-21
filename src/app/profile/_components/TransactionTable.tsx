@@ -2,15 +2,15 @@
 import Link from 'next/link';
 
 import { Theme, useMediaQuery } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { TableRowStyled, TableHeadCellStyled } from '.';
+import { TableHeadCellStyled, TableRowStyled } from '.';
 
 export function TransactionTable({ transactions }: { transactions: any[] }) {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
