@@ -20,3 +20,5 @@ export async function GET() {
   const res = await UserService.getAllUsers();
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
+
+export const revalidate = 0;
