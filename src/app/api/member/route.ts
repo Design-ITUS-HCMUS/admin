@@ -4,18 +4,25 @@ import MemberService from '@/services/memberService';
 
 /**
  * @swagger
- * /api/member?accountEventID={id}:
+ * /api/member?eventID={eventID}&userID={userID}:
  *   get:
  *     tags:
  *       - Organizer
- *     description: Get event info by ID.
+ *     description: Get event info of organizer.
  *     parameters:
  *      - in: query
- *        name: accountEventID
- *        description: ID of organizer (accountEvent)
+ *        name: eventID
+ *        description: ID of event
  *        required: true
  *        schema:
- *         type: integer
+ *          type: integer
+ *        example: 1
+ *      - in: query
+ *        name: userID
+ *        description: ID of user
+ *        required: true
+ *        schema:
+ *          type: integer
  *        example: 1
  *     responses:
  *       200:
@@ -27,7 +34,8 @@ import MemberService from '@/services/memberService';
  */
 
 export async function GET(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get('accountEventID');
-  const res = await MemberService.getEventInfoById(Number(id));
+  const eventID = req.nextUrl.searchParams.get('eventID');
+  const userID = req.nextUrl.searchParams.get('userID');
+  const res = await MemberService.getEventInfoById({ eventID: Number(eventID), userID: Number(userID) });
   return NextResponse.json(res.responseBody(), { status: res.status });
 }
