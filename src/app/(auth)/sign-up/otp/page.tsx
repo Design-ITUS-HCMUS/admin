@@ -2,6 +2,7 @@
 // React
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -30,16 +31,91 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+const resendMutation = async (values: { email: string; username: string }): Promise<number> => {
+  const response = await fetch('/api/auth/otpRegistration', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email: values.email, username: values.username }),
+  });
+
+  return response.status;
+};
+
+const submitMutation = async (values: {
+  username: string;
+  email: string;
+  password: string;
+  OTP: string;
+}): Promise<number> => {
+  const response = await fetch('/api/auth/registration', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      OTP: values.OTP,
+    }),
+  });
+
+  return response.status;
+};
+
 function OTPPage() {
   const router = useRouter();
   const [OTP, setOTP] = useState('');
   const [ableResend, setAbleResend] = useState(false);
   const [key, setKey] = useState(0);
-  const [isLoadingResend, setIsLoadingResend] = useState(false);
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState('');
   const { signUp, setSignUp } = useAuthContext();
+
+  const { mutate: resend, isPending: isLoadingResend } = useMutation({
+    mutationFn: resendMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
+        case 200:
+          setAbleResend(false);
+          setKey((key + 1) % 2); // force re-render
+          break;
+        case 500:
+          setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
+          throw new Error('Error message');
+      }
+    },
+  });
+
+  const { mutate: submit, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: submitMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
+        case 200:
+          setSignUp({ ...signUp, isSigningUp: true });
+          router.replace('/sign-up/success');
+          break;
+        case 403:
+          setAlertMessage('Mã OTP không hợp lệ');
+          throw new Error('Invalid OTP');
+        default:
+          setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
+          throw new Error('Error message');
+      }
+    },
+  });
 
   const onChange = (value: string) => setOTP(value);
   const enableResend = () => {
@@ -56,62 +132,11 @@ function OTPPage() {
   }, []);
 
   async function handleResend() {
-    try {
-      setIsLoadingResend(true);
-
-      const response = await fetch('/api/auth/otpRegistration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: signUp.email, username: signUp.username }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 500) {
-          setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
-          throw new Error('Error message');
-        }
-      }
-
-      setAbleResend(false);
-      setKey((key + 1) % 2); // force re-render
-
-      setIsLoadingResend(false);
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoadingResend(false);
-    }
+    resend({ email: signUp.email || '', username: signUp.username || '' });
   }
 
   async function handleSubmit() {
-    try {
-      setIsLoadingSubmit(true);
-
-      const response = await fetch('/api/auth/registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: signUp.username, email: signUp.email, password: signUp.password, OTP }),
-      });
-
-      switch (response.status) {
-        case 200:
-          setSignUp({ ...signUp, isSigningUp: true });
-          router.replace('/sign-up/success');
-          break;
-        case 403:
-          setAlertMessage('Mã OTP không hợp lệ');
-          throw new Error('Invalid OTP');
-        default:
-          setAlertMessage('Có lỗi xảy ra, vui lòng thử lại');
-          throw new Error('Error message');
-      }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoadingSubmit(false);
-    }
+    submit({ username: signUp.username || '', email: signUp.email || '', password: signUp.password || '', OTP });
   }
 
   return isLoadingPage ? (

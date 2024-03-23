@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useMutation } from '@tanstack/react-query';
 
 // Material UI Components
 import Alert from '@mui/material/Alert';
@@ -23,25 +24,32 @@ import { useAuthContext } from '@/app/(auth)/_context/store';
 import { colors } from '@/libs/ui';
 import { InputLayout } from '@/libs/ui/components';
 
+const forgetPasswordMutation = async (values: { username: string }): Promise<number> => {
+  const response = await fetch('/api/auth/otpResetPassword', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ usernameOrEmail: values.username }),
+  });
+
+  return response.status;
+};
+
 function ForgetPasswordPage() {
   const router = useRouter();
   const { signIn, setSignIn } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  async function handleSubmit(values: { username: string }) {
-    try {
-      setIsLoading(true);
-
-      const response = await fetch('/api/auth/otpResetPassword', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usernameOrEmail: values.username }),
-      });
-
-      switch (response.status) {
+  const { mutate, isPending } = useMutation({
+    mutationFn: forgetPasswordMutation,
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        setAlertMessage(error.message);
+      }
+    },
+    onSuccess: (status: number) => {
+      switch (status) {
         case 200:
           setSignIn({ ...signIn, isForgettingPassword: true });
           router.push('/sign-in/forget-password/otp');
@@ -53,10 +61,11 @@ function ForgetPasswordPage() {
           setAlertMessage('Gửi mã thất bại, vui lòng thử lại');
           throw new Error('Error message');
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-      setIsLoading(false);
-    }
+    },
+  });
+
+  async function handleSubmit(values: { username: string }) {
+    mutate(values);
   }
 
   return (
@@ -108,7 +117,7 @@ function ForgetPasswordPage() {
         }}
       </Formik>
       <Button size='large' type='submit' form='forget-password-form'>
-        {isLoading ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Gửi mã</div>}
+        {isPending ? <CircularProgress sx={{ color: colors.neutral.white, padding: '5px' }} /> : <div>Gửi mã</div>}
       </Button>
     </CardLayout>
   );
