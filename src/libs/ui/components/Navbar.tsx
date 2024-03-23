@@ -3,7 +3,7 @@
 // React and Next
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 // Material UI Components
 import AppBar from '@mui/material/AppBar';
@@ -170,6 +170,7 @@ function UserSettings(): React.JSX.Element {
   const username = 'Ngân Trúc';
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     !isMobile && setAnchorElUser(event.currentTarget);
@@ -179,6 +180,19 @@ function UserSettings(): React.JSX.Element {
     setAnchorElUser(null);
   };
 
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    }).then((res) => {
+      if (res.ok) {
+        router.replace(res.url);
+      }
+    });
+  };
   // The menu items never change through time, so we can use the same array for the whole component
   // and avoid the ? operation
   const settingItems = [
@@ -205,9 +219,7 @@ function UserSettings(): React.JSX.Element {
             </MenuItem>
           ))}
           <Divider />
-          {/* In the future, when BE provides API to logout, we may change from Link to axios utils 
-                instead of direct user to another frontend route */}
-          <MenuItem component={Link} href='/logout' key='logout'>
+          <MenuItem key='logout' onClick={handleLogout}>
             <ListItemText sx={{ color: 'error.main' }}>Đăng xuất</ListItemText>
           </MenuItem>
         </Menu>
