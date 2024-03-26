@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import authService from '@/services/authService';
 import teamService from '@/services/teamService';
-import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * @swagger

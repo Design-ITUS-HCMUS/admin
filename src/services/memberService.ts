@@ -9,7 +9,7 @@ class MemberService {
     this.accountEventRepository = new AccountEventRepository();
   }
 
-  async getEventInfoById(id: number) {
+  async getEventInfoById(id: { eventID: number; userID: number }) {
     try {
       const accountEvents = await this.accountEventRepository.getByEntity(
         { id, teamID: null },

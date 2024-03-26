@@ -1,6 +1,6 @@
-import { prisma } from '@prismaClient';
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { prisma } from '@prismaClient';
 
 export default class BucketRepository {
   private model: Prisma.BucketDelegate<DefaultArgs>;

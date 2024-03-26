@@ -1,5 +1,5 @@
-export * from './styles';
-export * from './EditPassword';
-export * from './TransactionTable';
 export * from './BasicInfo';
+export * from './EditPassword';
 export { default as SideBar } from './SideBar';
+export * from './styles';
+export * from './TransactionTable';

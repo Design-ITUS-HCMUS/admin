@@ -1,5 +1,6 @@
-import submissionService from '@/services/submissionService';
 import { NextRequest, NextResponse } from 'next/server';
+
+import submissionService from '@/services/submissionService';
 
 /**
  * @swagger

@@ -18,7 +18,6 @@ import PersonIcon from '@mui/icons-material/PersonRounded';
 // Internal
 import { CardLayout, StyledForm } from '@/app/(auth)/_components';
 import { useAuthContext } from '@/app/(auth)/_context/store';
-
 // Libs
 import { colors } from '@/libs/ui';
 import { InputLayout } from '@/libs/ui/components';

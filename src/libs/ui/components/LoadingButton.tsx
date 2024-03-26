@@ -1,5 +1,5 @@
-import CircularProgress from '@mui/material/CircularProgress';
 import Button, { ButtonProps } from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export function LoadingButton({ loading, children, ...props }: { loading: boolean } & ButtonProps) {
   return (

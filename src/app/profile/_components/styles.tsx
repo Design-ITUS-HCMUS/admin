@@ -1,10 +1,11 @@
 'use client';
 import React from 'react';
-import Typography from '@mui/material/Typography';
+
 import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 import { colors } from '@/libs/ui';
 

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type AlertState = 'info' | 'error' | 'success';
 

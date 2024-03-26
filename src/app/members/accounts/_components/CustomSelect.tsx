@@ -1,13 +1,13 @@
 'use client';
-import { Field, useFormikContext } from 'formik';
 import * as React from 'react';
+import { Field, useFormikContext } from 'formik';
 
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
 import { colors, DropdownText, InputLayout } from '@/libs/ui';
-import { ROLE, DEPARTMENT, POSITION } from '@/utils';
+import { DEPARTMENT, POSITION, ROLE } from '@/utils';
 
 export interface CustomSelectProps {
   /** The ratio of the input to the label. Each of the component use InputLayout as the root component, this prop will be passed directly to InputLayout */

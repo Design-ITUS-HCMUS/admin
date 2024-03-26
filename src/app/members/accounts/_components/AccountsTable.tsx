@@ -1,6 +1,7 @@
 'use client';
-import { useMemo, useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -10,12 +11,11 @@ import Typography from '@mui/material/Typography';
 
 import IosShareRounded from '@mui/icons-material/IosShareRounded';
 
-import { EnhancedTable, IHeadCell, Search, colors, SupportTable } from '@/libs/ui';
-import { shortenFBLink, tableHandler, Query } from '@/utils';
 import { useToast } from '@/hooks';
 import { useUsers } from '@/libs/query';
+import { colors, EnhancedTable, IHeadCell, Search, SupportTable } from '@/libs/ui';
+import { Query, shortenFBLink, tableHandler } from '@/utils';
 import { CreateAccountModal, DeleteAccountModal } from '.';
-import { useQuery } from '@tanstack/react-query';
 
 const headCells: readonly IHeadCell[] = [
   {
@@ -43,7 +43,7 @@ export interface ITableCell extends Record<(typeof headCells)[number]['key'], JS
 
 export default function AccountsTable() {
   const { getMembers } = useUsers();
-  const { data, refetch } = useQuery({
+  const { data, status } = useQuery({
     queryKey: ['users', 'members'],
     queryFn: getMembers,
   });
@@ -66,10 +66,6 @@ export default function AccountsTable() {
     });
     setOpen();
   }, []);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   const refactorData = (data: ITableCell[]): ITableCell[] => {
     const newData = data.map((item: ITableCell) => ({
@@ -101,50 +97,53 @@ export default function AccountsTable() {
   };
 
   const visibleRows: ITableCell[] = useMemo(() => {
-    return refactorData(tableHandler({ query, data }));
+    if (status === 'success') return refactorData(tableHandler({ query, data }));
+    else return [];
   }, [data, query]);
 
   return (
-    <>
-      <Stack direction='row' alignItems='center' justifyContent='space-between'>
-        <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
-        <Stack direction='row' spacing={2}>
-          <Button color='info' onClick={() => setOpenCreateAccountModal(true)}>
-            Tạo tài khoản
-          </Button>
-          <Button color='info' startIcon={<IosShareRounded />}>
-            Xuất file
-          </Button>
+    status === 'success' && (
+      <>
+        <Stack direction='row' alignItems='center' justifyContent='space-between'>
+          <Search onSearch={(_value) => {}} onBlur={(_value) => {}} />
+          <Stack direction='row' spacing={2}>
+            <Button color='info' onClick={() => setOpenCreateAccountModal(true)}>
+              Tạo tài khoản
+            </Button>
+            <Button color='info' startIcon={<IosShareRounded />}>
+              Xuất file
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-      {/* All members data table */}
-      {data.length === 0 ? (
-        <SupportTable headCells={headCells} state='empty' />
-      ) : (
-        <EnhancedTable
-          headCells={headCells}
-          rows={visibleRows}
-          totalRows={data.length}
-          onChangePage={(_e, page) => setQuery({ ...query, page })}
-          onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
-          onAct={(_e, row) => setSelectedRow(row as ITableCell)}>
-          <Link href={`/members/accounts/${selectedRow?._id}`}>
-            <MenuItem>Xem chi tiết</MenuItem>
-          </Link>
-          <Divider sx={{ my: 1 }} />
-          <MenuItem sx={{ color: 'error.main' }} onClick={() => setOpenDeleteAccountModal(true)}>
-            Xóa tài khoản
-          </MenuItem>
-        </EnhancedTable>
-      )}
-      <CreateAccountModal open={openCreateAccountModal} handleClose={() => setOpenCreateAccountModal(false)} />
-      <DeleteAccountModal
-        fullName={(selectedRow?.name as string) || (selectedRow?.email as string)}
-        userID={Number(selectedRow?._id)}
-        open={openDeleteAccountModal}
-        handleClose={() => setOpenDeleteAccountModal(false)}
-      />
-    </>
+        {/* All members data table */}
+        {data.length === 0 ? (
+          <SupportTable headCells={headCells} state='empty' />
+        ) : (
+          <EnhancedTable
+            headCells={headCells}
+            rows={visibleRows}
+            totalRows={data.length}
+            onChangePage={(_e, page) => setQuery({ ...query, page })}
+            onSort={(_e, order, orderByKey) => setQuery({ ...query, order, orderByKey })}
+            onAct={(_e, row) => setSelectedRow(row as ITableCell)}>
+            <Link href={`/members/accounts/${selectedRow?._id}`}>
+              <MenuItem>Xem chi tiết</MenuItem>
+            </Link>
+            <Divider sx={{ my: 1 }} />
+            <MenuItem sx={{ color: 'error.main' }} onClick={() => setOpenDeleteAccountModal(true)}>
+              Xóa tài khoản
+            </MenuItem>
+          </EnhancedTable>
+        )}
+        <CreateAccountModal open={openCreateAccountModal} handleClose={() => setOpenCreateAccountModal(false)} />
+        <DeleteAccountModal
+          fullName={(selectedRow?.name as string) || (selectedRow?.email as string)}
+          userID={Number(selectedRow?._id)}
+          open={openDeleteAccountModal}
+          handleClose={() => setOpenDeleteAccountModal(false)}
+        />
+      </>
+    )
   );
   // }
 }

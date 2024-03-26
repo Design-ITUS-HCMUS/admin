@@ -4,8 +4,8 @@ import React from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 import { WhiteCard } from './_components';
 

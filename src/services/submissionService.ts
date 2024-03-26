@@ -1,8 +1,9 @@
+import EventRepository from '@repositories/eventRepository';
+import SubmissionRepository from '@repositories/submissionRepository';
+
 import { Submission } from '@/interfaces/submission';
 import { STATUS_CODE } from '@/utils';
 import BaseResponse from '@/utils/baseResponse';
-import EventRepository from '@repositories/eventRepository';
-import SubmissionRepository from '@repositories/submissionRepository';
 
 class SubmissionService {
   private repository: SubmissionRepository;

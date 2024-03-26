@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Field, Form, Formik } from 'formik';
 
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
-import { PasswordInput, InputLayout, LoadingButton } from '@/libs/ui';
+import { InputLayout, LoadingButton, PasswordInput } from '@/libs/ui';
 import { ForgetPasswordSchema } from '@/libs/validations';
 
 export function EditPassword() {

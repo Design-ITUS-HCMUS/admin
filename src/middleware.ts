@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+
 import { routesConfig } from '@/utils/routes';
 export async function middleware(request: NextRequest) {
   // If the request path is in the publicRoutes array, return the request

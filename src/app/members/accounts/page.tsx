@@ -1,5 +1,6 @@
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+
 import Typography from '@mui/material/Typography';
-import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import { useUsers } from '@/libs/query';
 import { AccountsTable } from './_components';

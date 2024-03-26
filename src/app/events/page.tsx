@@ -58,7 +58,7 @@ interface ITableCell extends Record<(typeof headCells)[number]['key'], JSX.Eleme
   _id: string;
 }
 
-export default function EventsPage({ modal }: { modal: React.ReactNode }) {
+export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [eventsData, setEventsData] = useState<ITableCell[]>([]);
   const [selectedRow, setSelectedRow] = useState<ITableCell | null>(null);
@@ -118,7 +118,6 @@ export default function EventsPage({ modal }: { modal: React.ReactNode }) {
     <Section>
       {/* Include shared UI here e.g. a header or sidebar */}
       <StyledPaper variant='section'>
-        {modal}
         <Typography variant='h6' fontWeight='600'>
           Sự kiện
         </Typography>

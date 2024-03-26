@@ -1,11 +1,12 @@
-import { SignJWT, jwtVerify } from 'jose';
-import bcrypt from 'bcryptjs';
-import CommonService from '@/services/commonService';
-import UserRepository from '@repositories/userRepository';
-import { AccountInformation, User, SendOTP } from '@/interfaces/user';
-import BaseResponse from '@/utils/baseResponse';
-import { STATUS_CODE, TYPE_OTP, templateRegister, templateResetPassword } from '@/utils';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import UserRepository from '@repositories/userRepository';
+import bcrypt from 'bcryptjs';
+import { jwtVerify, SignJWT } from 'jose';
+
+import { AccountInformation, SendOTP, User } from '@/interfaces/user';
+import CommonService from '@/services/commonService';
+import { STATUS_CODE, templateRegister, templateResetPassword, TYPE_OTP } from '@/utils';
+import BaseResponse from '@/utils/baseResponse';
 
 class AuthService {
   private repository: UserRepository;

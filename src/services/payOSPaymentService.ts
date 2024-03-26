@@ -1,11 +1,10 @@
+import PayOS from '@payos/node';
 import PaymentRepository from '@repositories/paymentRepository';
+
+import { CheckoutRequestType, WebhookType } from '@/interfaces/payOS';
 import BaseResponse from '@/utils/baseResponse';
 import { STATUS_CODE } from '@/utils/enum';
-import { CheckoutRequestType, WebhookType } from '@/interfaces/payOS';
-import { getUnixTimeStamp, calcTotalPrice } from '@/utils/payOSUtils';
-import PayOS from '@payos/node';
-import authService from './authService';
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { calcTotalPrice, getUnixTimeStamp } from '@/utils/payOSUtils';
 
 class PayOSPaymentService {
   private repository: PaymentRepository;
@@ -16,6 +15,7 @@ class PayOSPaymentService {
   private static readonly PAYOS_CANCEL_URL = String(process.env.PAYOS_CANCEL_URL);
   private static readonly PAYOS_RETURN_URL = String(process.env.PAYOS_RETURN_URL);
   private static readonly PAYOS_WEBHOOK_URL = String(process.env.PAYOS_WEBHOOK_URL);
+  private static readonly PAYOS_WEBHOOK_IP_ADDRESS = String(process.env.PAYOS_WEBHOOK_IP_ADDRESS);
 
   private static readonly payOS = new PayOS(
     PayOSPaymentService.PAYOS_CLIENT_ID,
@@ -25,19 +25,15 @@ class PayOSPaymentService {
 
   constructor() {
     this.repository = new PaymentRepository();
-    PayOSPaymentService.payOS.confirmWebhook(PayOSPaymentService.PAYOS_WEBHOOK_URL).catch((err: any) => {
-      console.error(err);
+    PayOSPaymentService.payOS.confirmWebhook(PayOSPaymentService.PAYOS_WEBHOOK_URL).catch((_: any) => {
+      console.error('Error: PayOS webhook confirmation failed');
     });
   }
 
-  async createPaymentLink(body: any, token: RequestCookie | undefined) {
+  async createPaymentLink(body: any) {
     try {
-      // Get data from cookie
-      const payload = await authService.getDataFromToken(token);
-      if (!payload) return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
-
-      // Get data from payload
-      const buyerID = Number(payload.id);
+      // Get buyerID
+      const buyerID = Number(body.buyerID);
 
       // Get data from body
       const description = body.description;
@@ -112,8 +108,12 @@ class PayOSPaymentService {
     }
   }
 
-  async handleWebhookEvent(body: any) {
+  async handleWebhookEvent(body: any, ipAddress: string = '') {
     try {
+      // If req is not from PayOS -> Return error
+      if (ipAddress !== PayOSPaymentService.PAYOS_WEBHOOK_IP_ADDRESS)
+        return new BaseResponse(STATUS_CODE.FORBIDDEN, false, 'Permission denied');
+
       // If default webhook -> Pass it
       if (body.signature === '2ddc42638e5efe5dc562c49d538598227c75db17deaa618b1a8d408517c881fd')
         return new BaseResponse(STATUS_CODE.OK, true, 'Default webhook data by PayOS');

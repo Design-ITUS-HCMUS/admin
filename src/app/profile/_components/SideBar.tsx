@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { useMediaQuery, useTheme } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import { useScrollSpy } from '@/hooks';
